@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  teamu-front:
+    build:
+      context: ./src
+    environment:
+      - 'RUN_ENV=development'
+    env_file: ./src/client.env
+    volumes:
+      - ./src/:/home/node/client
+    ports:
+      - 2000:3000
+      - 2002:2002
+
+networks:
+  default:
+    name: ${DOCKER_NETWORK}
