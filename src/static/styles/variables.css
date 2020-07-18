@@ -1,2 +1,39 @@
+/*!* Large desktops and laptops *!*/
+/*media (min-width: 1200px) {*/
+
+/*}*/
+
+/*!* Portrait tablets and medium desktops *!*/
+/*media (min-width: 992px) and (max-width: 1199px) {*/
+
+/*}*/
+
+/*!* Portrait tablets and small desktops *!*/
+/*media (min-width: 768px) and (max-width: 991px) {*/
+
+/*}*/
+
+/*!* Landscape phones and portrait tablets *!*/
+/*media (max-width: 767px) {*/
+
+/*}*/
+
+/*!* Landscape phones and smaller *!*/
+/*media (max-width: 480px) {*/
+
+/*}*/
+
 :root {
+    --primaryColor: #61C9A8;
+    --blackColor: #333333;
+    --greyColor: #878E99;
+    --backgroundPageColor: #F5F6FA;
+    --borderColor: #DBDBDB;
+
+    --textFontSize: 14px;
+    --textLineHeight: 17px;
+
+    --fontFamily: "Inter", BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --defaultFontSize: 14px;
+    --defaultLineHeight: 17px;
 }

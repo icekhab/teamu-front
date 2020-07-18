@@ -1,0 +1,26 @@
+html {
+    font-family: var(--fontFamily);
+    font-size: var(--defaultFontSize);
+    line-height: var(--defaultLineHeight);
+    font-weight: normal;
+    color: var(--blackColor);
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}
+
+html,body {
+    height: 100%;
+    min-height: 100%;
+}
+
+h1 {
+    font-size: 26px;
+    line-height: 31px;
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    margin: 0;
+}
