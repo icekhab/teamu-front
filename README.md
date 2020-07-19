@@ -15,6 +15,8 @@ cd ./src/ && npm i && ../
 docker-compose up -d
 ```
 
+4. Открыть в браузере localhost:2000
+
 ## ESLINT
 
 
