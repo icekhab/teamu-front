@@ -1,8 +1,8 @@
-html {
+html, button {
     font-family: var(--fontFamily);
     font-size: var(--defaultFontSize);
     line-height: var(--defaultLineHeight);
-    font-weight: normal;
+    font-weight: 500;
     color: var(--blackColor);
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
@@ -18,6 +18,13 @@ html,body {
 h1 {
     font-size: 26px;
     line-height: 31px;
+}
+
+@media (min-width: 992px) {
+    h1 {
+        font-size: 36px;
+        line-height: 44px;
+    }
 }
 
 *, *:before, *:after {

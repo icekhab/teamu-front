@@ -1,7 +1,9 @@
+import ProjectLabel from '@/enums/ProjectLabel';
+
 class LabelEntity {
   id?: number;
 
-  title!: string;
+  title!: ProjectLabel;
 }
 
 export default LabelEntity;

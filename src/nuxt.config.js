@@ -57,7 +57,9 @@ module.exports = {
   env: {
     API_URL: process.env.API_URL,
   },
-  plugins: [],
+  plugins: [
+    '~/plugins/filters/dateFilter.ts',
+  ],
   css: [
     '~/static/styles/reset.css',
     '~/static/styles/fonts.css',

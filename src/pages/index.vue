@@ -1,43 +1,49 @@
 <template>
   <MenuLayout>
     <div class="main">
-      <div>
-        <h1>Список идей</h1>
-      </div>
+      <AllProjectsHeader />
+      <ProjectList :projects="projects" />
     </div>
   </MenuLayout>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import ProjectService from '@/services/ProjectService';
+import { State } from 'vuex-class';
+import TButton from '@/components/controls/TButton.vue';
+import MenuLayout from '@/components/layout/MenuLayout.vue';
+import AllProjectsHeader from '@/components/allProjects/AllProjectsHeader.vue';
+import ProjectList from '@/components/common/ProjectList.vue';
 import ProjectEntity from '@/entities/ProjectEntity';
-import TButton from '~/components/controls/TButton.vue';
-import MenuLayout from '~/components/layout/MenuLayout.vue';
+
+const namespace = 'allProjects';
 
 @Component({
   components: {
     TButton,
     MenuLayout,
+    AllProjectsHeader,
+    ProjectList,
+  },
+
+  async fetch({
+    store,
+  }) {
+    await store.dispatch('allProjects/getAllProjects');
   },
 })
 export default class MainPageComponent extends Vue {
-  projects: ProjectEntity[] = [];
-
-  async mounted() {
-    this.projects = await ProjectService.get();
-  }
+  @State('projects', { namespace }) projects!: ProjectEntity[];
 }
 </script>
 
 <style lang="postcss" scoped>
   .main {
     display: flex;
-    width: fit-content;
     flex-direction: column;
-    padding: 50px;
-    & * {
-      margin-top: 20px;
-    }
+    margin: auto;
+    padding: 30px 10px;
+    width: 100%;
+    max-width: 320px;
   }
 </style>

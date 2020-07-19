@@ -4,11 +4,15 @@ import UserEntity from '@/entities/UserEntity';
 class ProjectEntity {
   id?: number;
 
+  name!: string;
+
   useremail!: string;
 
   description!: string;
 
   created!: string;
+
+  accounts?: string;
 
   labels!: LabelEntity[];
 

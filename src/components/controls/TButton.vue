@@ -40,7 +40,7 @@ export default class MButtonComponent extends Vue {
 
   @Prop({
     default: 'primary',
-    validator: (value) => ['primary', 'black', 'transparent', 'white'].includes(value),
+    validator: (value) => ['primary', 'black', 'transparent', 'white-black', 'white-grey'].includes(value),
   })
   readonly theme!: string;
 
@@ -84,7 +84,8 @@ export default class MButtonComponent extends Vue {
     white-space: nowrap;
 
     &__size_m {
-      padding: 12px 20px;
+      height: 41px;
+      padding: 0 20px;
     }
 
     &__size_l {
@@ -124,10 +125,20 @@ export default class MButtonComponent extends Vue {
       }
     }
 
-    &__theme_white {
+    &__theme_white-black {
       background: #ffffff;
       color: var(--blackColor);
       border: 1px solid var(--borderColor);
+
+      &:hover {
+        /*background: var(--whiteColor-hover);*/
+      }
+    }
+
+    &__theme_white-grey {
+      background: #ffffff;
+      color: var(--greyColor);
+      border: 1px solid var(--greyColor);
 
       &:hover {
         /*background: var(--whiteColor-hover);*/
