@@ -4,7 +4,7 @@ services:
     build:
       context: .
     environment:
-      - 'RUN_ENV=production'
+      - 'RUN_ENV=development'
     env_file: ./client.env
     volumes:
       - .:/home/node/client

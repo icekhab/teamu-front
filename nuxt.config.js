@@ -6,7 +6,10 @@ module.exports = {
   */
   head: {
     title: 'Teamu',
-    meta: [],
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1, minimum-scale=1' },
+    ],
   },
   /*
   ** Customize the progress bar color
