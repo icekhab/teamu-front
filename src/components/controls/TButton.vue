@@ -76,7 +76,7 @@ export default class MButtonComponent extends Vue {
   .t-button {
     display: inline-block;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: var(--defaultBorderRadius);
     border: 0;
     transition: background .1s ease-out;
     width: 100%;

@@ -36,4 +36,6 @@
     --fontFamily: "Inter", BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --defaultFontSize: 14px;
     --defaultLineHeight: 17px;
+
+    --defaultBorderRadius: 5px;
 }

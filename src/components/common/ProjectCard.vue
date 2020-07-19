@@ -4,7 +4,7 @@
       <span class="project-card__title">{{ project.name }}</span>
       <span v-if="project.accounts" class="project-card__accounts">
         <ProfileIcon class="project-card__accounts-icon" />
-        3 / 6
+        {{ project.accounts }}
       </span>
       <span>{{ project.created | formatDate }}</span>
     </div>
@@ -19,11 +19,11 @@
           {{ project.user.name || project.user.email }}
         </span>
       </div>
-      <div v-if="project.labels.length" class="project-card__labels">
+      <div class="project-card__labels">
         <ProjectLabel
           v-for="label in project.labels"
-          :key="label"
-          :label="label"
+          :key="label.id"
+          :label="label.title"
           check
           class="project-card__label"
         />
@@ -55,13 +55,14 @@ export default class ProjectCardComponent extends Vue {
   .project-card {
     padding: 15px 10px 20px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.06);
-    border-radius: 5px;
-    margin-top: 20px;
+    border-radius: var(--defaultBorderRadius);
     display: flex;
     flex-direction: column;
     background: #FFFFFF;
     color: var(--greyColor);
     line-height: 17px;
+    min-width: 300px;
+    max-width: 356px;
 
     &__header {
       display: flex;

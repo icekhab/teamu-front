@@ -25,6 +25,22 @@ export default class ProjectListComponent extends Vue {
 
 <style lang="postcss" scoped>
   .project-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
 
+    @media (min-width: 992px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (min-width: 1110px) {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    @media (min-width: 1200px) {
+      grid-column-gap: 36px;
+      grid-row-gap: 36px;
+    }
   }
 </style>

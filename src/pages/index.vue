@@ -1,8 +1,8 @@
 <template>
   <MenuLayout>
     <div class="main">
-      <AllProjectsHeader />
-      <ProjectList :projects="projects" />
+      <AllProjectsHeader class="main__header" />
+      <ProjectList class="main__project-list" :projects="projects" />
     </div>
   </MenuLayout>
 </template>
@@ -44,6 +44,31 @@ export default class MainPageComponent extends Vue {
     margin: auto;
     padding: 30px 10px;
     width: 100%;
-    max-width: 320px;
+    align-items: center;
+    max-width: 356px;
+
+    &__project-list {
+      margin-top: 20px;
+    }
+
+    @media (min-width: 992px) {
+      max-width: 1108px;
+      align-items: flex-start;
+      padding: 50px 30px 50px 30px;
+
+      &__project-list {
+        margin-top: 50px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      max-width: 1140px;
+      align-items: flex-start;
+      padding: 50px 30px 50px 30px;
+
+      &__project-list {
+        margin-top: 50px;
+      }
+    }
   }
 </style>

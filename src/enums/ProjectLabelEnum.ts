@@ -1,4 +1,4 @@
-enum ProjectLabel {
+enum ProjectLabelEnum {
   mvpInProgress = 'делаем mvp',
   working ='работает',
   existIdea = 'есть идея',
@@ -8,4 +8,4 @@ enum ProjectLabel {
   scaling = 'масштабируем',
 }
 
-export default ProjectLabel;
+export default ProjectLabelEnum;
