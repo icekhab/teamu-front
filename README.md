@@ -1,8 +1,10 @@
 ## Установка
 
-1. установить [docker](https://www.docker.com/)
+1. установить [docker](https://www.docker.com/) и docker-compose
 
-2. выполнить консольные команды:
+2. установить [node](https://nodejs.org/uk/)
+
+3. выполнить консольные команды:
 ``` 
 git clone https://github.com/icekhab/teamu-front.git
 
