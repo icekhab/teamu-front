@@ -8,6 +8,7 @@
     "dev": "nuxt-ts",
     "development": "node --inspect=0.0.0.0:2002 node_modules/.bin/nuxt",
     "build": "nuxt-ts build",
+    "heroku-postbuild": "npm run build",
     "start": "nuxt-ts start",
     "production": "npm run build && npm run start",
     "generate": "nuxt-ts generate",
@@ -46,5 +47,9 @@
     "postcss-nested": "^4.2.0",
     "postcss-preset-env": "^6.7.0",
     "postcss-responsive-type": "^1.0.0"
+  },
+  "engines": {
+    "node": "12.x",
+    "npm": "6.x"
   }
 }

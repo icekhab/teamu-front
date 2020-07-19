@@ -2,12 +2,12 @@ version: "3.7"
 services:
   teamu-front:
     build:
-      context: ./src
+      context: .
     environment:
       - 'RUN_ENV=development'
-    env_file: ./src/client.env
+    env_file: ./client.env
     volumes:
-      - ./src/:/home/node/client
+      - .:/home/node/client
     ports:
       - 2000:3000
       - 2002:2002
