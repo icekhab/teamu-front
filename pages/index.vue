@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { State } from 'vuex-class';
+import { Getter } from 'vuex-class';
 import TButton from '@/components/controls/TButton.vue';
 import MenuLayout from '@/components/layout/MenuLayout.vue';
 import AllProjectsHeader from '@/components/allProjects/AllProjectsHeader.vue';
@@ -33,7 +33,7 @@ const namespace = 'allProjects';
   },
 })
 export default class MainPageComponent extends Vue {
-  @State('projects', { namespace }) projects!: ProjectEntity[];
+  @Getter('projects', { namespace }) projects!: ProjectEntity[];
 }
 </script>
 

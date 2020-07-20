@@ -5,8 +5,10 @@
         Список проектов
       </h1>
       <TInput
+        :value="filter.search"
         class="all-projects-header__search-input"
         placeholder="Поиск проекта"
+        @input="setSearchFilterDebounce($event)"
       />
       <TButton
         class="all-projects-header__add-project-btn"
@@ -32,6 +34,8 @@
             :key="index"
             class="all-projects-header__filter-label-item"
             :label="label"
+            :check="filter.projectLabels.includes(label)"
+            @click.native="changeLabel(label)"
           />
           <div v-if="index === 4" :key="index" class="break" />
         </template>
@@ -43,11 +47,16 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import ProjectLabelEnum from '@/enums/ProjectLabelEnum';
+import { Mutation, State } from 'vuex-class';
+import ProjectsFilterEntity from '@/entities/ProjectsFilterEntity';
+import debounce from '@/helpers/debounce';
 import TButton from '~/components/controls/TButton.vue';
 import TInput from '~/components/controls/TInput.vue';
 import ProjectCard from '~/components/common/ProjectCard.vue';
 import FilterIcon from '~/static/images/svg/filter-icon.svg';
 import ProjectLabel from '~/components/common/ProjectLabel.vue';
+
+const namespace = 'allProjects';
 
 @Component({
   components: {
@@ -58,8 +67,32 @@ import ProjectLabel from '~/components/common/ProjectLabel.vue';
     TInput,
   },
 })
-export default class MenuComponent extends Vue {
+export default class AllProjectsHeaderComponent extends Vue {
+  @State('filter', { namespace }) filter!: ProjectsFilterEntity;
+
+  @Mutation('setSearchFilter', { namespace }) setSearchFilter!: (search: string) => void;
+
+  @Mutation('addProjectLabelFilter', { namespace }) addProjectLabelFilter!: (label: ProjectLabelEnum) => void;
+
+  @Mutation('deleteProjectLabelFilter', { namespace }) deleteProjectLabelFilter!: (label: ProjectLabelEnum) => void;
+
+  setSearchFilterDebounce = debounce(this.setSearchFilter, 500);
+
   ProjectLabelEnum = ProjectLabelEnum;
+
+  changeLabel(label: ProjectLabelEnum) {
+    // eslint-disable-next-line no-debugger
+    debugger;
+    const isLabelChecked = this.filter.projectLabels.includes(label);
+    // eslint-disable-next-line no-debugger
+    debugger;
+
+    if (isLabelChecked) {
+      this.deleteProjectLabelFilter(label);
+    } else {
+      this.addProjectLabelFilter(label);
+    }
+  }
 }
 </script>
 

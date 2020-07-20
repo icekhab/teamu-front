@@ -35,9 +35,9 @@ export default class MInputComponent extends Vue {
      * Input's 'input' event listener, 'nextTick' is used to prevent event firing
      * before ui update, helps when using masks (Cleavejs and potentially others).
      */
-  changeInput = (value: any) => {
+  changeInput = (event: any) => {
     this.$nextTick(() => {
-      this.emitInput(value);
+      this.emitInput(event.target.value.trim());
     });
   };
 
