@@ -126,8 +126,10 @@ export default class AllProjectsHeaderComponent extends Vue {
     &__search-input {
       display: none;
     }
+  }
 
-    @media (min-width: 992px) {
+  @media (min-width: 992px) {
+    .all-projects-header {
       flex-direction: column;
 
       &__top {
@@ -171,11 +173,13 @@ export default class AllProjectsHeaderComponent extends Vue {
         width: 326px;
         margin-right: 20px;
         background: #fff url("/images/svg/search-icon.svg") no-repeat scroll 22px 11px;
-        padding-left: 57px;
+        padding-left: 57px!important;
       }
     }
+  }
 
-    @media (min-width: 1200px) {
+  @media (min-width: 1200px) {
+    .all-projects-header {
       &__search-input {
         display: inline;
         width: 356px;

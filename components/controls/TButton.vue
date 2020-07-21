@@ -74,12 +74,10 @@ export default class TButtonComponent extends Vue {
 
 <style lang="postcss" scoped>
   .t-button {
-    display: inline-block;
     text-decoration: none;
     border-radius: var(--defaultBorderRadius);
     border: 0;
     transition: background .1s ease-out;
-    width: 100%;
     box-sizing: border-box;
     white-space: nowrap;
 
