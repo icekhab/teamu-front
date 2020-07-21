@@ -21,7 +21,7 @@
       </div>
       <div class="project-card__labels">
         <ProjectLabel
-          v-for="label in project.labels"
+          v-for="label in project.labels.slice(0, 2)"
           :key="label.id"
           :label="label.title"
           check
