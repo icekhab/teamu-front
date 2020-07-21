@@ -110,7 +110,12 @@ export default class AllProjectsHeaderComponent extends Vue {
     }
 
     &__add-project-btn {
+      width: 100%;
       margin: 15px 0;
+    }
+
+    &__filter-btn {
+      width: 100%;
     }
 
     &__add-project-btn-slot {
