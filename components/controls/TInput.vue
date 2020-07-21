@@ -15,7 +15,7 @@ import {
 } from 'vue-property-decorator';
 
 @Component({})
-export default class MInputComponent extends Vue {
+export default class TInputComponent extends Vue {
   @Prop({
     default: 'm',
     validator: (value) => ['s', 'm', 'l'].includes(value),

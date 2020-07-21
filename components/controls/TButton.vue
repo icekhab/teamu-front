@@ -31,7 +31,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({})
-export default class MButtonComponent extends Vue {
+export default class TButtonComponent extends Vue {
   @Prop({
     default: 'm',
     validator: (value) => ['m', 'l'].includes(value),

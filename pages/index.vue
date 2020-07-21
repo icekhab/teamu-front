@@ -10,7 +10,6 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
-import TButton from '@/components/controls/TButton.vue';
 import MenuLayout from '@/components/layout/MenuLayout.vue';
 import AllProjectsHeader from '@/components/allProjects/AllProjectsHeader.vue';
 import ProjectList from '@/components/common/ProjectList.vue';
@@ -20,7 +19,6 @@ const namespace = 'allProjects';
 
 @Component({
   components: {
-    TButton,
     MenuLayout,
     AllProjectsHeader,
     ProjectList,

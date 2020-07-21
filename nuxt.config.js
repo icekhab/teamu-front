@@ -62,6 +62,7 @@ module.exports = {
   },
   plugins: [
     '~/plugins/filters/dateFilter.ts',
+    '~/plugins/controls/index.ts',
   ],
   css: [
     '~/static/styles/reset.css',

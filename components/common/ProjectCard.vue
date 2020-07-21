@@ -36,13 +36,11 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import ProjectEntity from '@/entities/ProjectEntity';
 import ProfileIcon from '@/static/images/svg/profile-icon.svg';
-import CircleAvatar from '@/components/controls/CircleAvatar.vue';
 import ProjectLabel from '@/components/common/ProjectLabel.vue';
 
 @Component({
   components: {
     ProfileIcon,
-    CircleAvatar,
     ProjectLabel,
   },
 })

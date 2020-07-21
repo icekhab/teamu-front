@@ -50,8 +50,6 @@ import ProjectLabelEnum from '@/enums/ProjectLabelEnum';
 import { Mutation, State } from 'vuex-class';
 import ProjectsFilterEntity from '@/entities/ProjectsFilterEntity';
 import debounce from '@/helpers/debounce';
-import TButton from '~/components/controls/TButton.vue';
-import TInput from '~/components/controls/TInput.vue';
 import ProjectCard from '~/components/common/ProjectCard.vue';
 import FilterIcon from '~/static/images/svg/filter-icon.svg';
 import ProjectLabel from '~/components/common/ProjectLabel.vue';
@@ -61,10 +59,8 @@ const namespace = 'allProjects';
 @Component({
   components: {
     ProjectLabel,
-    TButton,
     FilterIcon,
     ProjectCard,
-    TInput,
   },
 })
 export default class AllProjectsHeaderComponent extends Vue {

@@ -21,7 +21,6 @@ import SearchIcon from '@/static/images/svg/menu/search-icon.svg';
 import HelpIcon from '@/static/images/svg/menu/help-icon.svg';
 import TeamuLogo from '@/static/images/svg/menu/teamu-logo.svg';
 import UsersIcon from '@/static/images/svg/menu/users-icon.svg';
-import CircleAvatar from '@/components/controls/CircleAvatar.vue';
 
 @Component({
   components: {
@@ -29,7 +28,6 @@ import CircleAvatar from '@/components/controls/CircleAvatar.vue';
     MyIdeaIcon,
     NotificationIcon,
     SearchIcon,
-    CircleAvatar,
     HelpIcon,
     TeamuLogo,
     UsersIcon,
