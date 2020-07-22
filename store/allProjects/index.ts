@@ -50,6 +50,10 @@ export const mutations = {
     currentState.filter.search = search;
   },
 
+  setProjectLabelFilter(currentState: AllProjectsState, labels: ProjectLabelEnum[]): void {
+    currentState.filter.projectLabels = [...labels];
+  },
+
   addProjectLabelFilter(currentState: AllProjectsState, label: ProjectLabelEnum): void {
     currentState.filter.projectLabels.push(label);
   },

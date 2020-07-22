@@ -12,13 +12,14 @@
       />
       <TButton
         class="all-projects-header__add-project-btn"
-        theme="black"
+        theme="primary"
       >
         Добавить проект
       </TButton>
       <TButton
         class="all-projects-header__filter-btn"
         theme="white-grey"
+        @click="isVisibleMobileFilter = !isVisibleMobileFilter"
       >
         <span class="all-projects-header__add-project-btn-slot">
           <FilterIcon class="all-projects-header__add-project-btn-icon" />
@@ -37,9 +38,16 @@
             :check="filter.projectLabels.includes(label)"
             @click.native="changeLabel(label)"
           />
-          <div v-if="index === 4" :key="index" class="break" />
+          <div v-if="index === 4" :key="index - 5" class="break" />
         </template>
       </div>
+    </div>
+    <div v-if="isVisibleMobileFilter" class="all-projects-header__mobile-filter-popup">
+      <MobileFilter
+        class="all-projects-header__mobile-filter"
+        :checked-labels="filter.projectLabels"
+        @filter="changeMobileFilter"
+      />
     </div>
   </div>
 </template>
@@ -53,6 +61,7 @@ import debounce from '@/helpers/debounce';
 import ProjectCard from '~/components/common/ProjectCard.vue';
 import FilterIcon from '~/static/images/svg/filter-icon.svg';
 import ProjectLabel from '~/components/common/ProjectLabel.vue';
+import MobileFilter from './MobileFilter.vue';
 
 const namespace = 'allProjects';
 
@@ -61,6 +70,7 @@ const namespace = 'allProjects';
     ProjectLabel,
     FilterIcon,
     ProjectCard,
+    MobileFilter,
   },
 })
 export default class AllProjectsHeaderComponent extends Vue {
@@ -72,22 +82,27 @@ export default class AllProjectsHeaderComponent extends Vue {
 
   @Mutation('deleteProjectLabelFilter', { namespace }) deleteProjectLabelFilter!: (label: ProjectLabelEnum) => void;
 
+  @Mutation('setProjectLabelFilter', { namespace }) setProjectLabelFilter!: (labels: ProjectLabelEnum[]) => void;
+
   setSearchFilterDebounce = debounce(this.setSearchFilter, 500);
 
   ProjectLabelEnum = ProjectLabelEnum;
 
+  isVisibleMobileFilter = false;
+
   changeLabel(label: ProjectLabelEnum) {
-    // eslint-disable-next-line no-debugger
-    debugger;
     const isLabelChecked = this.filter.projectLabels.includes(label);
-    // eslint-disable-next-line no-debugger
-    debugger;
 
     if (isLabelChecked) {
       this.deleteProjectLabelFilter(label);
     } else {
       this.addProjectLabelFilter(label);
     }
+  }
+
+  changeMobileFilter(labels: ProjectLabelEnum[]) {
+    this.setProjectLabelFilter(labels);
+    this.isVisibleMobileFilter = false;
   }
 }
 </script>
@@ -130,6 +145,26 @@ export default class AllProjectsHeaderComponent extends Vue {
 
     &__search-input {
       display: none;
+    }
+
+    &__mobile-filter-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100%;
+      background: rgba(#333333, .85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+
+    &__mobile-filter {
+      width: 100%;
+      max-width: 480px;
+      padding: 30px 10px 42px;
+      background: var(--backgroundPageColor);
     }
   }
 
@@ -179,6 +214,10 @@ export default class AllProjectsHeaderComponent extends Vue {
         margin-right: 20px;
         background: #fff url("/images/svg/search-icon.svg") no-repeat scroll 22px 11px;
         padding-left: 57px!important;
+      }
+
+      &__mobile-filter-popup {
+        display: none;
       }
     }
   }

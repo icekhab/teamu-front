@@ -46,6 +46,7 @@ export default class MainPageComponent extends Vue {
     max-width: 356px;
 
     &__project-list {
+      width: 100%;
       margin-top: 20px;
     }
 
@@ -55,6 +56,7 @@ export default class MainPageComponent extends Vue {
       padding: 50px 30px 50px 30px;
 
       &__project-list {
+        width: auto;
         margin-top: 50px;
       }
     }

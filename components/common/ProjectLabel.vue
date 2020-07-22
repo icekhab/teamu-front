@@ -53,61 +53,58 @@ export default class ProjectLabelComponent extends Vue {
     }
 
     &.analyzing {
-      border-color: #BD90E3;
+      border-color: #E8D5CE;
 
       &.check {
-        background: #BD90E3;
+        background: #E8D5CE;
       }
     }
 
     &.exist-idea {
-      border-color: #43470B;
+      border-color: #F9D1E8;
 
       &.check {
-        background: #43470B;
-        color: #ffffff;
+        background: #F9D1E8;
       }
     }
 
     &.exist-specification {
-      border-color: #FED766;
+      border-color: #F9EED3;
 
       &.check {
-        background: #FED766;
+        background: #F9EED3;
       }
     }
 
     &.mvp-in-progress {
-      border-color: #4113AE;
+      border-color: #CBE5FB;
 
       &.check {
-        background: #4113AE;
-        color: #ffffff;
+        background: #CBE5FB;
       }
     }
 
     &.mvp-ready {
-      border-color: #B8E9D4;
+      border-color: #E0D7F9;
 
       &.check {
-        background: #B8E9D4;
+        background: #E0D7F9;
       }
     }
 
     &.scaling {
-      border-color: #E98142;
+      border-color: #D7D7D5;
 
       &.check {
-        background: #E98142;
-        color: #ffffff;
+        background: #D7D7D5;
       }
     }
 
     &.working {
-      border-color: #9BB2E5;
+      border-color: #D0E8E2;
 
       &.check {
-        background: #9BB2E5;
+        background: #D0E8E2;
       }
     }
   }
