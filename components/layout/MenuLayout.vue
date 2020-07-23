@@ -26,7 +26,7 @@ export default class MenuLayoutComponent extends Vue {}
 
     &__content {
       flex: 1;
-      padding: 0 0 50px 0;
+      padding: 30px 10px 70px;
       background: var(--backgroundPageColor);
     }
 
@@ -43,7 +43,7 @@ export default class MenuLayoutComponent extends Vue {}
   @media (min-width: 992px) {
     .menu-layout {
       &__content {
-        padding: 0 0 0 60px;
+        padding: 50px 30px 50px 90px;
       }
 
       &__menu {

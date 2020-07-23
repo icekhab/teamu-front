@@ -40,7 +40,6 @@ export default class MainPageComponent extends Vue {
     display: flex;
     flex-direction: column;
     margin: auto;
-    padding: 30px 10px;
     width: 100%;
     align-items: center;
     max-width: 356px;
@@ -63,12 +62,6 @@ export default class MainPageComponent extends Vue {
 
     @media (min-width: 1200px) {
       max-width: 1140px;
-      align-items: flex-start;
-      padding: 50px 30px 50px 30px;
-
-      &__project-list {
-        margin-top: 50px;
-      }
     }
   }
 </style>
