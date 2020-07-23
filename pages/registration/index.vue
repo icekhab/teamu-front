@@ -61,7 +61,7 @@ import SignUpEntity from '@/entities/SignUpEntity';
     TInput,
   },
 })
-export default class MainPageComponent extends Vue {
+export default class RegistrationComponent extends Vue {
   private signup: SignUpEntity = {
     name: '',
     email: '',
@@ -84,6 +84,7 @@ export default class MainPageComponent extends Vue {
     width: 600px;
     height: 714px;
     border: black solid 1px;
+    background-color: #fff;
 
     &__email-input {
         display: inline;
