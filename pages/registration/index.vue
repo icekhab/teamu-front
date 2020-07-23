@@ -1,0 +1,223 @@
+<template>
+  <div class="registration">
+    <span class="registration__label">Регистрация в TEAMU</span>
+    <TInput
+      v-model="signup.email"
+      class="registration__email-input"
+      placeholder="Email"
+    />
+    <TInput
+      v-model="signup.password"
+      type="password"
+      class="registration__password-input"
+      placeholder="Пароль"
+    />
+    <TInput
+      v-model="signup.openLandProfileLink"
+      class="registration__link-on-profile-input"
+      placeholder="Ссылка на профиль в MESTO"
+    />
+    <TInput
+      v-model="signup.userRole"
+      class="registration__role-in-project"
+      placeholder="Ваша роль в проекте"
+    />
+    <div class="registration__policy">
+      <TInput
+        type="checkbox"
+        class="registration__policy-cbx"
+      />
+      <span class="registration__policy-text">
+        Я принимаю
+      </span>
+      <span class="registration__policy-link">политику конфиденциальности</span>
+    </div>
+    <TButton
+      class="registration__register-btn"
+      theme="primary"
+      @click="onClick"
+    >
+      Зарегистрироваться
+    </TButton>
+    <span class="registration__divider" />
+    <div class="registration__account">
+      <span class="registration__account-question">
+        Есть аккаунт?
+      </span>
+      <span class="registration__account-entry">Войти</span>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator';
+import TButton from '@/components/controls/TButton.vue';
+import TInput from '@/components/controls/TInput.vue';
+import SignUpEntity from '@/entities/SignUpEntity';
+
+@Component({
+  components: {
+    TButton,
+    TInput,
+  },
+})
+export default class MainPageComponent extends Vue {
+  private signup: SignUpEntity = {
+    name: '',
+    email: '',
+    password: '',
+    verifyPassword: '',
+    userRole: '',
+    openLandProfileLink: '',
+  };
+
+  private async onClick() {
+    await this.$store.dispatch('registration/postSignUp', this.signup);
+  }
+}
+</script>
+
+<style lang="postcss" scoped>
+  .registration {
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    height: 714px;
+    border: black solid 1px;
+
+    &__email-input {
+        display: inline;
+        width: 392px;
+        height: 50px;
+        margin-right: 20px;
+        background: #fff url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 15px;
+        padding-left: 50px;
+        margin-top: 58px;
+        margin-right: 104px;
+        margin-left: 104px;
+    }
+
+    &__password-input {
+        display: inline;
+        width: 392px;
+        height: 50px;
+        margin-right: 20px;
+        background: #fff url("/images/svg/registration/password-icon.svg")
+            no-repeat scroll 22px 12px;
+        padding-left: 50px;
+        margin-top: 30px;
+        margin-right: 104px;
+        margin-left: 104px;
+    }
+
+    &__link-on-profile-input {
+        display: inline;
+        width: 392px;
+        height: 50px;
+        padding-left: 23px;
+        margin-top: 30px;
+        margin-right: 104px;
+        margin-left: 104px;
+    }
+
+    &__role-in-project {
+        display: inline;
+        width: 392px;
+        height: 50px;
+        padding-left: 23px;
+        margin-top: 30px;
+        margin-right: 104px;
+        margin-left: 104px;
+    }
+
+    &__label {
+        width: 403px;
+        height: 44px;
+        text-align: center;
+        margin-top: 50px;
+        margin-left: 99px;
+        margin-right: 99px;
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 36px;
+        line-height: 44px;
+        text-align: center;
+        color: #333333;
+    }
+
+    &__policy {
+        margin-top: 30px;
+        margin-left: 104px;
+        margin-right: 104px;
+        vertical-align: middle;
+    }
+
+    &__policy-text {
+        display: inline-block;
+        height: 24px;
+        vertical-align: middle;
+    }
+
+    &__policy-link {
+        display: inline-block;
+        height: 24px;
+        vertical-align: middle;
+        color: #4F56F1;
+    }
+
+    &__policy-cbx {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        background: #FFFFFF;
+        border: 1px solid #DBDBDB;
+        box-sizing: border-box;
+        border-radius: 5px;
+    }
+
+    &__register-btn {
+        width: 392px;
+        height: 44px;
+        left: 104px;
+        top: 542px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.06);
+        border-radius: 5px;
+        display: inline;
+        margin-top: 53px;
+        margin-right: 104px;
+        margin-left: 104px;
+    }
+
+    &__divider {
+        width: 392px;
+        height: 1px;
+        margin-top: 30px;
+        margin-right: 104px;
+        margin-left: 104px;
+        background: #DBDBDB;
+    }
+
+    &__account {
+        margin-top: 30px;
+        margin-left: 228px;
+        margin-right: 227px;
+        vertical-align: middle;
+        margin-bottom: 50px;
+    }
+
+    &__account-question {
+        display: inline-block;
+        height: 24px;
+        vertical-align: middle;
+    }
+
+    &__account-entry {
+        display: inline-block;
+        height: 24px;
+        vertical-align: middle;
+        color: #4F56F1;
+    }
+  }
+</style>
