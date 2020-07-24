@@ -51,9 +51,12 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import TButton from '@/components/controls/TButton.vue';
 import TInput from '@/components/controls/TInput.vue';
 import SignUpEntity from '@/entities/SignUpEntity';
+
+const namespace = 'registration';
 
 @Component({
   components: {
@@ -62,6 +65,8 @@ import SignUpEntity from '@/entities/SignUpEntity';
   },
 })
 export default class RegistrationComponent extends Vue {
+  @Action('postSignUp', { namespace }) postSignUp!: (signup: SignUpEntity) => void;
+
   private signup: SignUpEntity = {
     name: '',
     email: '',
@@ -72,7 +77,7 @@ export default class RegistrationComponent extends Vue {
   };
 
   private async onClick() {
-    await this.$store.dispatch('registration/postSignUp', this.signup);
+    await this.postSignUp(this.signup);
   }
 }
 </script>
@@ -90,7 +95,6 @@ export default class RegistrationComponent extends Vue {
         display: inline;
         width: 392px;
         height: 50px;
-        margin-right: 20px;
         background: #fff url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 15px;
         padding-left: 50px;
         margin-top: 58px;
@@ -102,7 +106,6 @@ export default class RegistrationComponent extends Vue {
         display: inline;
         width: 392px;
         height: 50px;
-        margin-right: 20px;
         background: #fff url("/images/svg/registration/password-icon.svg")
             no-repeat scroll 22px 12px;
         padding-left: 50px;

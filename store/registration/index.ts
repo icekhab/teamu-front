@@ -4,6 +4,7 @@ import RootState from '@/entities/states/RootState';
 import RegistrationService from '@/services/RegistrationService';
 import SignUpEntity from '@/entities/SignUpEntity';
 import AuthInfoEntity from '@/entities/AuthInfoEntity';
+import LoginEntity from '@/entities/LoginEntity';
 
 export const state = (): RegistrationState => ({
   signup: {
@@ -24,6 +25,12 @@ export const state = (): RegistrationState => ({
 export const actions : any = {
   async postSignUp(context: ActionContext<RegistrationState, RootState>, signup: SignUpEntity) {
     const authInfo: AuthInfoEntity = await RegistrationService.postSignUp(signup);
+
+    context.commit('setSignUpInfo', authInfo);
+  },
+
+  async postLogin(context: ActionContext<RegistrationState, RootState>, login: LoginEntity) {
+    const authInfo: AuthInfoEntity = await RegistrationService.postLogin(login);
 
     context.commit('setSignUpInfo', authInfo);
   },
