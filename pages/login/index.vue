@@ -30,7 +30,7 @@
       <span class="login__have-not-account-question">
         Нет аккаунта?
       </span>
-      <span class="login__have-not-account-registration">Пройти регистрацию</span>
+      <nuxt-link class="login__have-not-account-registration" to="/registration">Пройти регистрацию</nuxt-link>
     </div>
   </div>
 </template>
@@ -68,79 +68,77 @@ export default class LoginComponent extends Vue {
   .login {
     display: flex;
     flex-direction: column;
-    width: 600px;
-    height: 518px;
+    width: 320px;
+    height: 470px;
     border: black solid 1px;
     background-color: #fff;
     border-radius: 5px;
 
-    &__email-input {
-        display: inline;
-        width: 392px;
-        height: 50px;
-        background: #fff url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 17px;
-        padding-left: 50px;
-        margin-top: 58px;
-        margin-right: 104px;
-        margin-left: 104px;
-    }
-
-    &__password-input {
-        display: inline;
-        width: 392px;
-        height: 50px;
-        margin-right: 20px;
-        background: #fff url("/images/svg/registration/password-icon.svg")
-            no-repeat scroll 22px 17px;
-        padding-left: 50px;
-        margin-top: 30px;
-        margin-right: 104px;
-        margin-left: 104px;
-    }
-
     &__label {
-        width: 403px;
+        width: 300px;
         height: 44px;
+        margin-left: 10px;
+        font-size: 26px;
         text-align: center;
         margin-top: 50px;
-        margin-left: 99px;
-        margin-right: 99px;
         font-family: Inter;
         font-style: normal;
         font-weight: 600;
-        font-size: 36px;
         line-height: 44px;
         text-align: center;
         color: #333333;
     }
 
+    &__email-input {
+        display: inline;
+        width: 300px;
+        height: 40px;
+        padding-left: 50px;
+        margin-top: 58px;
+        margin-right: 10px;
+        margin-left: 10px;
+        background: #fff url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 13px;
+    }
+
+    &__password-input {
+        display: inline;
+        width: 300px;
+        height: 40px;
+        padding-left: 50px;
+        margin-top: 30px;
+        margin-right: 10px;
+        margin-left: 10px;
+        background: #fff
+          url("/images/svg/registration/password-icon.svg") no-repeat scroll 22px 13px;
+    }
+
     &__btn {
         display: inline;
-        width: 392px;
-        height: 44px;
+        width: 300px;
+        height: 40px;
+        margin-top: 30px;
+        margin-right: 10px;
+        margin-left: 10px;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.06);
         border-radius: 5px;
-        margin-top: 30px;
-        margin-right: 104px;
-        margin-left: 104px;
     }
 
     &__divider {
-        width: 392px;
+        width: 300px;
         height: 1px;
         margin-top: 30px;
-        margin-right: 104px;
-        margin-left: 104px;
+        margin-right: 10px;
+        margin-left: 10px;
         background: #DBDBDB;
     }
 
     &__forget-password {
-        width: 185px;
+        width: 300px;
         height: 17px;
+        text-align: center;
         margin-top: 30px;
-        margin-left: 207px;
-        margin-right: 208px;
-        vertical-align: middle;
+        margin-left: 10px;
+        margin-right: 10px;
     }
 
     &__forget-password-question {
@@ -157,11 +155,12 @@ export default class LoginComponent extends Vue {
     }
 
     &__have-not-account {
-        width: 251px;
+        width: 300px;
         height: 17px;
-        margin-top: 17px;
-        margin-left: 174px;
-        margin-right: 175px;
+        text-align: center;
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
         vertical-align: middle;
     }
 
@@ -176,6 +175,68 @@ export default class LoginComponent extends Vue {
         height: 24px;
         vertical-align: middle;
         color: #4F56F1;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .login {
+      width: 600px;
+      height: 518px;
+
+      &__label {
+          width: 403px;
+          height: 44px;
+          margin-left: 99px;
+          margin-right: 99px;
+          font-size: 36px;
+      }
+
+      &__email-input {
+          display: inline;
+          width: 392px;
+          height: 50px;
+          background: #fff
+            url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 17px;
+          padding-left: 50px;
+          margin-right: 104px;
+          margin-left: 104px;
+      }
+
+      &__password-input {
+          width: 392px;
+          height: 50px;
+          background: #fff url("/images/svg/registration/password-icon.svg")
+              no-repeat scroll 22px 17px;
+          margin-right: 104px;
+          margin-left: 104px;
+      }
+
+      &__btn {
+          width: 392px;
+          height: 44px;
+          margin-right: 104px;
+          margin-left: 104px;
+      }
+
+      &__divider {
+          width: 392px;
+          margin-right: 104px;
+          margin-left: 104px;
+      }
+
+      &__forget-password {
+          width: 185px;
+          margin-left: 207px;
+          margin-right: 208px;
+          vertical-align: middle;
+      }
+
+      &__have-not-account {
+          width: 251px;
+          margin-top: 30px;
+          margin-left: 174px;
+          margin-right: 175px;
+      }
     }
   }
 </style>
