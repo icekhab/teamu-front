@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <span class="login__label">Вход в TEAMU</span>
+    <span class="login__label">Вход в UTEAM</span>
     <TInput
       v-model="login.email"
       class="login__email-input"

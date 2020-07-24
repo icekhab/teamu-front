@@ -1,6 +1,6 @@
 <template>
   <div class="registration">
-    <span class="registration__label">Регистрация в TEAMU</span>
+    <span class="registration__label">Регистрация в UTEAM</span>
     <TInput
       v-model="signup.email"
       class="registration__email-input"
