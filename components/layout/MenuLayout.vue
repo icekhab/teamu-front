@@ -23,11 +23,13 @@ export default class MenuLayoutComponent extends Vue {}
     flex-direction: column;
     min-height: 100vh;
     width: 100%;
+    align-items: center;
+    background: var(--backgroundPageColor);
 
     &__content {
       flex: 1;
       padding: 30px 10px 70px;
-      background: var(--backgroundPageColor);
+      min-width: 320px;
     }
 
     &__menu {

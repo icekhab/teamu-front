@@ -21,6 +21,8 @@ export default class CircleAvatarComponent extends Vue {
     vertical-align: middle;
     border-radius: 50%;
     display: inline-block;
+    min-width: 20px;
+    min-height: 20px;
 
     &.avatar-empty {
       background: linear-gradient(180deg, #56CCF2 0%, rgba(47, 128, 237, 0.49) 100%);

@@ -40,7 +40,7 @@ export default class ProjectLabelComponent extends Vue {
   .project-label {
     font-size: 14px;
     line-height: 17px;
-    padding: 6px 10px;
+    padding: 4px 10px;
     border: 1px solid var(--primaryColor);
     color: var(--blackColor);
     box-sizing: border-box;

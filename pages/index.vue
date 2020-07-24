@@ -52,7 +52,6 @@ export default class MainPageComponent extends Vue {
     @media (min-width: 992px) {
       max-width: 1108px;
       align-items: flex-start;
-      padding: 50px 30px 50px 30px;
 
       &__project-list {
         width: auto;

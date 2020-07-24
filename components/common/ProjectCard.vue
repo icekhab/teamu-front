@@ -1,7 +1,9 @@
 <template>
   <div class="project-card">
     <div class="project-card__header">
-      <span class="project-card__title">{{ project.name }}</span>
+      <nuxt-link :to="projectLink" class="project-card__title">
+        {{ project.name }}
+      </nuxt-link>
       <span v-if="project.accounts" class="project-card__accounts">
         <ProfileIcon class="project-card__accounts-icon" />
         {{ project.accounts }}
@@ -46,6 +48,13 @@ import ProjectLabel from '@/components/common/ProjectLabel.vue';
 })
 export default class ProjectCardComponent extends Vue {
   @Prop() readonly project!: ProjectEntity;
+
+  projectLink = {
+    name: 'project-id',
+    params: {
+      id: this.project.id,
+    },
+  };
 }
 </script>
 
@@ -72,6 +81,7 @@ export default class ProjectCardComponent extends Vue {
       flex: 1;
       overflow: hidden;
       text-overflow: ellipsis;
+      text-decoration: none;
       display: -webkit-box;
       line-height: 17px;     /* fallback */
       max-height: 34px;      /* fallback */

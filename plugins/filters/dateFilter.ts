@@ -3,5 +3,8 @@ import DateHelper from '@/helpers/DateHelper';
 
 Vue.filter(
   'formatDate',
-  (value?: string) => value && DateHelper.toDateString(new Date(value)),
+  (
+    value?: string,
+    alwaysWithYear = false,
+  ) => value && DateHelper.toDateString(new Date(value), alwaysWithYear),
 );
