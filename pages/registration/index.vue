@@ -46,7 +46,9 @@
       <span class="registration__account-question">
         Есть аккаунт?
       </span>
-      <nuxt-link class="registration__account-entry" to="/login">Войти</nuxt-link>
+      <nuxt-link class="registration__account-entry" to="/login">
+        Войти
+      </nuxt-link>
     </div>
   </div>
 </template>
@@ -243,7 +245,8 @@ export default class RegistrationComponent extends Vue {
       &__email-input {
           width: 392px;
           height: 50px;
-          background: #fff url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 15px;
+          background: #fff
+            url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 15px;
           margin-top: 58px;
           margin-right: 104px;
           margin-left: 104px;

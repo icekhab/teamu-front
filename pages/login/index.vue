@@ -30,7 +30,9 @@
       <span class="login__have-not-account-question">
         Нет аккаунта?
       </span>
-      <nuxt-link class="login__have-not-account-registration" to="/registration">Пройти регистрацию</nuxt-link>
+      <nuxt-link class="login__have-not-account-registration" to="/registration">
+        Пройти регистрацию
+      </nuxt-link>
     </div>
   </div>
 </template>
