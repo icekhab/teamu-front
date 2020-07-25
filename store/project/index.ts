@@ -6,6 +6,8 @@ import DetailProjectEntity from '@/entities/DetailProjectEntity';
 
 export const state = (): ProjectState => ({
   project: {
+    id: 0,
+    vacancy: [],
     created: '',
     description: '',
     labels: [],

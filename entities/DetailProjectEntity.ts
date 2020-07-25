@@ -1,9 +1,10 @@
 import LabelEntity from '@/entities/LabelEntity';
 import LinkEntity from '@/entities/LinkEntity';
 import UserEntity from '@/entities/UserEntity';
+import VacancyEntity from '@/entities/VacancyEntity';
 
 class DetailProjectEntity {
-  id?: number;
+  id!: number;
 
   name!: string;
 
@@ -14,6 +15,8 @@ class DetailProjectEntity {
   created!: string;
 
   user!: UserEntity;
+
+  vacancy!: VacancyEntity[];
 
   labels!: LabelEntity[];
 

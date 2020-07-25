@@ -78,6 +78,7 @@ export default class ProjectInfoComponent extends Vue {
 <style lang="postcss" scoped>
   .project-info {
     width: 100%;
+    justify-content: space-between;
 
     &__about-creating {
       display: flex;
