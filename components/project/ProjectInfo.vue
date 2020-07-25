@@ -71,7 +71,7 @@ const namespace = 'project';
 export default class ProjectInfoComponent extends Vue {
   @State('project', { namespace }) project!: DetailProjectEntity;
 
-  noLogoUrl = '/static/images/no-logo.jpg';
+  noLogoUrl = '/images/no-logo.jpg';
 }
 </script>
 
@@ -154,6 +154,7 @@ export default class ProjectInfoComponent extends Vue {
       margin: 20px auto 0;
       width: 100%;
       max-width: 400px;
+      min-height: 150px;
       max-height: 200px;
       border-radius: var(--defaultBorderRadius);
       object-fit: cover;
@@ -191,10 +192,12 @@ export default class ProjectInfoComponent extends Vue {
         display: block;
         width: 100%;
         max-width: 380px;
+        min-height: 270px;
         max-height: 320px;
         margin: 57px 0 0 40px;
         border-radius: var(--defaultBorderRadius);
         object-fit: cover;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.06);
       }
     }
   }
@@ -230,8 +233,10 @@ export default class ProjectInfoComponent extends Vue {
 
       &__logo {
         max-width: 480px;
+        min-height: 350px;
         max-height: 400px;
         margin-left: 140px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.06);
       }
     }
   }
