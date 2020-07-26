@@ -50,7 +50,8 @@ export default class MainPageComponent extends Vue {
     }
 
     @media (min-width: 992px) {
-      max-width: 1108px;
+      width: 1108px;
+      max-width: none;
       align-items: flex-start;
 
       &__project-list {
@@ -60,7 +61,7 @@ export default class MainPageComponent extends Vue {
     }
 
     @media (min-width: 1200px) {
-      max-width: 1140px;
+      width: 1140px;
     }
   }
 </style>

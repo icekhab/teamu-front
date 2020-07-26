@@ -40,7 +40,7 @@ export default class ProjectInfoComponent extends Vue {
 
   @media (min-width: 1200px) {
     .vacancy-list {
-      grid-template-columns: repeat(3, 350px);
+      grid-template-columns: repeat(3, auto);
       grid-column-gap: 36px;
       grid-row-gap: 36px;
     }

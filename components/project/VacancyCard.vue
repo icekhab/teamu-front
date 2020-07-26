@@ -1,18 +1,22 @@
 <template>
   <div class="vacancy-card">
     <div class="vacancy-card__row">
-      <span class="vacancy-card__name">Роль</span>
+      <span class="vacancy-card__name">Ищем в команду:</span>
       <span class="vacancy-card__value">{{ vacancy.title }}</span>
     </div>
 
     <div v-if="vacancy.shareType === VacancyShareType.share" class="vacancy-card__row">
-      <span class="vacancy-card__name">Доля в проекте (%)</span>
+      <span class="vacancy-card__name">Доля в проекте (%):</span>
       <span class="vacancy-card__value">{{ vacancy.value }}</span>
     </div>
 
     <div class="vacancy-card__row">
-      <span class="vacancy-card__name">{{ shareTypeText }}</span>
-      <CheckIcon class="vacancy-card__check" />
+      <span class="vacancy-card__name vacancy-card__share">{{ shareTypeText }}</span>
+      <span class="vacancy-card__check">
+        <span class="vacancy-card__check-background">
+          <CheckIcon />
+        </span>
+      </span>
     </div>
 
     <TButton class="vacancy-card__send-request-btn" theme="primary">
@@ -55,6 +59,7 @@ export default class VacancyCardComponent extends Vue {
   .vacancy-card {
     min-width: 300px;
     max-width: 350px;
+    width: auto;
     /*min-height: 263px;*/
 
     background: #FFFFFF;
@@ -66,34 +71,62 @@ export default class VacancyCardComponent extends Vue {
     &__row {
       width: 100%;
       display: flex;
-      margin-bottom: 20px;
+      margin-bottom: 28px;
       align-items: center;
     }
 
     &__name {
-      max-height: 55%;
+      min-width: 138px;
+      max-width: 138px;
+      align-self: flex-start;
+      white-space: nowrap;
+
+      &.vacancy-card__share {
+        white-space: normal;
+      }
     }
 
     &__value {
       margin-left: 20px;
+      font-weight: bold;
       flex-grow: 1;
-      padding: 10px 5px;
-      background: #FFFFFF;
-      border: 1px solid var(--borderColor);
-      box-sizing: border-box;
-      border-radius: 5px;
-      display: flex;
-      justify-content: center;
       color: var(--blackColor);
     }
 
     &__check {
-      margin-left: 35px;
-      color: var(--primaryColor);
+      margin-left: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      background: rgba(#4F56F1, 0.5);
+      border-radius: 5px;
+      color: #FFFFFF;
+    }
+
+    &__check-background {
+      width: 14px;
+      height: 14px;
+      display: flex;
+      background: #4F56F1;
+      border-radius: 5px;
+      align-items: center;
+      justify-content: center;
     }
 
     &__send-request-btn {
       width: 100%;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .vacancy-card {
+      width: 350px;
+
+      &__send-request-btn {
+        width: 158px;
+      }
     }
   }
 </style>
