@@ -30,6 +30,9 @@ export default class MenuLayoutComponent extends Vue {}
       flex: 1;
       padding: 30px 10px 70px;
       min-width: 320px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
     }
 
     &__menu {

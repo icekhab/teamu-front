@@ -71,7 +71,7 @@ const namespace = 'project';
 export default class ProjectInfoComponent extends Vue {
   @State('project', { namespace }) project!: DetailProjectEntity;
 
-  noLogoUrl = '/images/no-logo.jpg';
+  noLogoUrl = '/images/svg/no-photo.svg';
 }
 </script>
 
@@ -233,6 +233,7 @@ export default class ProjectInfoComponent extends Vue {
       }
 
       &__logo {
+        min-width: 400px;
         max-width: 480px;
         min-height: 350px;
         max-height: 400px;

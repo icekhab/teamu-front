@@ -39,7 +39,6 @@ export default class MainPageComponent extends Vue {
   .main {
     display: flex;
     flex-direction: column;
-    margin: auto;
     width: 100%;
     align-items: center;
     max-width: 356px;

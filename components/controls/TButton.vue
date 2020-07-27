@@ -40,7 +40,7 @@ export default class TButtonComponent extends Vue {
 
   @Prop({
     default: 'primary',
-    validator: (value) => ['primary', 'black', 'transparent', 'white-black', 'white-grey'].includes(value),
+    validator: (value) => ['primary', 'outline-primary', 'black', 'transparent', 'white-black', 'white-grey'].includes(value),
   })
   readonly theme!: string;
 
@@ -77,7 +77,7 @@ export default class TButtonComponent extends Vue {
     text-decoration: none;
     border-radius: var(--defaultBorderRadius);
     border: 0;
-    transition: background .1s ease-out;
+    transition: all .15s ease-in-out;
     box-sizing: border-box;
     white-space: nowrap;
 
@@ -96,10 +96,30 @@ export default class TButtonComponent extends Vue {
     &__theme_primary {
       background: var(--primaryColor);
       color: #ffffff;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.06);
+      box-shadow: var(--defaultBoxShadow);
 
       &:hover {
-        /*background: var(--primaryColor-hover);*/
+        background: var(--primaryColor-hover);
+      }
+
+      &:active {
+        box-shadow: var(--activeControlBoxShadow);
+      }
+    }
+
+    &__theme_outline-primary {
+      background: transparent;
+      border: 1px solid var(--primaryColor);
+      color: var(--primaryColor);
+
+      &:hover {
+        box-shadow: 0 0 0 1px var(--primaryColor-hover);
+        border-color: var(--primaryColor-hover);
+        color: var(--primaryColor-hover);
+      }
+
+      &:active {
+        box-shadow: var(--activeControlBoxShadow);
       }
     }
 

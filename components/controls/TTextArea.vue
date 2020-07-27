@@ -1,12 +1,12 @@
 <template>
-  <input
+  <textarea
     :class="classInput"
     :value="value"
     v-bind="$attrs"
     @input="changeInput"
     @blur="$emit('blur', $event)"
     @focus="$emit('focus', $event)"
-  >
+  />
 </template>
 
 <script lang="ts">
@@ -15,7 +15,7 @@ import {
 } from 'vue-property-decorator';
 
 @Component({})
-export default class TInputComponent extends Vue {
+export default class TTextAreaComponent extends Vue {
   @Prop({
     default: 'm',
     validator: (value) => ['s', 'm', 'l'].includes(value),
@@ -26,8 +26,8 @@ export default class TInputComponent extends Vue {
 
   get classInput() {
     return [
-      't-input',
-      `t-input__size_${this.size}`,
+      't-text-area',
+      `t-text-area__size_${this.size}`,
     ];
   }
 
@@ -49,7 +49,7 @@ export default class TInputComponent extends Vue {
 </script>
 
 <style lang="postcss" scoped>
-  .t-input {
+  .t-text-area {
     height: inherit;
     line-height: var(--defaultLineHeight);
     background-color: #ffffff;

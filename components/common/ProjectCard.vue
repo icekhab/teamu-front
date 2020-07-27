@@ -1,9 +1,9 @@
 <template>
-  <div class="project-card">
+  <nuxt-link :to="projectLink" class="project-card">
     <div class="project-card__header">
-      <nuxt-link :to="projectLink" class="project-card__title">
+      <span :to="projectLink" class="project-card__title">
         {{ project.name }}
-      </nuxt-link>
+      </span>
       <span v-if="project.accounts" class="project-card__accounts">
         <ProfileIcon class="project-card__accounts-icon" />
         {{ project.accounts }}
@@ -31,7 +31,7 @@
         />
       </div>
     </div>
-  </div>
+  </nuxt-link>
 </template>
 
 <script lang="ts">
@@ -70,6 +70,12 @@ export default class ProjectCardComponent extends Vue {
     line-height: 17px;
     min-width: 300px;
     max-width: 356px;
+    text-decoration: none;
+    transition: all .15s ease-in;
+
+    &:hover {
+      box-shadow: var(--hoverBlockBoxShadow);
+    }
 
     &__header {
       display: flex;

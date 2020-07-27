@@ -13,6 +13,7 @@
       <TButton
         class="all-projects-header__add-project-btn"
         theme="primary"
+        :to="createProjectLink"
       >
         Добавить проект
       </TButton>
@@ -36,6 +37,7 @@
             class="all-projects-header__filter-label-item"
             :label="label"
             :check="filter.projectLabels.includes(label)"
+            active
             @click.native="changeLabel(label)"
           />
           <div v-if="index === 4" :key="index - 5" class="break" />
@@ -58,8 +60,8 @@ import ProjectLabelEnum from '@/enums/ProjectLabelEnum';
 import { Mutation, State } from 'vuex-class';
 import ProjectsFilterEntity from '@/entities/ProjectsFilterEntity';
 import debounce from '@/helpers/debounce';
+import FilterIcon from '@/static/images/svg/filter-icon.svg';
 import ProjectCard from '~/components/common/ProjectCard.vue';
-import FilterIcon from '~/static/images/svg/filter-icon.svg';
 import ProjectLabel from '~/components/common/ProjectLabel.vue';
 import MobileFilter from './MobileFilter.vue';
 
@@ -89,6 +91,10 @@ export default class AllProjectsHeaderComponent extends Vue {
   ProjectLabelEnum = ProjectLabelEnum;
 
   isVisibleMobileFilter = false;
+
+  createProjectLink = {
+    name: 'project-new',
+  };
 
   changeLabel(label: ProjectLabelEnum) {
     const isLabelChecked = this.filter.projectLabels.includes(label);
@@ -127,6 +133,9 @@ export default class AllProjectsHeaderComponent extends Vue {
     &__add-project-btn {
       width: 100%;
       margin: 15px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     &__filter-btn {

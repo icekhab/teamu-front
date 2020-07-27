@@ -14,6 +14,8 @@ export default class ProjectLabelComponent extends Vue {
 
   @Prop({ type: Boolean }) readonly check?: boolean;
 
+  @Prop({ type: Boolean }) readonly active?: boolean;
+
   private labelClasses = {
     [ProjectLabelEnum.analyzing]: 'analyzing',
     [ProjectLabelEnum.existIdea]: 'exist-idea',
@@ -31,6 +33,7 @@ export default class ProjectLabelComponent extends Vue {
       'project-label',
       labelClass || 'default',
       this.check ? 'check' : undefined,
+      this.active ? 'active' : undefined,
     ];
   }
 }
@@ -47,6 +50,7 @@ export default class ProjectLabelComponent extends Vue {
     border-radius: var(--defaultBorderRadius);
     display: inline-block;
     background: #ffffff;
+    transition: all .15s ease-in-out;
 
     &.check {
       background: var(--primaryColor);
@@ -57,6 +61,14 @@ export default class ProjectLabelComponent extends Vue {
 
       &.check {
         background: #E8D5CE;
+
+        &.active:hover {
+          background: #E6BFB1;
+        }
+      }
+
+      &.active:hover {
+        border-color: #E6BFB1;
       }
     }
 
@@ -65,6 +77,14 @@ export default class ProjectLabelComponent extends Vue {
 
       &.check {
         background: #F9D1E8;
+
+        &.active:hover {
+          background: #FCB9DF;
+        }
+      }
+
+      &.active:hover {
+        border-color: #FCB9DF;
       }
     }
 
@@ -73,6 +93,14 @@ export default class ProjectLabelComponent extends Vue {
 
       &.check {
         background: #F9EED3;
+
+        &.active:hover {
+          background: #F3DDA7;
+        }
+      }
+
+      &.active:hover {
+        border-color: #F3DDA7;
       }
     }
 
@@ -81,6 +109,14 @@ export default class ProjectLabelComponent extends Vue {
 
       &.check {
         background: #CBE5FB;
+
+        &.active:hover {
+          background: #ABD5FA;
+        }
+      }
+
+      &.active:hover {
+        border-color: #ABD5FA;
       }
     }
 
@@ -89,6 +125,14 @@ export default class ProjectLabelComponent extends Vue {
 
       &.check {
         background: #E0D7F9;
+
+        &.active:hover {
+          background: #CFC0F8;
+        }
+      }
+
+      &.active:hover {
+        border-color: #CFC0F8;
       }
     }
 
@@ -97,6 +141,14 @@ export default class ProjectLabelComponent extends Vue {
 
       &.check {
         background: #D7D7D5;
+
+        &.active:hover {
+          background: #BBBBBA;
+        }
+      }
+
+      &.active:hover {
+        border-color: #BBBBBA;
       }
     }
 
@@ -105,6 +157,14 @@ export default class ProjectLabelComponent extends Vue {
 
       &.check {
         background: #D0E8E2;
+
+        &.active:hover {
+          background: #B8EBDE;
+        }
+      }
+
+      &.active:hover {
+        border-color: #B8EBDE;
       }
     }
   }

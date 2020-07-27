@@ -25,6 +25,7 @@
 
 :root {
     --primaryColor: #4F56F1;
+    --primaryColor-hover: #3B41B7;
     --blackColor: #333333;
     --greyColor: #878E99;
     --backgroundPageColor: #F5F6FA;
@@ -36,6 +37,9 @@
     --fontFamily: "Inter", BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --defaultFontSize: 14px;
     --defaultLineHeight: 17px;
+    --defaultBoxShadow: 4px 4px 6px rgba(0, 0, 0, 0.06);
+    --activeControlBoxShadow: 5px 5px 5px rgba(59, 65, 183, 0.3);
+    --hoverBlockBoxShadow: 5px 5px 20px 3px rgba(0, 0, 0, 0.2);
 
     --defaultBorderRadius: 5px;
 }
