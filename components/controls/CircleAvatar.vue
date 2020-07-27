@@ -1,6 +1,6 @@
 <template>
-  <img v-if="src" src="avatar.png" alt="Avatar" class="avatar">
-  <div v-else class="avatar avatar-empty" />
+  <img v-if="src" src="avatar.png" alt="Avatar" class="avatar" @click="$emit('click')">
+  <div v-else class="avatar avatar-empty" @click="$emit('click')" />
 </template>
 
 <script lang="ts">

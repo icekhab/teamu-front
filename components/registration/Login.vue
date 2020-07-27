@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login" :class="{ 'login-show': !!currentShow, 'login-hide': !currentShow }">
     <span class="login__label">Вход в UTEAM</span>
     <TInput
       v-model="login.email"
@@ -30,15 +30,17 @@
       <span class="login__have-not-account-question">
         Нет аккаунта?
       </span>
-      <nuxt-link class="login__have-not-account-registration" to="/registration">
+      <span class="login__have-not-account-registration" @click="$emit('showRegistration')">
         Пройти регистрацию
-      </nuxt-link>
+      </span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import {
+  Vue, Component, Prop, Watch,
+} from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import TButton from '@/components/controls/TButton.vue';
 import TInput from '@/components/controls/TInput.vue';
@@ -55,23 +57,42 @@ const namespace = 'registration';
 export default class LoginComponent extends Vue {
   @Action('postLogin', { namespace }) postLogin!: (login: LoginEntity) => void;
 
+  @Prop({ default: false, type: Boolean })
+  private value!: boolean;
+
+  private currentShow: boolean = false;
+
   private login: LoginEntity = {
     email: '',
     password: '',
   };
 
   private async onClick() {
-    await this.postLogin(this.login);
+    try {
+      await this.postLogin(this.login);
+      this.$emit('close');
+    } catch (err) {
+      alert(err);
+    }
+  }
+
+  @Watch('value', { immediate: true })
+  private onValue(newVal: boolean): void {
+    this.currentShow = newVal;
   }
 }
 </script>
 
 <style lang="postcss" scoped>
   .login {
+    position: absolute;
+    top: 10%;
+    left: 30%;
     display: flex;
     flex-direction: column;
     width: 320px;
     height: 470px;
+    padding-top: 50px;
     border: black solid 1px;
     background-color: #fff;
     border-radius: 5px;
@@ -188,8 +209,8 @@ export default class LoginComponent extends Vue {
       &__label {
           width: 403px;
           height: 44px;
-          margin-left: 99px;
-          margin-right: 99px;
+          margin-left: 169px;
+          margin-right: 171px;
           font-size: 36px;
       }
 
@@ -241,4 +262,13 @@ export default class LoginComponent extends Vue {
       }
     }
   }
+
+  .login-show {
+    display: initial;
+  }
+
+  .login-hide {
+    display: none;
+  }
+
 </style>

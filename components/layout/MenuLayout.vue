@@ -3,7 +3,7 @@
     <div class="menu-layout__content">
       <slot />
     </div>
-    <Menu class="menu-layout__menu" />
+    <Menu class="menu-layout__menu" @showRegistration="$emit('showRegistration')" />
   </div>
 </template>
 

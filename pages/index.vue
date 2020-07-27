@@ -1,9 +1,11 @@
 <template>
-  <MenuLayout>
+  <MenuLayout @showRegistration="showRegistration">
     <div class="main">
       <AllProjectsHeader class="main__header" />
       <ProjectList class="main__project-list" :projects="projects" />
     </div>
+    <Login v-model="isShowLogin" @showRegistration="showRegistration" @close="closeLogin" />
+    <Registration v-model="isShowRegistration" @showLogin="showLogin" @close="closeRegistration" />
   </MenuLayout>
 </template>
 
@@ -14,6 +16,8 @@ import MenuLayout from '@/components/layout/MenuLayout.vue';
 import AllProjectsHeader from '@/components/allProjects/AllProjectsHeader.vue';
 import ProjectList from '@/components/common/ProjectList.vue';
 import ProjectEntity from '@/entities/ProjectEntity';
+import Login from '@/components/registration/Login.vue';
+import Registration from '@/components/registration/Registration.vue';
 
 const namespace = 'allProjects';
 
@@ -22,6 +26,8 @@ const namespace = 'allProjects';
     MenuLayout,
     AllProjectsHeader,
     ProjectList,
+    Login,
+    Registration,
   },
 
   async fetch({
@@ -32,6 +38,28 @@ const namespace = 'allProjects';
 })
 export default class MainPageComponent extends Vue {
   @Getter('projects', { namespace }) projects!: ProjectEntity[];
+
+  private isShowLogin: boolean = false;
+
+  private isShowRegistration: boolean = false;
+
+  private showRegistration() {
+    this.isShowRegistration = !this.isShowRegistration;
+    this.isShowLogin = false;
+  }
+
+  private showLogin() {
+    this.isShowLogin = !this.isShowLogin;
+    this.isShowRegistration = false;
+  }
+
+  private closeRegistration() {
+    this.isShowRegistration = false;
+  }
+
+  private closeLogin() {
+    this.isShowLogin = false;
+  }
 }
 </script>
 
