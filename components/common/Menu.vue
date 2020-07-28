@@ -1,7 +1,7 @@
 <template>
   <div class="menu">
     <TeamuLogo class="menu__item teamu-logo" />
-    <CircleAvatar class="menu__item avatar" />
+    <CircleAvatar class="menu__item avatar" @click="$emit('showRegistration')" />
     <MyIdeaIcon class="menu__item my-idea" />
     <SearchIcon class="menu__item search" />
     <div class="menu__item empty" />

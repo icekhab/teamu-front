@@ -8,7 +8,12 @@ class RegistrationService extends BaseApiService {
     // Backend suggestion
     data.verifyPassword = data.password;
 
-    return this.http.post<AuthInfoEntity>('/signup', data).then((x) => x.data);
+    return this.http.post<AuthInfoEntity>('/signup', data)
+      .then((x) => {
+        this.setTokenInLocalStorage(x.data.string);
+
+        return x.data;
+      });
   }
 
   public postLogin(data: LoginEntity): Promise<AuthInfoEntity> {
@@ -18,7 +23,15 @@ class RegistrationService extends BaseApiService {
       headers: {
         Authorization: `Basic ${window.btoa(stringToBase)}`,
       },
-    }).then((x) => x.data);
+    }).then((x) => {
+      this.setTokenInLocalStorage(x.data.string);
+
+      return x.data;
+    });
+  }
+
+  private setTokenInLocalStorage(token: string) {
+    window.localStorage.setItem('token', token);
   }
 }
 

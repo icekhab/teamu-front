@@ -1,5 +1,8 @@
 <template>
-  <div class="registration">
+  <div
+    class="registration"
+    :class="{ 'registration-show': !!currentShow, 'registration-hide': !currentShow }"
+  >
     <span class="registration__label">Регистрация в UTEAM</span>
     <TInput
       v-model="signup.email"
@@ -46,15 +49,17 @@
       <span class="registration__account-question">
         Есть аккаунт?
       </span>
-      <nuxt-link class="registration__account-entry" to="/login">
+      <span class="registration__account-entry" @click="$emit('showLogin')">
         Войти
-      </nuxt-link>
+      </span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import {
+  Vue, Component, Prop, Watch,
+} from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import TButton from '@/components/controls/TButton.vue';
 import TInput from '@/components/controls/TInput.vue';
@@ -71,6 +76,11 @@ const namespace = 'registration';
 export default class RegistrationComponent extends Vue {
   @Action('postSignUp', { namespace }) postSignUp!: (signup: SignUpEntity) => void;
 
+  @Prop({ default: false, type: Boolean })
+  private value!: boolean;
+
+  private currentShow: boolean = false;
+
   private signup: SignUpEntity = {
     name: '',
     email: '',
@@ -81,13 +91,27 @@ export default class RegistrationComponent extends Vue {
   };
 
   private async onClick() {
-    await this.postSignUp(this.signup);
+    try {
+      await this.postSignUp(this.signup);
+      this.$emit('close');
+    } catch (err) {
+      alert(err);
+    }
+  }
+
+  @Watch('value', { immediate: true })
+  private onValue(newVal: boolean): void {
+    this.currentShow = newVal;
   }
 }
 </script>
 
 <style lang="postcss" scoped>
   .registration {
+    position: absolute;
+    padding-top: 50px;
+    top: 10%;
+    left: 30%;
     display: flex;
     flex-direction: column;
     width: 320px;
@@ -101,7 +125,7 @@ export default class RegistrationComponent extends Vue {
         text-align: center;
         margin-top: 50px;
         margin-left: 10px;
-        margin-right: 99px;
+        margin-right: 10px;
         font-family: Inter;
         font-style: normal;
         font-weight: 600;
@@ -238,7 +262,7 @@ export default class RegistrationComponent extends Vue {
           width: 403px;
           margin-top: 50px;
           margin-left: 99px;
-          margin-right: 99px;
+          margin-right: 60px;
           font-size: 36px;
       }
 
@@ -322,4 +346,13 @@ export default class RegistrationComponent extends Vue {
       }
     }
   }
+
+  .registration-show {
+    display: initial;
+  }
+
+  .registration-hide {
+    display: none;
+  }
+
 </style>

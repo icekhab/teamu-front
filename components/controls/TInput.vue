@@ -48,7 +48,7 @@ export default class TInputComponent extends Vue {
 }
 </script>
 
-<style lang="postcss" scoped>
+<style lang="postcss">
   .t-input {
     height: inherit;
     line-height: var(--defaultLineHeight);

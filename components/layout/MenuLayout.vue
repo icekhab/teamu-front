@@ -3,18 +3,26 @@
     <div class="menu-layout__content">
       <slot />
     </div>
-    <Menu class="menu-layout__menu" />
+    <Menu class="menu-layout__menu" @showRegistration="showRegistration" />
+    <RegistrationLogin class="menu-layout__registration-login" v-model="isShowRegistration" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Menu from '~/components/common/Menu.vue';
+import RegistrationLogin from '~/components/common/RegistrationLogin.vue';
 
 @Component({
-  components: { Menu },
+  components: { Menu, RegistrationLogin },
 })
-export default class MenuLayoutComponent extends Vue {}
+export default class MenuLayoutComponent extends Vue {
+  private isShowRegistration: boolean = false;
+
+  private showRegistration() {
+    this.isShowRegistration = !this.isShowRegistration;
+  }
+}
 </script>
 
 <style lang="postcss" scoped>
