@@ -1,5 +1,5 @@
 <template>
-  <div class="registration-layout">
+  <div class="registration-login">
     <Login v-model="isShowLogin" @showRegistration="showRegistration" @close="closeLogin" />
     <Registration v-model="isShowRegistration" @showLogin="showLogin" @close="closeRegistration" />
   </div>
@@ -15,7 +15,7 @@ import Registration from '@/components/registration/Registration.vue';
 @Component({
   components: { Login, Registration },
 })
-export default class RegistrationLayout extends Vue {
+export default class RegistrationLoginComponent extends Vue {
   @Prop({ default: false, type: Boolean })
   private value!: boolean;
 

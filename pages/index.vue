@@ -1,10 +1,9 @@
 <template>
-  <MenuLayout @showRegistration="showRegistration">
+  <MenuLayout>
     <div class="main">
       <AllProjectsHeader class="main__header" />
       <ProjectList class="main__project-list" :projects="projects" />
     </div>
-    <RegistrationLayout v-model="isShowRegistration" />
   </MenuLayout>
 </template>
 
@@ -12,7 +11,6 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 import MenuLayout from '@/components/layout/MenuLayout.vue';
-import RegistrationLayout from '@/components/layout/RegistrationLayout.vue';
 import AllProjectsHeader from '@/components/allProjects/AllProjectsHeader.vue';
 import ProjectList from '@/components/common/ProjectList.vue';
 import ProjectEntity from '@/entities/ProjectEntity';
@@ -22,7 +20,6 @@ const namespace = 'allProjects';
 @Component({
   components: {
     MenuLayout,
-    RegistrationLayout,
     AllProjectsHeader,
     ProjectList,
   },
@@ -35,12 +32,6 @@ const namespace = 'allProjects';
 })
 export default class MainPageComponent extends Vue {
   @Getter('projects', { namespace }) projects!: ProjectEntity[];
-
-  private isShowRegistration: boolean = false;
-
-  private showRegistration() {
-    this.isShowRegistration = !this.isShowRegistration;
-  }
 }
 </script>
 
