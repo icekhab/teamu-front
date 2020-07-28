@@ -4,7 +4,7 @@
       <slot />
     </div>
     <Menu class="menu-layout__menu" @showRegistration="showRegistration" />
-    <RegistrationLogin class="menu-layout__registration-login" v-model="isShowRegistration" />
+    <RegistrationLogin class="menu-layout__registration-login" v-model="isShowRegistration" @close="isShowRegistration = false" />
   </div>
 </template>
 

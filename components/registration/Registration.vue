@@ -3,6 +3,7 @@
     class="registration"
     :class="{ 'registration-show': !!currentShow, 'registration-hide': !currentShow }"
   >
+    <span class="registration__cross" @click="$emit('close')">X</span>
     <span class="registration__label">Регистрация в UTEAM</span>
     <TInput
       v-model="signup.email"
@@ -118,6 +119,13 @@ export default class RegistrationComponent extends Vue {
     height: 610px;
     border: black solid 1px;
     background-color: #fff;
+
+    &__cross {
+      position: absolute;
+      top: 1%;
+      right: 3%;
+      cursor: pointer;
+    }
 
     &__label {
         width: 300px;
