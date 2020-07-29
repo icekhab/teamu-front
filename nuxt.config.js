@@ -63,6 +63,7 @@ module.exports = {
   plugins: [
     '~/plugins/filters/dateFilter.ts',
     '~/plugins/controls/index.ts',
+    { src: '~/plugins/storeHooks/nuxtClientInit.ts', mode: 'client' },
   ],
   css: [
     '~/static/styles/reset.css',

@@ -11,9 +11,19 @@
         @input="setSearchFilterDebounce($event)"
       />
       <TButton
+        v-if="isAuthorize"
         class="all-projects-header__add-project-btn"
         theme="primary"
         :to="createProjectLink"
+      >
+        Добавить проект
+      </TButton>
+      <TButton
+        v-else
+        class="all-projects-header__add-project-btn"
+        theme="primary"
+        type="button"
+        @click.native="setIsShowLogin(true)"
       >
         Добавить проект
       </TButton>
@@ -77,6 +87,10 @@ const namespace = 'allProjects';
 })
 export default class AllProjectsHeaderComponent extends Vue {
   @State('filter', { namespace }) filter!: ProjectsFilterEntity;
+
+  @State('isAuthorize', { namespace: 'user' }) isAuthorize!: boolean;
+
+  @Mutation('setIsShowLogin', { namespace: 'user' }) setIsShowLogin!: (isShowLogin: boolean) => void;
 
   @Mutation('setSearchFilter', { namespace }) setSearchFilter!: (search: string) => void;
 

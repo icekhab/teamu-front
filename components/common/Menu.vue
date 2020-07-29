@@ -1,7 +1,7 @@
 <template>
   <div class="menu">
     <TeamuLogo class="menu__item teamu-logo" />
-    <CircleAvatar class="menu__item avatar" @click="$emit('showRegistration')" />
+    <CircleAvatar class="menu__item avatar" @click="setIsShowLogin(true)" />
     <MyIdeaIcon class="menu__item my-idea" />
     <SearchIcon class="menu__item search" />
     <div class="menu__item empty" />
@@ -21,6 +21,7 @@ import SearchIcon from '@/static/images/svg/menu/search-icon.svg';
 import HelpIcon from '@/static/images/svg/menu/help-icon.svg';
 import TeamuLogo from '@/static/images/svg/menu/teamu-logo.svg';
 import UsersIcon from '@/static/images/svg/menu/users-icon.svg';
+import { Mutation } from 'vuex-class';
 
 @Component({
   components: {
@@ -33,7 +34,9 @@ import UsersIcon from '@/static/images/svg/menu/users-icon.svg';
     UsersIcon,
   },
 })
-export default class MenuComponent extends Vue {}
+export default class MenuComponent extends Vue {
+  @Mutation('setIsShowLogin', { namespace: 'user' }) setIsShowLogin!: (isShowLogin: boolean) => void;
+}
 </script>
 
 <style lang="postcss" scoped>

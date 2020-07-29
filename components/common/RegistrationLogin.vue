@@ -7,42 +7,37 @@
 
 <script lang="ts">
 import {
-  Component, Vue, Prop, Watch,
+  Component, Vue,
 } from 'vue-property-decorator';
 import Login from '@/components/registration/Login.vue';
 import Registration from '@/components/registration/Registration.vue';
+import { State, Mutation } from 'vuex-class';
 
 @Component({
   components: { Login, Registration },
 })
 export default class RegistrationLoginComponent extends Vue {
-  @Prop({ default: false, type: Boolean })
-  private value!: boolean;
+  @State('isShowLogin', { namespace: 'user' }) isShowLogin!: boolean;
 
-  @Watch('value', { immediate: true })
-  private onValue(newVal: boolean): void {
-    if (newVal) {
-      this.showRegistration();
-    }
-  }
+  @State('isShowRegistration', { namespace: 'user' }) isShowRegistration!: boolean;
 
-  private isShowLogin: boolean = false;
+  @Mutation('setIsShowLogin', { namespace: 'user' }) setIsShowLogin!: (isShowLogin: boolean) => void;
 
-  private isShowRegistration: boolean = false;
+  @Mutation('setIsShowRegistration', { namespace: 'user' }) setIsShowRegistration!: (setIsShowRegistration: boolean) => void;
 
   private showRegistration() {
-    this.isShowRegistration = !this.isShowRegistration;
-    this.isShowLogin = false;
+    this.setIsShowLogin(false);
+    this.setIsShowRegistration(true);
   }
 
   private showLogin() {
-    this.isShowLogin = !this.isShowLogin;
-    this.isShowRegistration = false;
+    this.setIsShowRegistration(false);
+    this.setIsShowLogin(true);
   }
 
   private close() {
-    this.isShowLogin = false;
-    this.isShowRegistration = false;
+    this.setIsShowRegistration(false);
+    this.setIsShowLogin(false);
     this.$emit('close');
   }
 }

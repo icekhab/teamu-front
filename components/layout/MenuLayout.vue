@@ -3,8 +3,8 @@
     <div class="menu-layout__content">
       <slot />
     </div>
-    <Menu class="menu-layout__menu" @showRegistration="showRegistration" />
-    <RegistrationLogin class="menu-layout__registration-login" v-model="isShowRegistration" @close="isShowRegistration = false" />
+    <Menu class="menu-layout__menu" />
+    <RegistrationLogin class="menu-layout__registration-login" />
   </div>
 </template>
 
@@ -16,13 +16,7 @@ import RegistrationLogin from '~/components/common/RegistrationLogin.vue';
 @Component({
   components: { Menu, RegistrationLogin },
 })
-export default class MenuLayoutComponent extends Vue {
-  private isShowRegistration: boolean = false;
-
-  private showRegistration() {
-    this.isShowRegistration = !this.isShowRegistration;
-  }
-}
+export default class MenuLayoutComponent extends Vue {}
 </script>
 
 <style lang="postcss" scoped>
