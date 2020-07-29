@@ -31,7 +31,7 @@ class RegistrationService extends BaseApiService {
   }
 
   private setTokenInLocalStorage(token: string) {
-    window.localStorage.setItem('token', token);
+    document.cookie = `token=${token}`;
   }
 }
 
