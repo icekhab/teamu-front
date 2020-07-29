@@ -7,7 +7,9 @@ class LabelService extends BaseApiService {
   }
 
   public async saveLabels(projectId: number, labels: LabelEntity[]): Promise<void> {
-    await this.http.put<any>(`/project/${projectId}/label`, labels);
+    const labelForCreating = labels.map(({ id }) => ({ labelId: id }));
+
+    await this.http.put<any>(`/project/${projectId}/label`, labelForCreating);
   }
 }
 

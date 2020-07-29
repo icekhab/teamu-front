@@ -2,6 +2,7 @@
   <input
     :class="classInput"
     :value="value"
+    :type="type"
     v-bind="$attrs"
     @input="changeInput"
     @blur="$emit('blur', $event)"
@@ -21,6 +22,9 @@ export default class TInputComponent extends Vue {
     validator: (value) => ['s', 'm', 'l'].includes(value),
   })
   readonly size!: string;
+
+  @Prop()
+  readonly type?: string;
 
   @Prop([Number, String]) readonly value!: number | string;
 
@@ -61,6 +65,10 @@ export default class TInputComponent extends Vue {
     transition-property: color, border-color;
     transition-duration: .15s;
     transition-timing-function: ease-out;
+
+    &:disabled {
+      background: #F0F0F0;
+    }
 
     &::placeholder {
       color: var(--greyColor);

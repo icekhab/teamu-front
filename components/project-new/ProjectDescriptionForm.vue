@@ -1,21 +1,35 @@
 <template>
   <form class="project-description-form" @submit.prevent="submitForm">
-    <TInput
-      v-model="newProject.name"
-      class="project-description-form__name"
-      placeholder="Название"
-    />
-    <TTextArea
-      v-model="newProject.description"
-      class="project-description-form__description"
-      maxlength="6000"
-      rows="5"
-      placeholder="Описание"
-    />
-    <div class="project-description-form__labels-wrap">
-      <ProjectLabelListCheck v-model="newLabels" class="project-description-form__labels" />
+    <div class="project-description-form__description-text">
+      Расскажите о своем проекте. Укажите название проекта и его краткое описание. Выберите лейблы, которые отображают в какой стадии находится ваш проект. Загрузите картинку вашего проекта (это может быть сам продукт или то, что его отображает).
     </div>
-    <ImageChooser class="project-description-form__logo" name="project-logo" :base-src="newProject.imagePath" />
+    <div class="project-description-form__controls">
+      <div class="project-description-form__inputs">
+        <TInput
+          v-model="newProject.name"
+          class="project-description-form__name"
+          placeholder="Название"
+        />
+        <TTextArea
+          v-model="newProject.description"
+          class="project-description-form__description"
+          maxlength="6000"
+          rows="5"
+          placeholder="Описание"
+        />
+        <div class="project-description-form__labels-wrap">
+          <span class="project-description-form__labels-header">Метка проекта</span>
+          <ProjectLabelListCheck v-model="newLabels" class="project-description-form__labels" />
+        </div>
+      </div>
+
+      <ImageChooser
+        class="project-description-form__logo"
+        name="project-logo"
+        :base-src="newProject.imagePath"
+      />
+    </div>
+
     <TButton class="project-description-form__submit" type="submit">
       Далее
     </TButton>
@@ -66,6 +80,11 @@ export default class ProjectDescriptionFormComponent extends Vue {
       width: 100%;
     }
 
+    &__description-text {
+      line-height: 135%;
+      margin-bottom: 30px;
+    }
+
     &__description {
       width: 100%;
       margin-top: 20px;
@@ -74,6 +93,11 @@ export default class ProjectDescriptionFormComponent extends Vue {
 
     &__labels {
       align-items: flex-start;
+    }
+
+    &__labels-header {
+      display: block;
+      margin-bottom: 20px;
     }
 
     &__labels-wrap {
@@ -92,6 +116,46 @@ export default class ProjectDescriptionFormComponent extends Vue {
     &__submit {
       width: 100%;
       margin-top: 30px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .project-description-form {
+      display: flex;
+      flex-direction: column;
+
+      &__description-text {
+        max-width: 600px;
+        margin-bottom: 30px;
+      }
+
+      &__controls {
+        display: flex;
+      }
+
+      &__inputs {
+        order: 1;
+        flex: 1;
+      }
+
+      &__logo {
+        margin: 0 40px 0 0;
+      }
+
+      &__labels-header {
+        display: none;
+      }
+
+      &__labels-wrap {
+        padding: 0;
+        background: none;
+        border: 0;
+      }
+
+      &__submit {
+        width: 115px;
+        align-self: flex-end;
+      }
     }
   }
 </style>

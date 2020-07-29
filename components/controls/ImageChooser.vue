@@ -229,4 +229,15 @@ export default {
     }
   }
 }
+@media (min-width: 1200px) {
+  .image-uploader {
+    width: 307px;
+    height: 280px;
+
+    &__download-btn {
+      width: 80%;
+      margin: 0 auto 10px;
+    }
+  }
+}
 </style>

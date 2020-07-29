@@ -6,7 +6,7 @@
       :class="getTabClass(tab)"
       @click="tab.disabled || setValue(tab.value)"
     >
-      {{ tab.title }}
+      <span v-if="tab.value === newValue" class="line" />{{ tab.title }}
     </span>
   </div>
 </template>
@@ -76,6 +76,31 @@ export default class TabsComponent extends Vue {
 
       &.selected {
         color: var(--blackColor);
+      }
+    }
+  }
+
+  @media (min-width: 992px) {
+    .tabs {
+      flex-direction: column;
+      font-size: 16px;
+      line-height: 19px;
+
+      &__item {
+        display: flex;
+        align-items: center;
+
+        &.selected .line {
+          display: inline-block;
+          width: 20px;
+          height: 2px;
+          background: black;
+          margin-right: 5px;
+        }
+
+        &:not(:last-child) {
+          margin-bottom: 20px;
+        }
       }
     }
   }

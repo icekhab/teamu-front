@@ -5,9 +5,15 @@
       :key="label.id"
       class="project-label-list-check__item"
       :value="value.some(({ id }) => id === label.id)"
-      @click.native="checkLabel(label)"
+      :disabled="isMaxChecked && !value.some(({ id }) => id === label.id)"
+      @input="checkLabel(label)"
     >
-      <ProjectLabel class="project-label-list-check__item-label" :label="label.title" check active />
+      <ProjectLabel
+        class="project-label-list-check__item-label"
+        :label="label.title"
+        check
+        active
+      />
     </TCheckbox>
   </div>
 </template>
@@ -29,7 +35,13 @@ const namespace = 'labels';
 export default class ProjectLabelListCheckComponent extends Vue {
   @Prop({ default: [], type: Array }) value!: LabelEntity[];
 
+  @Prop({ default: 2, type: Number }) maxCheck!: number;
+
   @State('labels', { namespace }) readonly labels!: LabelEntity[];
+
+  get isMaxChecked() {
+    return this.value.length >= this.maxCheck;
+  }
 
   @Emit('input')
   checkLabel(label: LabelEntity) {
@@ -55,8 +67,26 @@ export default class ProjectLabelListCheckComponent extends Vue {
     flex-direction: column;
 
     &__item {
-      margin-bottom: 20px;
       width: auto;
+
+      &:not(:last-child){
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .project-label-list-check {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
+
+      &__item {
+        &:not(:last-child){
+          margin-bottom: 0;
+        }
+      }
     }
   }
 </style>

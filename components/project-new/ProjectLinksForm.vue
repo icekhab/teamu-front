@@ -100,4 +100,34 @@ export default class ProjectLinksFormComponent extends Vue {
       margin-top: 30px;
     }
   }
+
+  @media (min-width: 1200px) {
+    .project-links-form {
+      display: flex;
+      flex-direction: column;
+
+      &__description-text {
+        max-width: 600px;
+      }
+
+      &__link-block {
+        display: flex;
+        max-width: 800px;
+      }
+
+      &__link {
+        margin: 0 0 0 30px;
+      }
+
+      &__add-link-btn {
+        width: 192px;
+        margin-top: 30px;
+      }
+
+      &__submit-btn {
+        width: 115px;
+        align-self: flex-end;
+      }
+    }
+  }
 </style>

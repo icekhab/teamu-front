@@ -128,6 +128,7 @@ export default class ProjectInfoComponent extends Vue {
 
     &__description {
       line-height: 130%;
+      white-space: pre-line;
     }
 
     &__links-block {

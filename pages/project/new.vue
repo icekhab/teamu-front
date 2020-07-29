@@ -4,29 +4,34 @@
       <h1 class="project-new__header">
         Добавление проекта
       </h1>
-      <Tabs
-        v-model="selectedTab"
-        :tabs="tabs"
-        class="project-new__tabs"
-      />
-      <ProjectDescriptionForm
-        v-show="selectedTab === 'description'"
-        class="project-new__form"
-        :project="project"
-        :labels="labels"
-        @submit="submitDescriptionForm"
-      />
-      <ProjectLinksForm
-        v-show="selectedTab === 'links'"
-        class="project-new__form"
-        :links="links"
-        @submit="submitLinkForm"
-      />
-      <ProjectVacanciesForm
-        v-show="selectedTab === 'vacancies'"
-        class="project-new__form"
-        @submit="submitVacanciesForm"
-      />
+      <div class="project-new__content">
+        <div class="project-new__tabs-wrap">
+          <Tabs
+            v-model="selectedTab"
+            :tabs="tabs"
+            class="project-new__tabs"
+          />
+        </div>
+        <ProjectDescriptionForm
+          v-show="selectedTab === 'description'"
+          class="project-new__form"
+          :project="project"
+          :labels="labels"
+          @submit="submitDescriptionForm"
+        />
+        <ProjectLinksForm
+          v-show="selectedTab === 'links'"
+          class="project-new__form"
+          :links="links"
+          @submit="submitLinkForm"
+        />
+        <ProjectVacanciesForm
+          v-show="selectedTab === 'vacancies'"
+          class="project-new__form"
+          :vacancies="vacancies"
+          @submit="submitVacanciesForm"
+        />
+      </div>
     </div>
   </MenuLayout>
 </template>
@@ -42,6 +47,12 @@ import DescriptionProjectEntity from '@/entities/DescriptionProjectEntity';
 import ProjectDescriptionForm from '@/components/project-new/ProjectDescriptionForm.vue';
 import ProjectVacanciesForm from '@/components/project-new/ProjectVacanciesForm.vue';
 import LinkEntity from '@/entities/LinkEntity';
+import VacancyEntity from '@/entities/VacancyEntity';
+import VacancyShareType from '@/enums/VacancyShareType';
+import ProjectService from '@/services/ProjectService';
+import LabelService from '@/services/LabelService';
+import LinkService from '@/services/LinkService';
+import VacancyService from '@/services/VacancyService';
 
 @Component({
   components: {
@@ -85,6 +96,8 @@ export default class MainPageComponent extends Vue {
 
   links: LinkEntity[] = [{ id: 0, link: '', title: '' }];
 
+  vacancies: VacancyEntity[] = [{ id: 0, title: '', shareType: VacancyShareType.share }];
+
   selectedTab = 'description';
 
   async submitDescriptionForm({ project, labels }: any) {
@@ -92,8 +105,6 @@ export default class MainPageComponent extends Vue {
     this.labels = labels;
 
     this.selectedTab = 'links';
-    // const projectId = await ProjectService.create(project);
-    // await LabelService.saveLabels(projectId, labels);
   }
 
   async submitLinkForm(links: LinkEntity[]) {
@@ -102,8 +113,30 @@ export default class MainPageComponent extends Vue {
     this.selectedTab = 'vacancies';
   }
 
-  async submitVacanciesForm() {
-    alert('Проект создан, вы восхитительны!');
+  async submitVacanciesForm(vacancies: VacancyEntity[]) {
+    const projectId = await ProjectService.create(this.project);
+
+    // eslint-disable-next-line array-callback-return
+    const creatingLinksPromises = this.links.map(async (link) => {
+      await LinkService.create(projectId, link);
+    });
+    // eslint-disable-next-line array-callback-return
+    const creatingVacanciesPromises = vacancies.map(async (vacancy) => {
+      await VacancyService.create(projectId, vacancy);
+    });
+
+    await Promise.all([
+      ...creatingLinksPromises,
+      ...creatingVacanciesPromises,
+      this.labels.length ? LabelService.saveLabels(projectId, this.labels) : undefined,
+    ]);
+
+    await this.$router.push({
+      name: 'project-id',
+      params: {
+        id: projectId.toString(),
+      },
+    });
   }
 }
 </script>
@@ -115,8 +148,13 @@ export default class MainPageComponent extends Vue {
     max-width: 400px;
     flex-direction: column;
 
-    &__tabs {
+    &__content {
+      display: flex;
+      flex-direction: column;
       margin-top: 30px;
+    }
+
+    &__tabs {
     }
 
     &__form {
@@ -129,6 +167,25 @@ export default class MainPageComponent extends Vue {
     .project-new {
       max-width: 800px;
       display: flex;
+
+      &__form {
+        margin-top: 0;
+      }
+
+      &__content {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+      }
+
+      &__tabs-wrap {
+        min-width: 180px;
+        background: #FFFFFF;
+        border-radius: var(--defaultBorderRadius);
+        height: auto;
+        padding: 29px 20px 29px 39px;
+        margin-right: 40px;
+      }
     }
   }
 

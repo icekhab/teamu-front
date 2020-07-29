@@ -1,27 +1,27 @@
 <template>
   <label
     ref="label"
-    class="t-checkbox"
+    class="t-radio-button"
     :class="classLabel"
     :disabled="disabled"
-    @click="focus"
     @keydown.prevent.enter="label.click()"
+    @click="focus"
   >
     <input
       ref="input"
-      :value="newValue"
-      class="t-checkbox__input"
-      type="checkbox"
+      v-model="computedValue"
+      :value="val"
+      class="t-radio-button__input"
+      type="radio"
       :disabled="disabled"
       :required="required"
       :name="name"
-      @change="input"
       @click.stop
     >
-    <span class="t-checkbox__check">
-      <CheckIcon v-if="newValue" class="t-checkbox__check-icon" />
+    <span class="t-radio-button__check">
+      <CheckIcon v-if="newValue === val" class="t-radio-button__check-icon" />
     </span>
-    <span class="t-checkbox__label"><slot /></span>
+    <span class="t-radio-button__label"><slot /></span>
   </label>
 </template>
 
@@ -36,18 +36,20 @@ import CheckIcon from '~/static/images/svg/check-icon.svg';
     CheckIcon,
   },
 })
-export default class MCheckboxComponent extends Vue {
+export default class TRadioButtonComponent extends Vue {
   @Ref('input') readonly inputCheckbox!: HTMLInputElement;
 
   @Ref('label') readonly label!: HTMLLabelElement;
 
-  @Prop({ type: Boolean, default: false }) readonly value!: boolean;
+  @Prop({ default: false }) readonly value!: any;
 
   @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
 
   @Prop({ type: Boolean, default: false }) readonly required!: boolean;
 
   @Prop({ type: String }) readonly name: string | undefined;
+
+  @Prop() readonly val: any;
 
   @Prop({
     default: 'default',
@@ -62,8 +64,6 @@ export default class MCheckboxComponent extends Vue {
   }
 
   set computedValue(value: boolean) {
-    if (this.newValue === value) return;
-
     this.newValue = value;
     this.input(value);
   }
@@ -74,17 +74,14 @@ export default class MCheckboxComponent extends Vue {
   }
 
   @Emit()
-  input(event: any) {
-    this.newValue = event.target.checked;
-
-    return this.newValue;
+  input(value: boolean) {
+    return value;
   }
 
   get classLabel() {
     return [
-      `t-checkbox__theme_${this.theme}`,
-      { 'is-checked': this.newValue },
-      { disabled: this.disabled },
+      `t-radio-button__theme_${this.theme}`,
+      { 'is-checked': this.newValue === this.val },
     ];
   }
 
@@ -96,12 +93,14 @@ export default class MCheckboxComponent extends Vue {
 </script>
 
 <style lang="postcss" scoped>
-  .t-checkbox {
+  .t-radio-button {
     position: relative;
     outline: none;
     display: flex;
     align-items: center;
     user-select: none;
+    width: 25px;
+    height: 25px;
 
     cursor: pointer;
 
@@ -130,23 +129,23 @@ export default class MCheckboxComponent extends Vue {
       transition: color .15s ease-out;
     }
 
-    &.t-checkbox__theme_default {
+    &.t-radio-button__theme_default {
       color: #FFFFFF;
 
       &.is-checked {
-        & .t-checkbox__check {
+        & .t-radio-button__check {
           border: 0;
           background: var(--primaryColor);
         }
 
         &:hover {
-          & .t-checkbox__check {
+          & .t-radio-button__check {
             background: var(--primaryColor-hover);
           }
         }
       }
 
-      & .t-checkbox__check {
+      & .t-radio-button__check {
         width: 25px;
         height: 25px;
         flex-shrink: 0;
@@ -159,27 +158,14 @@ export default class MCheckboxComponent extends Vue {
         color: white;
       }
 
-      & .t-checkbox__check-icon {
+      & .t-radio-button__check-icon {
         width: 10px;
         height: 8px;
       }
 
       &:hover {
-        & .t-checkbox__check {
+        & .t-radio-button__check {
           border-color: var(--primaryColor-hover);
-        }
-      }
-
-      &.disabled {
-        & .t-checkbox__check {
-          background: #F0F0F0;
-        }
-
-        &:hover {
-          & .t-checkbox__check {
-            background: #F0F0F0;
-            border-color: var(--borderColor);
-          }
         }
       }
     }

@@ -10,9 +10,9 @@ class VacancyEntity {
 
   value?: number;
 
-  aboutVacancy!: string;
+  aboutVacancy?: string;
 
-  contact!: ContactEntity;
+  contact?: ContactEntity;
 }
 
 export default VacancyEntity;

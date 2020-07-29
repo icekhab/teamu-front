@@ -1,6 +1,7 @@
 import SignUpEntity from '@/entities/SignUpEntity';
 import AuthInfoEntity from '@/entities/AuthInfoEntity';
 import LoginEntity from '@/entities/LoginEntity';
+import CookieHelper from '@/helpers/CookieHelper';
 import BaseApiService from './BaseApiService';
 
 class RegistrationService extends BaseApiService {
@@ -31,7 +32,7 @@ class RegistrationService extends BaseApiService {
   }
 
   private setTokenInLocalStorage(token: string) {
-    document.cookie = `token=${token}`;
+    CookieHelper.setCookie('token', token);
   }
 }
 
