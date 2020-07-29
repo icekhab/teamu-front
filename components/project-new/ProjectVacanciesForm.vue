@@ -48,6 +48,9 @@
             />
           </div>
         </div>
+        <div class="project-vacancies-form__row">
+          <span class="project-vacancies-form__remove" @click="removeVacancy(index)">Удалить</span>
+        </div>
       </div>
 
       <TButton
@@ -130,6 +133,10 @@ export default class ProjectVacanciesFormComponent extends Vue {
     this.newVacancies.push({ ...emptyVacancy });
   }
 
+  removeVacancy(index: number) {
+    this.newVacancies.splice(index, 1);
+  }
+
   @Emit('submit')
   submitForm() {
     return this.newVacancies;
@@ -192,6 +199,18 @@ export default class ProjectVacanciesFormComponent extends Vue {
     &__submit-btn {
       margin-top: 30px;
       width: 100%;
+    }
+
+    &__remove {
+      color: rgba(#FF4B3E, .7);
+      display: inline-block;
+      cursor: pointer;
+      transition: color .15s ease-out;
+      margin: auto;
+
+      &:hover {
+        color: #FF4B3E;
+      }
     }
   }
 

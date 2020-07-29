@@ -15,6 +15,7 @@
           class="project-links-form__link"
           placeholder="Ссылка"
         />
+        <span class="project-links-form__remove" @click="removeLink(index)">Удалить</span>
       </div>
       <TButton
         v-if="newLinks.length < 8"
@@ -60,6 +61,10 @@ export default class ProjectLinksFormComponent extends Vue {
     this.newLinks.push({ ...emptyLink });
   }
 
+  removeLink(index: number) {
+    this.newLinks.splice(index, 1);
+  }
+
   @Emit('submit')
   submitForm() {
     return this.newLinks;
@@ -77,8 +82,12 @@ export default class ProjectLinksFormComponent extends Vue {
       margin-top: 30px;
     }
 
-    &__link-block:not(:first-child) {
-      margin-top: 30px;
+    &__link-block {
+      text-align: center;
+
+      &:not(:first-child) {
+        margin-top: 30px;
+      }
     }
 
     &__title {
@@ -88,6 +97,18 @@ export default class ProjectLinksFormComponent extends Vue {
     &__link {
       width: 100%;
       margin-top: 10px;
+    }
+
+    &__remove {
+      color: rgba(#FF4B3E, .7);
+      margin-top: 15px;
+      display: inline-block;
+      cursor: pointer;
+      transition: color .15s ease-out;
+
+      &:hover {
+        color: #FF4B3E;
+      }
     }
 
     &__add-link-btn {
@@ -113,6 +134,12 @@ export default class ProjectLinksFormComponent extends Vue {
       &__link-block {
         display: flex;
         max-width: 800px;
+      }
+
+      &__remove {
+        margin: 0 0 0 30px;
+        display: flex;
+        align-items: center;
       }
 
       &__link {
