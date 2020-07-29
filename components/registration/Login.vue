@@ -1,5 +1,6 @@
 <template>
   <div class="login" :class="{ 'login-show': !!currentShow, 'login-hide': !currentShow }">
+    <span class="login__cross" @click="$emit('close')">X</span>
     <span class="login__label">Вход в UTEAM</span>
     <TInput
       v-model="login.email"
@@ -96,6 +97,13 @@ export default class LoginComponent extends Vue {
     border: black solid 1px;
     background-color: #fff;
     border-radius: 5px;
+
+    &__cross {
+      position: absolute;
+      top: 1%;
+      right: 3%;
+      cursor: pointer;
+    }
 
     &__label {
         width: 300px;

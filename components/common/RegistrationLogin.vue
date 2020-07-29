@@ -1,7 +1,7 @@
 <template>
   <div class="registration-login">
-    <Login v-model="isShowLogin" @showRegistration="showRegistration" @close="closeLogin" />
-    <Registration v-model="isShowRegistration" @showLogin="showLogin" @close="closeRegistration" />
+    <Login v-model="isShowLogin" @showRegistration="showRegistration" @close="close" />
+    <Registration v-model="isShowRegistration" @showLogin="showLogin" @close="close" />
   </div>
 </template>
 
@@ -40,12 +40,10 @@ export default class RegistrationLoginComponent extends Vue {
     this.isShowRegistration = false;
   }
 
-  private closeRegistration() {
-    this.isShowRegistration = false;
-  }
-
-  private closeLogin() {
+  private close() {
     this.isShowLogin = false;
+    this.isShowRegistration = false;
+    this.$emit('close');
   }
 }
 </script>
