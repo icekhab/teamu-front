@@ -10,23 +10,34 @@
         placeholder="Поиск проекта"
         @input="setSearchFilterDebounce($event)"
       />
-      <TButton
-        v-if="isAuthorize"
-        class="all-projects-header__add-project-btn"
-        theme="primary"
-        :to="createProjectLink"
-      >
-        Добавить проект
-      </TButton>
-      <TButton
-        v-else
-        class="all-projects-header__add-project-btn"
-        theme="primary"
-        type="button"
-        @click.native="setIsShowLogin(true)"
-      >
-        Добавить проект
-      </TButton>
+      <no-ssr>
+        <TButton
+          v-if="isAuthorize"
+          class="all-projects-header__add-project-btn"
+          theme="primary"
+          :to="createProjectLink"
+        >
+          Добавить проект
+        </TButton>
+        <TButton
+          v-else
+          class="all-projects-header__add-project-btn"
+          theme="primary"
+          type="button"
+          @click.native="openLogin"
+        >
+          Добавить проект
+        </TButton>
+        <slot slot="placeholder">
+          <TButton
+            class="all-projects-header__add-project-btn"
+            theme="primary"
+            type="button"
+          >
+            Добавить проект
+          </TButton>
+        </slot>
+      </no-ssr>
       <TButton
         class="all-projects-header__filter-btn"
         theme="white-grey"
@@ -71,6 +82,7 @@ import { Mutation, State } from 'vuex-class';
 import ProjectsFilterEntity from '@/entities/ProjectsFilterEntity';
 import debounce from '@/helpers/debounce';
 import FilterIcon from '@/static/images/svg/filter-icon.svg';
+import { RawLocation } from 'vue-router/types/router';
 import ProjectCard from '~/components/common/ProjectCard.vue';
 import ProjectLabel from '~/components/common/ProjectLabel.vue';
 import MobileFilter from './MobileFilter.vue';
@@ -89,6 +101,8 @@ export default class AllProjectsHeaderComponent extends Vue {
   @State('filter', { namespace }) filter!: ProjectsFilterEntity;
 
   @State('isAuthorize', { namespace: 'user' }) isAuthorize!: boolean;
+
+  @Mutation('setToAfterLogin', { namespace: 'user' }) setToAfterLogin!: (ToAfterLogin: RawLocation) => void;
 
   @Mutation('setIsShowLogin', { namespace: 'user' }) setIsShowLogin!: (isShowLogin: boolean) => void;
 
@@ -109,6 +123,11 @@ export default class AllProjectsHeaderComponent extends Vue {
   createProjectLink = {
     name: 'project-new',
   };
+
+  openLogin() {
+    this.setToAfterLogin(this.createProjectLink);
+    this.setIsShowLogin(true);
+  }
 
   changeLabel(label: ProjectLabelEnum) {
     const isLabelChecked = this.filter.projectLabels.includes(label);

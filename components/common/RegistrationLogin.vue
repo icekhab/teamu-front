@@ -12,6 +12,7 @@ import {
 import Login from '@/components/registration/Login.vue';
 import Registration from '@/components/registration/Registration.vue';
 import { State, Mutation } from 'vuex-class';
+import { RawLocation } from 'vue-router/types/router';
 
 @Component({
   components: { Login, Registration },
@@ -22,6 +23,8 @@ export default class RegistrationLoginComponent extends Vue {
   @State('isShowRegistration', { namespace: 'user' }) isShowRegistration!: boolean;
 
   @Mutation('setIsShowLogin', { namespace: 'user' }) setIsShowLogin!: (isShowLogin: boolean) => void;
+
+  @Mutation('setToAfterLogin', { namespace: 'user' }) setToAfterLogin!: (toAfterLogin?: RawLocation) => void;
 
   @Mutation('setIsShowRegistration', { namespace: 'user' }) setIsShowRegistration!: (setIsShowRegistration: boolean) => void;
 
@@ -38,6 +41,7 @@ export default class RegistrationLoginComponent extends Vue {
   private close() {
     this.setIsShowRegistration(false);
     this.setIsShowLogin(false);
+    this.setToAfterLogin(undefined);
     this.$emit('close');
   }
 }

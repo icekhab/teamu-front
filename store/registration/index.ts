@@ -27,16 +27,24 @@ export const actions : any = {
     const authInfo: AuthInfoEntity = await RegistrationService.postSignUp(signup);
 
     context.commit('setSignUpInfo', authInfo);
-    context.commit('user/setIsAuthorize', true);
-    context.commit('user/setToken', authInfo.string);
+    context.commit('user/setIsAuthorize', true, { root: true });
+    context.commit('user/setToken', authInfo.string, { root: true });
+
+    if (context.rootState.user.toAfterLogin) {
+      await this.$router.push(context.rootState.user.toAfterLogin);
+    }
   },
 
   async postLogin(context: ActionContext<RegistrationState, RootState>, login: LoginEntity) {
     const authInfo: AuthInfoEntity = await RegistrationService.postLogin(login);
 
     context.commit('setSignUpInfo', authInfo);
-    context.commit('user/setIsAuthorize', true);
-    context.commit('user/setToken', authInfo.string);
+    context.commit('user/setIsAuthorize', true, { root: true });
+    context.commit('user/setToken', authInfo.string, { root: true });
+
+    if (context.rootState.user.toAfterLogin) {
+      await this.$router.push(context.rootState.user.toAfterLogin);
+    }
   },
 };
 

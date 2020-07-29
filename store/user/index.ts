@@ -2,6 +2,7 @@ import UserState from '@/entities/states/UserState';
 import CookieHelper from '@/helpers/CookieHelper';
 import { ActionContext } from 'vuex';
 import RootState from '@/entities/states/RootState';
+import { RawLocation } from 'vue-router/types/router';
 
 export const state = (): UserState => ({
   isAuthorize: false,
@@ -22,7 +23,7 @@ export const mutations = {
     currentState.isAuthorize = isAuthorize;
   },
 
-  setToken(currentState: UserState, token: string): void {
+  setToken(currentState: UserState, token?: string): void {
     currentState.token = token;
   },
 
@@ -32,5 +33,9 @@ export const mutations = {
 
   setIsShowLogin(currentState: UserState, isShowLogin: boolean): void {
     currentState.isShowLogin = isShowLogin;
+  },
+
+  setToAfterLogin(currentState: UserState, toAfterLogin?: RawLocation): void {
+    currentState.toAfterLogin = toAfterLogin;
   },
 };
