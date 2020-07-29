@@ -79,10 +79,12 @@ export default class MainPageComponent extends Vue {
     {
       value: 'links',
       title: 'Ссылки',
+      disabled: true,
     },
     {
       value: 'vacancies',
       title: 'Мы ищем',
+      disabled: true,
     },
   ];
 
@@ -104,37 +106,38 @@ export default class MainPageComponent extends Vue {
     this.project = project;
     this.labels = labels;
 
+    this.project.id = await ProjectService.create(this.project);
+
+    await LabelService.saveLabels(this.project.id, this.labels);
+
     this.selectedTab = 'links';
+    this.tabs[1].disabled = false;
   }
 
   async submitLinkForm(links: LinkEntity[]) {
     this.links = links;
 
+    const creatingLinksPromises = this.links.map(
+      (link) => LinkService.create(this.project.id, link),
+    );
+
+    await Promise.all(creatingLinksPromises);
+
     this.selectedTab = 'vacancies';
+    this.tabs[2].disabled = false;
   }
 
   async submitVacanciesForm(vacancies: VacancyEntity[]) {
-    const projectId = await ProjectService.create(this.project);
+    const creatingVacanciesPromises = vacancies.map(
+      (vacancy) => VacancyService.create(this.project.id, vacancy),
+    );
 
-    // eslint-disable-next-line array-callback-return
-    const creatingLinksPromises = this.links.map(async (link) => {
-      await LinkService.create(projectId, link);
-    });
-    // eslint-disable-next-line array-callback-return
-    const creatingVacanciesPromises = vacancies.map(async (vacancy) => {
-      await VacancyService.create(projectId, vacancy);
-    });
-
-    await Promise.all([
-      ...creatingLinksPromises,
-      ...creatingVacanciesPromises,
-      this.labels.length ? LabelService.saveLabels(projectId, this.labels) : undefined,
-    ]);
+    await Promise.all(creatingVacanciesPromises);
 
     await this.$router.push({
       name: 'project-id',
       params: {
-        id: projectId.toString(),
+        id: this.project.id.toString(),
       },
     });
   }
