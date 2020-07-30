@@ -48,11 +48,10 @@ import ProjectDescriptionForm from '@/components/project-new/ProjectDescriptionF
 import ProjectVacanciesForm from '@/components/project-new/ProjectVacanciesForm.vue';
 import LinkEntity from '@/entities/LinkEntity';
 import VacancyEntity from '@/entities/VacancyEntity';
-import VacancyShareType from '@/enums/VacancyShareType';
-import ProjectService from '@/services/ProjectService';
-import LabelService from '@/services/LabelService';
-import LinkService from '@/services/LinkService';
-import VacancyService from '@/services/VacancyService';
+import { Action, State } from 'vuex-class';
+import LabelEntity from '@/entities/LabelEntity';
+
+const namespace = 'savingProject';
 
 @Component({
   components: {
@@ -69,8 +68,28 @@ import VacancyService from '@/services/VacancyService';
   }) {
     await store.dispatch('labels/getLabels');
   },
+
+  validate({ params }: any) {
+    return !!params.id;
+  },
 })
 export default class MainPageComponent extends Vue {
+  @State('project', { namespace }) readonly project!: DescriptionProjectEntity;
+
+  @State('labels', { namespace }) readonly labels!: LabelEntity[];
+
+  @State('links', { namespace }) readonly links!: LinkEntity[];
+
+  @State('vacancies', { namespace }) readonly vacancies!: VacancyEntity[];
+
+  @Action('saveProject', { namespace }) readonly saveProject!: (project: DescriptionProjectEntity) => void;
+
+  @Action('saveLabels', { namespace }) readonly saveLabels!: (labels: LabelEntity[]) => void;
+
+  @Action('saveLinks', { namespace }) readonly saveLinks!: (links: LinkEntity[]) => void;
+
+  @Action('saveVacancies', { namespace }) readonly saveVacancies!: (vacancies: VacancyEntity[]) => void;
+
   tabs: TabEntity[] = [
     {
       value: 'description',
@@ -79,52 +98,38 @@ export default class MainPageComponent extends Vue {
     {
       value: 'links',
       title: 'Ссылки',
+      disabled: true,
     },
     {
       value: 'vacancies',
       title: 'Мы ищем',
+      disabled: true,
     },
   ];
 
-  project: DescriptionProjectEntity = {
-    id: 0,
-    description: '',
-    name: '',
-  };
-
-  labels = [];
-
-  links: LinkEntity[] = [{ id: 0, link: '', title: '' }];
-
-  vacancies: VacancyEntity[] = [{ id: 0, title: '', shareType: VacancyShareType.share }];
-
   selectedTab = 'description';
 
+  async mounted() {
+    await this.$store.dispatch('savingProject/getProject', this.$route.params.id);
+  }
+
   async submitDescriptionForm({ project, labels }: any) {
-    this.project = project;
-    this.labels = labels;
+    await this.saveProject(project);
+    await this.saveLabels(labels);
 
-    this.project.id = await ProjectService.create(this.project);
-
-    await LabelService.saveLabels(this.project.id, this.labels);
+    this.selectedTab = 'links';
+    this.tabs[1].disabled = false;
   }
 
   async submitLinkForm(links: LinkEntity[]) {
-    this.links = links;
+    await this.saveLinks(links);
 
-    const creatingLinksPromises = this.links.map(
-      (link) => LinkService.create(this.project.id, link),
-    );
-
-    await Promise.all(creatingLinksPromises);
+    this.selectedTab = 'vacancies';
+    this.tabs[2].disabled = false;
   }
 
   async submitVacanciesForm(vacancies: VacancyEntity[]) {
-    const creatingVacanciesPromises = vacancies.map(
-      (vacancy) => VacancyService.create(this.project.id, vacancy),
-    );
-
-    await Promise.all(creatingVacanciesPromises);
+    await this.saveVacancies(vacancies);
 
     await this.$router.push({
       name: 'project-id',
@@ -137,64 +142,64 @@ export default class MainPageComponent extends Vue {
 </script>
 
 <style lang="postcss" scoped>
-  .project-new {
-    width: 100%;
-    min-width: 300px;
-    max-width: 400px;
+.project-new {
+  width: 100%;
+  min-width: 300px;
+  max-width: 400px;
+  flex-direction: column;
+
+  &__content {
+    display: flex;
     flex-direction: column;
+    margin-top: 30px;
+  }
+
+  &__tabs {
+  }
+
+  &__form {
+    margin-top: 30px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .project-new {
+    max-width: 800px;
+    display: flex;
+
+    &__form {
+      margin-top: 0;
+    }
 
     &__content {
       display: flex;
-      flex-direction: column;
-      margin-top: 30px;
+      flex-direction: row;
+      align-items: flex-start;
     }
 
-    &__tabs {
-    }
-
-    &__form {
-      margin-top: 30px;
-      width: 100%;
-    }
-  }
-
-  @media (min-width: 992px) {
-    .project-new {
-      max-width: 800px;
-      display: flex;
-
-      &__form {
-        margin-top: 0;
-      }
-
-      &__content {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-      }
-
-      &__tabs-wrap {
-        min-width: 180px;
-        background: #FFFFFF;
-        border-radius: var(--defaultBorderRadius);
-        height: auto;
-        padding: 29px 20px 29px 39px;
-        margin-right: 40px;
-      }
+    &__tabs-wrap {
+      min-width: 180px;
+      background: #FFFFFF;
+      border-radius: var(--defaultBorderRadius);
+      height: auto;
+      padding: 29px 20px 29px 39px;
+      margin-right: 40px;
     }
   }
+}
 
-  @media (min-width: 1200px) {
-    .project-new {
-      display: flex;
-      max-width: 1108px;
-    }
+@media (min-width: 1200px) {
+  .project-new {
+    display: flex;
+    max-width: 1108px;
   }
+}
 
-  @media (min-width: 1200px) {
-    .project-new {
-      display: flex;
-      max-width: 1400px;
-    }
+@media (min-width: 1200px) {
+  .project-new {
+    display: flex;
+    max-width: 1400px;
   }
+}
 </style>
