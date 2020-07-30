@@ -10,7 +10,7 @@
         placeholder="Поиск проекта"
         @input="setSearchFilterDebounce($event)"
       />
-      <no-ssr>
+      <client-only>
         <TButton
           v-if="isAuthorize"
           class="all-projects-header__add-project-btn"
@@ -37,7 +37,7 @@
             Добавить проект
           </TButton>
         </slot>
-      </no-ssr>
+      </client-only>
       <TButton
         class="all-projects-header__filter-btn"
         theme="white-grey"

@@ -76,5 +76,6 @@ module.exports = {
     'nuxt-svg-loader',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
+    'vue-scrollto/nuxt',
   ],
 };

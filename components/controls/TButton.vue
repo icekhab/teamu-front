@@ -111,10 +111,12 @@ export default class TButtonComponent extends Vue {
       box-shadow: var(--defaultBoxShadow);
 
       &:hover {
+        color: #ffffff;
         background: var(--primaryColor-hover);
       }
 
       &:active {
+        color: #ffffff;
         box-shadow: var(--activeControlBoxShadow);
       }
     }
