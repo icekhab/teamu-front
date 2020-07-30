@@ -1,11 +1,15 @@
 <template>
   <div class="menu">
-    <TeamuLogo class="menu__item teamu-logo" />
+    <nuxt-link class="menu__item teamu-logo" :to="projectsLink">
+      <TeamuLogo />
+    </nuxt-link>
     <CircleAvatar class="menu__item avatar" @click="setIsShowLogin(true)" />
     <MyIdeaIcon class="menu__item my-idea" />
     <SearchIcon class="menu__item search" />
     <div class="menu__item empty" />
-    <AllIdeasIcon class="menu__item all-idea" />
+    <nuxt-link class="menu__item all-idea" :class="getClass(projectsLink)" :to="projectsLink">
+      <AllIdeasIcon />
+    </nuxt-link>
     <NotificationIcon class="menu__item notification" />
     <HelpIcon class="menu__item help" />
     <UsersIcon class="menu__item users" />
@@ -36,6 +40,14 @@ import { Mutation } from 'vuex-class';
 })
 export default class MenuComponent extends Vue {
   @Mutation('setIsShowLogin', { namespace: 'user' }) setIsShowLogin!: (isShowLogin: boolean) => void;
+
+  projectsLink = {
+    name: 'project',
+  };
+
+  getClass(to: any) {
+    return { active: to.name === this.$router.currentRoute.name };
+  }
 }
 </script>
 
@@ -58,6 +70,10 @@ export default class MenuComponent extends Vue {
       }
 
       &:hover {
+        color: var(--blackColor);
+      }
+
+      &.active {
         color: var(--blackColor);
       }
     }
