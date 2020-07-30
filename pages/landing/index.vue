@@ -40,12 +40,16 @@
             </p>
             <div class="block__callToAction">
               <!-- TODO: add action -->
-              <TButton class="rigthNav__loginBtn" theme="primary">
+              <TButton theme="primary">
                 Попробовать бесплатно
               </TButton>
             </div>
           </div>
-          <div class="block__rigthPart" />
+          <div class="block__rigthPart">
+            <div class="imgContainer">
+              <img src="/images/svg/landing/startup-3.svg" alt>
+            </div>
+          </div>
         </div>
 
         <!-- Block about for who the service is -->
@@ -53,7 +57,9 @@
           <h2>Для кого наш сревис</h2>
           <div class="infoBlock">
             <div class="infoBlock__leftPart">
-              <img src="/images/svg/landing/startup.svg" alt>
+              <div class="imgContainer">
+                <img src="/images/svg/landing/startup.svg" alt>
+              </div>
             </div>
 
             <div class="infoBlock__rigthPart">
@@ -63,7 +69,7 @@
                 <li>Найди людей, разделяющих идею и ценности проекта</li>
                 <li>Объединитесь в команду и идите к цели!</li>
               </ul>
-              <div>
+              <div class="infoBlock__callToAction">
                 <TButton theme="outline-primary">
                   Найти людей
                 </TButton>
@@ -71,17 +77,21 @@
             </div>
           </div>
           <!-- Block about proffesional -->
-          <div class="infoBlock">
+          <div class="infoBlock reverse">
             <div class="infoBlock__leftPart">
-              <h3>Профессионалам</h3>
-              <p>Хватит обменивать свое время на деньги! Делай то, что нравится и во что ты веришь — с командой единомышленников. Это шанс стать свободным и независимым.</p>
-              <TButton theme="outline-primary">
-                Найти проект
-              </TButton>
+              <div class="imgContainer">
+                <img src="/images/svg/landing/innovation.svg" alt>
+              </div>
             </div>
 
             <div class="infoBlock__rigthPart">
-              <img src="/images/svg/landing/innovation.svg" alt>
+              <h3>Профессионалам</h3>
+              <p>Хватит обменивать свое время на деньги! Делай то, что нравится и во что ты веришь — с командой единомышленников. Это шанс стать свободным и независимым.</p>
+              <div class="infoBlock__callToAction">
+                <TButton theme="outline-primary">
+                  Найти проект
+                </TButton>
+              </div>
             </div>
           </div>
 
@@ -150,7 +160,7 @@
                 Команда проекта будет очень благодарна за любые комментарии, советы и критику. Расскажите нам - что вам не хватает, какую проблему вы бы хотели решить с помощью подобного сервиса.
               </p>
               <!-- TODO: add action -->
-              <div>
+              <div class="infoBlockTypeTwo__callToAction">
                 <TButton theme="outline-primary">
                   Написать нам
                 </TButton>
@@ -197,15 +207,25 @@
 </template>
 
 <script lang="ts">
+/**
+ * @author Aleksandr Skobeltcyn
+ */
+
 import { Vue } from 'vue-property-decorator';
 
 export default class LandingPageComponent extends Vue {}
 </script>
 
 <style lang="postcss" scoped>
+/* Reset styles */
 * {
   text-decoration: none;
   color: #333;
+  font-family: Inter;
+  font-style: normal;
+}
+a:hover {
+  color: #4f56f1;
 }
 h1 {
   font-family: Inter;
@@ -214,8 +234,9 @@ h1 {
   font-size: 48px;
   line-height: 130%;
 }
+
+/* Containers  and wrapper*/
 .container {
-  width: 100%;
   background: #f5f6fa;
   padding: 50px 0px;
   .container__wrapper {
@@ -224,12 +245,15 @@ h1 {
     max-width: 1120px;
   }
 }
+
+/* Top bar */
 .topBar {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
+/* Logo  */
 .logo {
   font-family: Inter;
   font-style: normal;
@@ -258,6 +282,14 @@ h1 {
     padding: 10px 5px;
   }
 }
+
+@media (max-width: 1200px) {
+  .logo {
+    &__text {
+      display: none;
+    }
+  }
+}
 .nav {
   &__link {
     font-family: Inter;
@@ -273,12 +305,12 @@ h1 {
 .rigthNav {
 }
 
-/* first block */
-
+/* Top block */
 .block {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
   &__callToAction {
   }
   &__leftPart {
@@ -295,21 +327,44 @@ h1 {
   }
   &__rigthPart {
     flex: 50%;
+    img {
+      width: 100%;
+    }
   }
 }
 .first {
   margin-top: 90px;
-  background: url("/images/svg/landing/startup-3.svg") no-repeat scroll 22px
-    11px;
-  background-position: right;
-  background-size: contain;
 }
 .rigthNav {
   &__loginBtn {
   }
 }
 
-/* first feature blocks */
+@media (max-width: 1200px) {
+  .featuresBlock {
+    margin-top: 50px;
+  }
+  .block {
+    flex-direction: column-reverse;
+    align-items: center;
+    &__leftPart {
+      flex: 100%;
+    }
+    &__rigthPart {
+      flex: 100%;
+      display: none;
+    }
+    &__callToAction {
+      text-align: center;
+    }
+  }
+  h1,
+  p {
+    text-align: center;
+  }
+}
+
+/* First feature blocks */
 .featuresBlock {
   margin-top: 150px;
 
@@ -356,6 +411,9 @@ h1 {
   background: rgb(79 87 241 / 0.07);
   border-radius: 5px;
   padding: 70px 40px;
+  &.reverse {
+    flex-direction: row-reverse;
+  }
   p {
     font-family: Inter;
     font-style: normal;
@@ -405,16 +463,50 @@ h1 {
   &__leftPart {
     flex: 50%;
     flex-direction: column;
+    .imgContainer {
+      text-align: center;
+    }
   }
   &__rigthPart {
     flex: 50%;
     display: flex;
     flex-direction: column;
+    .imgContainer {
+      text-align: center;
+    }
   }
 }
 
-/* feature panels  */
+@media (max-width: 1200px) {
+  .infoBlock {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
 
+    &.reverse {
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    &__leftPart {
+      flex: 100%;
+      img {
+        width: 100%;
+      }
+    }
+    &__rigthPart {
+      flex: 100%;
+      img {
+        width: 100%;
+      }
+    }
+    &__callToAction {
+      text-align: center;
+    }
+  }
+}
+
+/* Feature panels  */
 .featurePanels {
   margin: 50px 0px 100px 0px;
   display: flex;
@@ -453,6 +545,20 @@ h1 {
   }
 }
 
+@media (max-width: 1200px) {
+  .featurePanels {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    &__title {
+      text-align: center;
+    }
+    &__description {
+      text-align: center;
+    }
+  }
+}
+
 /* MVP feedback block */
 .infoBlockTypeTwo {
   display: flex;
@@ -466,7 +572,7 @@ h1 {
     line-height: 56px;
     color: #333333;
     position: relative;
-    padding-bottom: 30px;
+    padding: 30px 0px;
   }
   &__description {
     font-family: Inter;
@@ -474,7 +580,6 @@ h1 {
     font-weight: normal;
     font-size: 18px;
     line-height: 30px;
-
     color: #878e99;
     mix-blend-mode: normal;
     margin: 20px 0px;
@@ -484,12 +589,17 @@ h1 {
     flex-direction: column;
     img {
       max-width: 460px;
+      width: 100%;
     }
   }
   &__rigthPart {
     flex: 50%;
     display: flex;
     flex-direction: column;
+    img {
+      max-width: 460px;
+      width: 100%;
+    }
   }
   &__underlindedHeader {
     &:after {
@@ -505,8 +615,27 @@ h1 {
   }
 }
 
-/* Footer  */
+@media (max-width: 1200px) {
+  .infoBlockTypeTwo {
+    gap: 30px;
+    flex-direction: column;
+    align-items: center;
+    h3 {
+      text-align: center;
+    }
+    &__underlindedHeader {
+      &:after {
+        left: 50%;
+        margin: 0px 0px 0px -28px;
+      }
+    }
+    &__callToAction {
+      text-align: center;
+    }
+  }
+}
 
+/* Footer  */
 .footer {
   width: 100%;
   margin: 50px auto 0px auto;
@@ -547,12 +676,43 @@ h1 {
     }
   }
 }
+
+@media (max-width: 1200px) {
+  .footer {
+    &__container {
+      flex-direction: column;
+      align-items: center;
+
+      gap: 30px;
+    }
+    &__leftPart {
+      flex: 100%;
+      text-align: center;
+      justify-content: center;
+    }
+    &__rightPart {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      justify-content: space-between;
+      align-items: center;
+    }
+    &__creators {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}
+
+/* Separator */
 .separater {
   width: 100%;
   height: 1px;
   background: #4f57f12a;
   margin: 50px 0px;
 }
+
+/* Helper classes */
 .noPaddingAndMargin {
   padding: 0px !important;
   margin: 0px auto !important;
