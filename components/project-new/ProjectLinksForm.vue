@@ -39,9 +39,10 @@
 
 <script lang="ts">
 import {
-  Component, Emit, Prop, Vue,
+  Component, Emit, Prop, Vue, Watch,
 } from 'vue-property-decorator';
 import LinkEntity from '@/entities/LinkEntity';
+import deepCopyFunction from '@/helpers/deepCopy';
 
 const emptyLink: LinkEntity = { id: 0, link: '', title: '' };
 
@@ -55,7 +56,12 @@ export default class ProjectLinksFormComponent extends Vue {
   })
   readonly links!: LinkEntity[];
 
-  newLinks = this.links;
+  newLinks = deepCopyFunction(this.links);
+
+  @Watch('links', { immediate: false })
+  private onLabels(newVal: LinkEntity[]): void {
+    this.newLinks = deepCopyFunction(newVal);
+  }
 
   addLink() {
     this.newLinks.push({ ...emptyLink });

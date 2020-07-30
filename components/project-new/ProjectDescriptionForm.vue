@@ -38,12 +38,14 @@
 
 <script lang="ts">
 import {
-  Component, Emit, Prop, Vue,
+  Component, Emit, Prop, Vue, Watch,
 } from 'vue-property-decorator';
 import TInput from '@/components/controls/TInput.vue';
 import TTextArea from '@/components/controls/TTextArea.vue';
 import DescriptionProjectEntity from '@/entities/DescriptionProjectEntity';
 import ImageChooser from '@/components/controls/ImageChooser.vue';
+import LabelEntity from '@/entities/LabelEntity';
+import deepCopyFunction from '@/helpers/deepCopy';
 import TCheckbox from '~/components/controls/TCheckbox.vue';
 import TButton from '~/components/controls/TButton.vue';
 import ProjectLabelListCheck from '~/components/common/ProjectLabelListCheck.vue';
@@ -59,13 +61,23 @@ import ProjectLabelListCheck from '~/components/common/ProjectLabelListCheck.vue
   },
 })
 export default class ProjectDescriptionFormComponent extends Vue {
-  @Prop({ required: false, type: Object }) project?: DescriptionProjectEntity;
+  @Prop({ required: true, type: Object }) project!: DescriptionProjectEntity;
 
-  @Prop({ required: false, type: Array }) labels?: DescriptionProjectEntity;
+  @Prop({ required: true, type: Array }) labels!: LabelEntity[];
 
-  newProject = this.project || {};
+  newProject = { ...this.project };
 
-  newLabels = this.labels || [];
+  newLabels = [...this.labels];
+
+  @Watch('project', { immediate: false })
+  private onProject(newVal: DescriptionProjectEntity): void {
+    this.newProject = deepCopyFunction(newVal);
+  }
+
+  @Watch('labels', { immediate: false })
+  private onLabels(newVal: LabelEntity[]): void {
+    this.newLabels = deepCopyFunction(newVal);
+  }
 
   @Emit('submit')
   submitForm() {

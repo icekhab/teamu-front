@@ -48,11 +48,10 @@ import ProjectDescriptionForm from '@/components/project-new/ProjectDescriptionF
 import ProjectVacanciesForm from '@/components/project-new/ProjectVacanciesForm.vue';
 import LinkEntity from '@/entities/LinkEntity';
 import VacancyEntity from '@/entities/VacancyEntity';
-import VacancyShareType from '@/enums/VacancyShareType';
-import ProjectService from '@/services/ProjectService';
-import LabelService from '@/services/LabelService';
-import LinkService from '@/services/LinkService';
-import VacancyService from '@/services/VacancyService';
+import { Action, State } from 'vuex-class';
+import LabelEntity from '@/entities/LabelEntity';
+
+const namespace = 'savingProject';
 
 @Component({
   components: {
@@ -71,6 +70,22 @@ import VacancyService from '@/services/VacancyService';
   },
 })
 export default class MainPageComponent extends Vue {
+  @State('project', { namespace }) readonly project!: DescriptionProjectEntity;
+
+  @State('labels', { namespace }) readonly labels!: LabelEntity[];
+
+  @State('links', { namespace }) readonly links!: LinkEntity[];
+
+  @State('vacancies', { namespace }) readonly vacancies!: VacancyEntity[];
+
+  @Action('saveProject', { namespace }) readonly saveProject!: (project: DescriptionProjectEntity) => void;
+
+  @Action('saveLabels', { namespace }) readonly saveLabels!: (labels: LabelEntity[]) => void;
+
+  @Action('saveLinks', { namespace }) readonly saveLinks!: (links: LinkEntity[]) => void;
+
+  @Action('saveVacancies', { namespace }) readonly saveVacancies!: (vacancies: VacancyEntity[]) => void;
+
   tabs: TabEntity[] = [
     {
       value: 'description',
@@ -88,51 +103,25 @@ export default class MainPageComponent extends Vue {
     },
   ];
 
-  project: DescriptionProjectEntity = {
-    id: 0,
-    description: '',
-    name: '',
-  };
-
-  labels = [];
-
-  links: LinkEntity[] = [{ id: 0, link: '', title: '' }];
-
-  vacancies: VacancyEntity[] = [{ id: 0, title: '', shareType: VacancyShareType.share }];
-
   selectedTab = 'description';
 
   async submitDescriptionForm({ project, labels }: any) {
-    this.project = project;
-    this.labels = labels;
-
-    this.project.id = await ProjectService.create(this.project);
-
-    await LabelService.saveLabels(this.project.id, this.labels);
+    await this.saveProject(project);
+    await this.saveLabels(labels);
 
     this.selectedTab = 'links';
     this.tabs[1].disabled = false;
   }
 
   async submitLinkForm(links: LinkEntity[]) {
-    this.links = links;
-
-    const creatingLinksPromises = this.links.map(
-      (link) => LinkService.create(this.project.id, link),
-    );
-
-    await Promise.all(creatingLinksPromises);
+    await this.saveLinks(links);
 
     this.selectedTab = 'vacancies';
     this.tabs[2].disabled = false;
   }
 
   async submitVacanciesForm(vacancies: VacancyEntity[]) {
-    const creatingVacanciesPromises = vacancies.map(
-      (vacancy) => VacancyService.create(this.project.id, vacancy),
-    );
-
-    await Promise.all(creatingVacanciesPromises);
+    await this.saveVacancies(vacancies);
 
     await this.$router.push({
       name: 'project-id',

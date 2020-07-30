@@ -74,5 +74,7 @@ module.exports = {
   hooks,
   modules: [
     'nuxt-svg-loader',
+    '@nuxtjs/axios',
+    '@nuxtjs/auth',
   ],
 };

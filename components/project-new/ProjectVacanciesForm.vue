@@ -76,12 +76,13 @@
 
 <script lang="ts">
 import {
-  Component, Emit, Prop, Vue,
+  Component, Emit, Prop, Vue, Watch,
 } from 'vue-property-decorator';
 import VacancyEntity from '@/entities/VacancyEntity';
 import VacancyShareType from '@/enums/VacancyShareType';
 import TInput from '@/components/controls/TInput.vue';
 import TRadioButton from '@/components/controls/TRadioButton.vue';
+import deepCopyFunction from '@/helpers/deepCopy';
 
 const emptyVacancy: VacancyEntity = {
   id: 0, title: '', shareType: VacancyShareType.share,
@@ -100,7 +101,7 @@ export default class ProjectVacanciesFormComponent extends Vue {
   })
   readonly vacancies!: VacancyEntity[];
 
-  newVacancies = this.vacancies;
+  newVacancies = deepCopyFunction(this.vacancies);
 
   VacancyShareType = VacancyShareType;
 
@@ -118,6 +119,11 @@ export default class ProjectVacanciesFormComponent extends Vue {
       title: 'Оплачиваемая работа Part-time',
     },
   ];
+
+  @Watch('vacancies', { immediate: false })
+  private onLabels(newVal: VacancyEntity[]): void {
+    this.newVacancies = deepCopyFunction(newVal);
+  }
 
   changeVacancyValue(index: number, value?: string) {
     this.newVacancies[index].value = value ? Number(value) : undefined;

@@ -2,8 +2,9 @@ import LabelEntity from '@/entities/LabelEntity';
 import LinkEntity from '@/entities/LinkEntity';
 import UserEntity from '@/entities/UserEntity';
 import VacancyEntity from '@/entities/VacancyEntity';
+import DescriptionProjectEntity from '@/entities/DescriptionProjectEntity';
 
-class DetailProjectEntity {
+class DetailProjectEntity implements DescriptionProjectEntity {
   id!: number;
 
   name!: string;
