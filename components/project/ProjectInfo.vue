@@ -2,6 +2,7 @@
   <div class="project-info">
     <div class="project-info__main">
       <div class="project-info__about-creating">
+        <TSpinner />
         <span>Добавлена: {{ project.created | formatDate(true) }}</span>
         <span class="project-info__author">
           Автор:
@@ -60,12 +61,14 @@ import { Component, Vue } from 'vue-property-decorator';
 import { State } from 'vuex-class';
 import DetailProjectEntity from '@/entities/DetailProjectEntity';
 import ProjectLabel from '~/components/common/ProjectLabel.vue';
+import TSpinner from '~/components/controls/TSpinner.vue';
 
 const namespace = 'project';
 
 @Component({
   components: {
     ProjectLabel,
+    TSpinner,
   },
 })
 export default class ProjectInfoComponent extends Vue {

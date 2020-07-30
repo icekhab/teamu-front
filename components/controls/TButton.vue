@@ -23,14 +23,20 @@
     :disabled="disabled"
     @click="$emit('click', $event)"
   >
-    <slot />
+    <TSpinner v-if="loading" />
+    <slot v-else />
   </button>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import TSpinner from '@/components/controls/TSpinner.vue';
 
-@Component({})
+@Component({
+  components: {
+    TSpinner,
+  },
+})
 export default class TButtonComponent extends Vue {
   @Prop({
     default: 'm',
@@ -61,6 +67,12 @@ export default class TButtonComponent extends Vue {
     default: false,
   })
   readonly disabled!: boolean;
+
+  @Prop({
+    type: Boolean,
+    default: false,
+  })
+  readonly loading!: boolean;
 
   get classButton() {
     return [

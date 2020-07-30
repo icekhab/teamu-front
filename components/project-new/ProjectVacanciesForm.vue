@@ -64,13 +64,22 @@
       </TButton>
     </div>
 
-    <TButton
-      class="project-vacancies-form__submit-btn"
-      type="submit"
-      theme="primary"
-    >
-      Добавить проект
-    </TButton>
+    <div class="project-vacancies-form__btn-panel">
+      <div
+        class="project-vacancies-form__saved-text"
+        :style="{visibility: isSaved ? 'visible' : 'hidden'}"
+      >
+        Успешно сохранено!
+      </div>
+      <TButton
+        class="project-vacancies-form__submit-btn"
+        type="submit"
+        :loading="loading"
+        :disabled="loading"
+      >
+        {{ btnText }}
+      </TButton>
+    </div>
   </form>
 </template>
 
@@ -83,6 +92,9 @@ import VacancyShareType from '@/enums/VacancyShareType';
 import TInput from '@/components/controls/TInput.vue';
 import TRadioButton from '@/components/controls/TRadioButton.vue';
 import deepCopyFunction from '@/helpers/deepCopy';
+import { Action, State } from 'vuex-class';
+
+const namespace = 'savingProject';
 
 const emptyVacancy: VacancyEntity = {
   id: 0, title: '', shareType: VacancyShareType.share,
@@ -95,15 +107,19 @@ const emptyVacancy: VacancyEntity = {
   },
 })
 export default class ProjectVacanciesFormComponent extends Vue {
-  @Prop({
-    default: [{ ...emptyVacancy }],
-    type: Array,
-  })
-  readonly vacancies!: VacancyEntity[];
+  @State('vacancies', { namespace }) readonly vacancies!: VacancyEntity[];
 
-  newVacancies = deepCopyFunction(this.vacancies);
+  @Action('saveVacancies', { namespace }) readonly saveVacancies!: (vacancies: VacancyEntity[]) => void;
+
+  @Prop({ default: 'Сохранить', type: String }) btnText!: string;
+
+  newVacancies: VacancyEntity[] = [];
 
   VacancyShareType = VacancyShareType;
+
+  loading = false;
+
+  isSaved = false;
 
   dictionaryShareType = [
     {
@@ -120,7 +136,7 @@ export default class ProjectVacanciesFormComponent extends Vue {
     },
   ];
 
-  @Watch('vacancies', { immediate: false })
+  @Watch('vacancies', { immediate: true })
   private onLabels(newVal: VacancyEntity[]): void {
     this.newVacancies = deepCopyFunction(newVal);
   }
@@ -143,9 +159,13 @@ export default class ProjectVacanciesFormComponent extends Vue {
     this.newVacancies.splice(index, 1);
   }
 
-  @Emit('submit')
-  submitForm() {
-    return this.newVacancies;
+  @Emit('afterSubmit')
+  async submitForm() {
+    this.loading = true;
+    this.isSaved = false;
+    await this.saveVacancies(this.newVacancies);
+    this.isSaved = true;
+    this.loading = false;
   }
 }
 </script>
@@ -202,9 +222,20 @@ export default class ProjectVacanciesFormComponent extends Vue {
       margin: 30px auto;
     }
 
-    &__submit-btn {
+    &__btn-panel {
+      display: flex;
+      flex-direction: column;
       margin-top: 30px;
+      align-items: center;
+    }
+
+    &__saved-text {
+      color: #61C9A8;
+    }
+
+    &__submit-btn {
       width: 100%;
+      margin-top: 15px;
     }
 
     &__remove {
@@ -244,10 +275,21 @@ export default class ProjectVacanciesFormComponent extends Vue {
         }
       }
 
-      &__submit-btn {
-        margin-top: 50px;
-        width: 190px;
+      &__btn-panel {
+        flex-direction: row;
         align-self: flex-end;
+        align-items: center;
+      }
+
+      &__saved-text {
+        color: #61C9A8;
+        white-space: nowrap;
+      }
+
+      &__submit-btn {
+        min-width: 190px;
+        align-self: flex-end;
+        margin: 0 0 0 20px;
       }
     }
   }

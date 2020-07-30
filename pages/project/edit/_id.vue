@@ -2,7 +2,7 @@
   <MenuLayout>
     <div class="project-new">
       <h1 class="project-new__header">
-        Добавление проекта
+        Редактирование проекта
       </h1>
       <div class="project-new__content">
         <div class="project-new__tabs-wrap">
@@ -15,21 +15,14 @@
         <ProjectDescriptionForm
           v-show="selectedTab === 'description'"
           class="project-new__form"
-          :project="project"
-          :labels="labels"
-          @submit="submitDescriptionForm"
         />
         <ProjectLinksForm
           v-show="selectedTab === 'links'"
           class="project-new__form"
-          :links="links"
-          @submit="submitLinkForm"
         />
         <ProjectVacanciesForm
           v-show="selectedTab === 'vacancies'"
           class="project-new__form"
-          :vacancies="vacancies"
-          @submit="submitVacanciesForm"
         />
       </div>
     </div>
@@ -43,15 +36,9 @@ import ProjectInfo from '@/components/project/ProjectInfo.vue';
 import Tabs from '@/components/common/Tabs.vue';
 import TabEntity from '@/entities/TabEntity';
 import ProjectLinksForm from '@/components/project-new/ProjectLinksForm.vue';
-import DescriptionProjectEntity from '@/entities/DescriptionProjectEntity';
 import ProjectDescriptionForm from '@/components/project-new/ProjectDescriptionForm.vue';
 import ProjectVacanciesForm from '@/components/project-new/ProjectVacanciesForm.vue';
-import LinkEntity from '@/entities/LinkEntity';
-import VacancyEntity from '@/entities/VacancyEntity';
-import { Action, State } from 'vuex-class';
-import LabelEntity from '@/entities/LabelEntity';
-
-const namespace = 'savingProject';
+import { Action } from 'vuex-class';
 
 @Component({
   components: {
@@ -73,22 +60,8 @@ const namespace = 'savingProject';
     return !!params.id;
   },
 })
-export default class MainPageComponent extends Vue {
-  @State('project', { namespace }) readonly project!: DescriptionProjectEntity;
-
-  @State('labels', { namespace }) readonly labels!: LabelEntity[];
-
-  @State('links', { namespace }) readonly links!: LinkEntity[];
-
-  @State('vacancies', { namespace }) readonly vacancies!: VacancyEntity[];
-
-  @Action('saveProject', { namespace }) readonly saveProject!: (project: DescriptionProjectEntity) => void;
-
-  @Action('saveLabels', { namespace }) readonly saveLabels!: (labels: LabelEntity[]) => void;
-
-  @Action('saveLinks', { namespace }) readonly saveLinks!: (links: LinkEntity[]) => void;
-
-  @Action('saveVacancies', { namespace }) readonly saveVacancies!: (vacancies: VacancyEntity[]) => void;
+export default class ProjectEditPageComponent extends Vue {
+  @Action('getProject', { namespace: 'savingProject' }) readonly getProject!: (projectId: number) => void;
 
   tabs: TabEntity[] = [
     {
@@ -98,45 +71,17 @@ export default class MainPageComponent extends Vue {
     {
       value: 'links',
       title: 'Ссылки',
-      disabled: true,
     },
     {
       value: 'vacancies',
       title: 'Мы ищем',
-      disabled: true,
     },
   ];
 
   selectedTab = 'description';
 
   async mounted() {
-    await this.$store.dispatch('savingProject/getProject', this.$route.params.id);
-  }
-
-  async submitDescriptionForm({ project, labels }: any) {
-    await this.saveProject(project);
-    await this.saveLabels(labels);
-
-    this.selectedTab = 'links';
-    this.tabs[1].disabled = false;
-  }
-
-  async submitLinkForm(links: LinkEntity[]) {
-    await this.saveLinks(links);
-
-    this.selectedTab = 'vacancies';
-    this.tabs[2].disabled = false;
-  }
-
-  async submitVacanciesForm(vacancies: VacancyEntity[]) {
-    await this.saveVacancies(vacancies);
-
-    await this.$router.push({
-      name: 'project-id',
-      params: {
-        id: this.project.id.toString(),
-      },
-    });
+    await this.getProject(Number(this.$route.params.id));
   }
 }
 </script>

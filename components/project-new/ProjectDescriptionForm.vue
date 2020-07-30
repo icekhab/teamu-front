@@ -30,9 +30,22 @@
       />
     </div>
 
-    <TButton class="project-description-form__submit" type="submit">
-      Далее
-    </TButton>
+    <div class="project-description-form__btn-panel">
+      <div
+        class="project-description-form__saved-text"
+        :style="{visibility: isSaved ? 'visible' : 'hidden'}"
+      >
+        Успешно сохранено!
+      </div>
+      <TButton
+        class="project-description-form__submit"
+        type="submit"
+        :loading="loading"
+        :disabled="loading"
+      >
+        {{ btnText }}
+      </TButton>
+    </div>
   </form>
 </template>
 
@@ -46,9 +59,12 @@ import DescriptionProjectEntity from '@/entities/DescriptionProjectEntity';
 import ImageChooser from '@/components/controls/ImageChooser.vue';
 import LabelEntity from '@/entities/LabelEntity';
 import deepCopyFunction from '@/helpers/deepCopy';
+import { Action, State } from 'vuex-class';
 import TCheckbox from '~/components/controls/TCheckbox.vue';
 import TButton from '~/components/controls/TButton.vue';
 import ProjectLabelListCheck from '~/components/common/ProjectLabelListCheck.vue';
+
+const namespace = 'savingProject';
 
 @Component({
   components: {
@@ -61,27 +77,42 @@ import ProjectLabelListCheck from '~/components/common/ProjectLabelListCheck.vue
   },
 })
 export default class ProjectDescriptionFormComponent extends Vue {
-  @Prop({ required: true, type: Object }) project!: DescriptionProjectEntity;
+  @State('project', { namespace }) readonly project!: DescriptionProjectEntity;
 
-  @Prop({ required: true, type: Array }) labels!: LabelEntity[];
+  @State('labels', { namespace }) readonly labels!: LabelEntity[];
 
-  newProject = { ...this.project };
+  @Action('saveProject', { namespace }) readonly saveProject!: (project: DescriptionProjectEntity) => void;
 
-  newLabels = [...this.labels];
+  @Action('saveLabels', { namespace }) readonly saveLabels!: (labels: LabelEntity[]) => void;
 
-  @Watch('project', { immediate: false })
+  @Prop({ default: 'Сохранить', type: String }) btnText!: string;
+
+  newProject: DescriptionProjectEntity = { id: 0, name: '', description: '' };
+
+  newLabels: LabelEntity[] = [];
+
+  loading = false;
+
+  isSaved = false;
+
+  @Watch('project', { immediate: true })
   private onProject(newVal: DescriptionProjectEntity): void {
-    this.newProject = deepCopyFunction(newVal);
+    this.newProject = { ...newVal };
   }
 
-  @Watch('labels', { immediate: false })
+  @Watch('labels', { immediate: true })
   private onLabels(newVal: LabelEntity[]): void {
     this.newLabels = deepCopyFunction(newVal);
   }
 
-  @Emit('submit')
-  submitForm() {
-    return { project: this.newProject, labels: this.newLabels };
+  @Emit('afterSubmit')
+  async submitForm() {
+    this.loading = true;
+    this.isSaved = false;
+    await this.saveProject(this.newProject);
+    await this.saveLabels(this.newLabels);
+    this.isSaved = true;
+    this.loading = false;
   }
 }
 </script>
@@ -125,9 +156,20 @@ export default class ProjectDescriptionFormComponent extends Vue {
       margin-top: 20px;
     }
 
+    &__btn-panel {
+      display: flex;
+      flex-direction: column;
+      margin-top: 30px;
+      align-items: center;
+    }
+
+    &__saved-text {
+      color: #61C9A8;
+    }
+
     &__submit {
       width: 100%;
-      margin-top: 30px;
+      margin-top: 15px;
     }
   }
 
@@ -164,9 +206,21 @@ export default class ProjectDescriptionFormComponent extends Vue {
         border: 0;
       }
 
-      &__submit {
-        width: 115px;
+      &__btn-panel {
+        flex-direction: row;
         align-self: flex-end;
+        align-items: center;
+      }
+
+      &__saved-text {
+        color: #61C9A8;
+        white-space: nowrap;
+      }
+
+      &__submit {
+        min-width: 115px;
+        align-self: flex-end;
+        margin: 0 0 0 20px;
       }
     }
   }

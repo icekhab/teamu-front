@@ -27,13 +27,23 @@
         Добавить ссылку
       </TButton>
     </div>
-    <TButton
-      class="project-links-form__submit-btn"
-      type="submit"
-      theme="primary"
-    >
-      Далее
-    </TButton>
+
+    <div class="project-links-form__btn-panel">
+      <div
+        class="project-links-form__saved-text"
+        :style="{visibility: isSaved ? 'visible' : 'hidden'}"
+      >
+        Успешно сохранено!
+      </div>
+      <TButton
+        class="project-links-form__submit-btn"
+        type="submit"
+        :loading="loading"
+        :disabled="loading"
+      >
+        {{ btnText }}
+      </TButton>
+    </div>
   </form>
 </template>
 
@@ -43,22 +53,28 @@ import {
 } from 'vue-property-decorator';
 import LinkEntity from '@/entities/LinkEntity';
 import deepCopyFunction from '@/helpers/deepCopy';
+import { Action, State } from 'vuex-class';
 
+const namespace = 'savingProject';
 const emptyLink: LinkEntity = { id: 0, link: '', title: '' };
 
 @Component({
   components: {},
 })
 export default class ProjectLinksFormComponent extends Vue {
-  @Prop({
-    default: [{ ...emptyLink }],
-    type: Array,
-  })
-  readonly links!: LinkEntity[];
+  @State('links', { namespace }) readonly links!: LinkEntity[];
 
-  newLinks = deepCopyFunction(this.links);
+  @Action('saveLinks', { namespace }) readonly saveLinks!: (links: LinkEntity[]) => void;
 
-  @Watch('links', { immediate: false })
+  @Prop({ default: 'Сохранить', type: String }) btnText!: string;
+
+  newLinks: LinkEntity[] = [];
+
+  loading = false;
+
+  isSaved = false;
+
+  @Watch('links', { immediate: true })
   private onLabels(newVal: LinkEntity[]): void {
     this.newLinks = deepCopyFunction(newVal);
   }
@@ -71,9 +87,13 @@ export default class ProjectLinksFormComponent extends Vue {
     this.newLinks.splice(index, 1);
   }
 
-  @Emit('submit')
-  submitForm() {
-    return this.newLinks;
+  @Emit('afterSubmit')
+  async submitForm() {
+    this.loading = true;
+    this.isSaved = false;
+    await this.saveLinks(this.newLinks);
+    this.isSaved = true;
+    this.loading = false;
   }
 }
 </script>
@@ -122,9 +142,20 @@ export default class ProjectLinksFormComponent extends Vue {
       margin-top: 30px;
     }
 
+    &__btn-panel {
+      display: flex;
+      flex-direction: column;
+      margin-top: 30px;
+      align-items: center;
+    }
+
+    &__saved-text {
+      color: #61C9A8;
+    }
+
     &__submit-btn {
       width: 100%;
-      margin-top: 30px;
+      margin-top: 15px;
     }
   }
 
@@ -157,9 +188,21 @@ export default class ProjectLinksFormComponent extends Vue {
         margin-top: 30px;
       }
 
-      &__submit-btn {
-        width: 115px;
+      &__btn-panel {
+        flex-direction: row;
         align-self: flex-end;
+        align-items: center;
+      }
+
+      &__saved-text {
+        color: #61C9A8;
+        white-space: nowrap;
+      }
+
+      &__submit-btn {
+        min-width: 115px;
+        align-self: flex-end;
+        margin: 0 0 0 20px;
       }
     }
   }
