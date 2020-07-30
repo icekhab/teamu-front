@@ -21,7 +21,6 @@
               <a v-scroll-to="{ el: '#feedback', duration: 900 }" href="#">Написать нам</a>
             </div>
           </div>
-          <!-- TODO: add action -->
           <div class="rigthNav">
             <TButton
               class="rigthNav__loginBtn"
@@ -43,7 +42,6 @@
               Находи единомышленников и партнеров для их реализации
             </p>
             <div class="block__callToAction">
-              <!-- TODO: add action -->
               <TButton class="block__link" theme="primary" :to="projectsLink">
                 Попробовать бесплатно
               </TButton>
@@ -163,7 +161,6 @@
               >
                 Команда проекта будет очень благодарна за любые комментарии, советы и критику. Расскажите нам - что вам не хватает, какую проблему вы бы хотели решить с помощью подобного сервиса.
               </p>
-              <!-- TODO: add action -->
               <div class="infoBlockTypeTwo__callToAction">
                 <TButton theme="outline-primary">
                   Написать нам
