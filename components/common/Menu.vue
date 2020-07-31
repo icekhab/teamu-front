@@ -4,7 +4,9 @@
       <TeamuLogo />
     </nuxt-link>
     <CircleAvatar class="menu__item avatar" @click="$modal.show('login-modal')" />
-    <MyIdeaIcon class="menu__item my-idea" />
+    <nuxt-link class="menu__item my-idea" :class="getClass(myProjectsLink)" :to="myProjectsLink">
+      <MyIdeaIcon />
+    </nuxt-link>
     <SearchIcon class="menu__item search" />
     <div class="menu__item empty" />
     <nuxt-link class="menu__item all-idea" :class="getClass(projectsLink)" :to="projectsLink">
@@ -40,6 +42,10 @@ import UsersIcon from '@/static/images/svg/menu/users-icon.svg';
 export default class MenuComponent extends Vue {
   projectsLink = {
     name: 'project',
+  };
+
+  myProjectsLink = {
+    name: 'project-my',
   };
 
   getClass(to: any) {

@@ -4,6 +4,8 @@
       v-for="project in projects"
       :key="project.id"
       :project="project"
+      v-bind="$attrs"
+      v-on="$listeners"
     />
   </div>
 </template>

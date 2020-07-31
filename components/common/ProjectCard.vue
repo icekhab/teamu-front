@@ -1,37 +1,58 @@
 <template>
-  <nuxt-link :to="projectLink" class="project-card">
-    <div class="project-card__header">
-      <span :to="projectLink" class="project-card__title">
-        {{ project.name }}
-      </span>
-      <span v-if="project.accounts" class="project-card__accounts">
-        <ProfileIcon class="project-card__accounts-icon" />
-        {{ project.accounts }}
-      </span>
-      <span>{{ project.created | formatDate }}</span>
-    </div>
-    <div class="project-card__text">
-      {{ project.description }}
-    </div>
-    <div class="project-card__footer">
-      <div class="project-card__author">
-        Автор:
-        <CircleAvatar class="project-card__author-avatar" />
-        <span class="project-card__author-name">
-          {{ project.user.name || project.user.email }}
+  <div class="project-card">
+    <nuxt-link :to="projectLink" class="project-card__link-block">
+      <div class="project-card__header">
+        <span :to="projectLink" class="project-card__title">
+          {{ project.name }}
         </span>
+        <span v-if="project.accounts" class="project-card__accounts">
+          <ProfileIcon class="project-card__accounts-icon" />
+          {{ project.accounts }}
+        </span>
+        <span>{{ project.created | formatDate }}</span>
       </div>
-      <div class="project-card__labels">
-        <ProjectLabel
-          v-for="label in project.labels.slice(0, 2)"
-          :key="label.id"
-          :label="label.title"
-          check
-          class="project-card__label"
-        />
+      <div class="project-card__text">
+        {{ project.description }}
       </div>
+      <div class="project-card__footer">
+        <div class="project-card__author">
+          Автор:
+          <CircleAvatar class="project-card__author-avatar" />
+          <span class="project-card__author-name">
+            {{ project.user.name || project.user.email }}
+          </span>
+        </div>
+        <div class="project-card__labels">
+          <ProjectLabel
+            v-for="label in project.labels.slice(0, 2)"
+            :key="label.id"
+            :label="label.title"
+            check
+            class="project-card__label"
+          />
+        </div>
+      </div>
+    </nuxt-link>
+    <div v-if="isMy" class="project-card__buttons">
+      <TButton
+        v-if="isDraft"
+        class="project-card__buttons__btn"
+        type="button"
+        @click="$emit('publish', project.id)"
+      >
+        Опубликовать
+      </TButton>
+      <TButton
+        v-else
+        class="project-card__buttons__btn"
+        theme="primary"
+        type="button"
+        @click="$emit('toDraft', project.id)"
+      >
+        В черновик
+      </TButton>
     </div>
-  </nuxt-link>
+  </div>
 </template>
 
 <script lang="ts">
@@ -48,6 +69,10 @@ import ProjectLabel from '@/components/common/ProjectLabel.vue';
 })
 export default class ProjectCardComponent extends Vue {
   @Prop() readonly project!: ProjectEntity;
+
+  @Prop({ default: false, type: Boolean }) readonly isMy!: boolean;
+
+  @Prop({ default: false, type: Boolean }) readonly isDraft!: boolean;
 
   projectLink = {
     name: 'project-id',
@@ -72,6 +97,14 @@ export default class ProjectCardComponent extends Vue {
     max-width: 356px;
     text-decoration: none;
     transition: all .15s ease-in;
+
+    &__link-block {
+      display: flex;
+      flex-direction: column;
+      background: #FFFFFF;
+      color: var(--greyColor);
+      text-decoration: none;
+    }
 
     &:hover {
       box-shadow: var(--hoverBlockBoxShadow);
@@ -146,6 +179,23 @@ export default class ProjectCardComponent extends Vue {
 
     &__label:not(:first-child) {
       margin-left: 15px;
+    }
+
+    &__buttons {
+      display: flex;
+      align-items: center;
+
+      &__btn {
+        width: 280px;
+        height: 37px;
+        margin: 0 auto;
+        margin-top: 20px;
+        color: #4F56F1;
+        background: #FFFFFF;
+        border: 1px solid #4F56F1;
+        box-sizing: border-box;
+        border-radius: 5px;
+      }
     }
   }
 </style>
