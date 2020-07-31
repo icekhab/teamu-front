@@ -104,8 +104,6 @@ export default class AllProjectsHeaderComponent extends Vue {
 
   @Mutation('setToAfterLogin', { namespace: 'user' }) setToAfterLogin!: (ToAfterLogin: RawLocation) => void;
 
-  @Mutation('setIsShowLogin', { namespace: 'user' }) setIsShowLogin!: (isShowLogin: boolean) => void;
-
   @Mutation('setSearchFilter', { namespace }) setSearchFilter!: (search: string) => void;
 
   @Mutation('addProjectLabelFilter', { namespace }) addProjectLabelFilter!: (label: ProjectLabelEnum) => void;
@@ -126,7 +124,8 @@ export default class AllProjectsHeaderComponent extends Vue {
 
   openLogin() {
     this.setToAfterLogin(this.createProjectLink);
-    this.setIsShowLogin(true);
+
+    this.$modal.show('login-modal');
   }
 
   changeLabel(label: ProjectLabelEnum) {

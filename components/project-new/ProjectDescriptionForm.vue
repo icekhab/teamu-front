@@ -132,6 +132,12 @@ export default class ProjectDescriptionFormComponent extends Vue {
       width: 100%;
       margin-top: 20px;
       resize: none;
+      -ms-overflow-style: none;
+      overflow: -moz-scrollbars-none;
+
+      &::-webkit-scrollbar {
+        width: 0 !important
+      }
     }
 
     &__labels {

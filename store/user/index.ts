@@ -6,8 +6,6 @@ import { RawLocation } from 'vue-router/types/router';
 
 export const state = (): UserState => ({
   isAuthorize: false,
-  isShowRegistration: false,
-  isShowLogin: false,
 });
 
 export const actions : any = {
@@ -25,14 +23,6 @@ export const mutations = {
 
   setToken(currentState: UserState, token?: string): void {
     currentState.token = token;
-  },
-
-  setIsShowRegistration(currentState: UserState, isShowRegistration: boolean): void {
-    currentState.isShowRegistration = isShowRegistration;
-  },
-
-  setIsShowLogin(currentState: UserState, isShowLogin: boolean): void {
-    currentState.isShowLogin = isShowLogin;
   },
 
   setToAfterLogin(currentState: UserState, toAfterLogin?: RawLocation): void {

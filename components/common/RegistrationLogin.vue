@@ -1,7 +1,9 @@
 <template>
   <div class="registration-login">
-    <Login v-model="isShowLogin" @showRegistration="showRegistration" @close="close" />
-    <Registration v-model="isShowRegistration" @showLogin="showLogin" @close="close" />
+    <client-only>
+      <Login @showRegistration="showRegistration" @close="close" />
+      <Registration @showLogin="showLogin" @close="close" />
+    </client-only>
   </div>
 </template>
 
@@ -11,36 +13,28 @@ import {
 } from 'vue-property-decorator';
 import Login from '@/components/registration/Login.vue';
 import Registration from '@/components/registration/Registration.vue';
-import { State, Mutation } from 'vuex-class';
+import { Mutation } from 'vuex-class';
 import { RawLocation } from 'vue-router/types/router';
 
 @Component({
   components: { Login, Registration },
 })
 export default class RegistrationLoginComponent extends Vue {
-  @State('isShowLogin', { namespace: 'user' }) isShowLogin!: boolean;
-
-  @State('isShowRegistration', { namespace: 'user' }) isShowRegistration!: boolean;
-
-  @Mutation('setIsShowLogin', { namespace: 'user' }) setIsShowLogin!: (isShowLogin: boolean) => void;
-
   @Mutation('setToAfterLogin', { namespace: 'user' }) setToAfterLogin!: (toAfterLogin?: RawLocation) => void;
 
-  @Mutation('setIsShowRegistration', { namespace: 'user' }) setIsShowRegistration!: (setIsShowRegistration: boolean) => void;
-
   private showRegistration() {
-    this.setIsShowLogin(false);
-    this.setIsShowRegistration(true);
+    this.$modal.hide('login-modal');
+    this.$modal.show('registration-modal');
   }
 
   private showLogin() {
-    this.setIsShowRegistration(false);
-    this.setIsShowLogin(true);
+    this.$modal.show('login-modal');
+    this.$modal.hide('registration-modal');
   }
 
   private close() {
-    this.setIsShowRegistration(false);
-    this.setIsShowLogin(false);
+    this.$modal.hide('registration-modal');
+    this.$modal.hide('login-modal');
     this.setToAfterLogin(undefined);
     this.$emit('close');
   }

@@ -3,7 +3,7 @@
     <nuxt-link class="menu__item teamu-logo" :to="projectsLink">
       <TeamuLogo />
     </nuxt-link>
-    <CircleAvatar class="menu__item avatar" @click="setIsShowLogin(true)" />
+    <CircleAvatar class="menu__item avatar" @click="$modal.show('login-modal')" />
     <MyIdeaIcon class="menu__item my-idea" />
     <SearchIcon class="menu__item search" />
     <div class="menu__item empty" />
@@ -25,7 +25,6 @@ import SearchIcon from '@/static/images/svg/menu/search-icon.svg';
 import HelpIcon from '@/static/images/svg/menu/help-icon.svg';
 import TeamuLogo from '@/static/images/svg/menu/teamu-logo.svg';
 import UsersIcon from '@/static/images/svg/menu/users-icon.svg';
-import { Mutation } from 'vuex-class';
 
 @Component({
   components: {
@@ -39,8 +38,6 @@ import { Mutation } from 'vuex-class';
   },
 })
 export default class MenuComponent extends Vue {
-  @Mutation('setIsShowLogin', { namespace: 'user' }) setIsShowLogin!: (isShowLogin: boolean) => void;
-
   projectsLink = {
     name: 'project',
   };

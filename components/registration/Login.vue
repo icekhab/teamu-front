@@ -1,41 +1,43 @@
 <template>
-  <div class="login" :class="{ 'login-show': !!currentShow, 'login-hide': !currentShow }">
-    <span class="login__cross" @click="$emit('close')">X</span>
-    <span class="login__label">Вход в UTEAM</span>
-    <TInput
-      v-model="login.email"
-      class="login__email-input"
-      placeholder="Email"
-    />
-    <TInput
-      v-model="login.password"
-      type="password"
-      class="login__password-input"
-      placeholder="Пароль"
-    />
-    <TButton
-      class="login__btn"
-      theme="primary"
-      @click="onClick"
-    >
-      Войти в сервис
-    </TButton>
-    <span class="login__divider" />
-    <div class="login__forget-password">
-      <span class="login__forget-password-question">
-        Забыли пароль?
-      </span>
-      <span class="login__forget-password-reset">Сбросить</span>
+  <modal name="login-modal" transition="pop-out" width="640" height="558" adaptive>
+    <div class="login">
+      <span class="login__cross" @click="$emit('close')">X</span>
+      <span class="login__label">Вход в UTEAM</span>
+      <TInput
+        v-model="login.email"
+        class="login__email-input"
+        placeholder="Email"
+      />
+      <TInput
+        v-model="login.password"
+        type="password"
+        class="login__password-input"
+        placeholder="Пароль"
+      />
+      <TButton
+        class="login__btn"
+        theme="primary"
+        @click="onClick"
+      >
+        Войти в сервис
+      </TButton>
+      <span class="login__divider" />
+      <div class="login__forget-password">
+        <span class="login__forget-password-question">
+          Забыли пароль?
+        </span>
+        <span class="login__forget-password-reset">Сбросить</span>
+      </div>
+      <div class="login__have-not-account">
+        <span class="login__have-not-account-question">
+          Нет аккаунта?
+        </span>
+        <span class="login__have-not-account-registration" @click="$emit('showRegistration')">
+          Пройти регистрацию
+        </span>
+      </div>
     </div>
-    <div class="login__have-not-account">
-      <span class="login__have-not-account-question">
-        Нет аккаунта?
-      </span>
-      <span class="login__have-not-account-registration" @click="$emit('showRegistration')">
-        Пройти регистрацию
-      </span>
-    </div>
-  </div>
+  </modal>
 </template>
 
 <script lang="ts">
@@ -86,17 +88,12 @@ export default class LoginComponent extends Vue {
 
 <style lang="postcss" scoped>
   .login {
-    position: absolute;
-    top: 10%;
-    left: 30%;
     display: flex;
     flex-direction: column;
     width: 320px;
     height: 470px;
-    padding-top: 50px;
-    border: black solid 1px;
-    background-color: #fff;
-    border-radius: 5px;
+    padding: 20px;
+    margin: auto;
 
     &__cross {
       position: absolute;
@@ -111,7 +108,7 @@ export default class LoginComponent extends Vue {
         margin-left: 10px;
         font-size: 26px;
         text-align: center;
-        margin-top: 50px;
+        margin-top: 30px;
         font-family: Inter;
         font-style: normal;
         font-weight: 600;
@@ -122,54 +119,44 @@ export default class LoginComponent extends Vue {
 
     &__email-input {
         display: inline;
-        width: 300px;
+        width: 100%;
         height: 40px;
         padding-left: 50px;
         margin-top: 58px;
-        margin-right: 10px;
-        margin-left: 10px;
         background: #fff url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 13px;
     }
 
     &__password-input {
         display: inline;
-        width: 300px;
+        width: 100%;
         height: 40px;
         padding-left: 50px;
         margin-top: 30px;
-        margin-right: 10px;
-        margin-left: 10px;
         background: #fff
           url("/images/svg/registration/password-icon.svg") no-repeat scroll 22px 13px;
     }
 
     &__btn {
         display: inline;
-        width: 300px;
+        width: 100%;
         height: 40px;
         margin-top: 30px;
-        margin-right: 10px;
-        margin-left: 10px;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.06);
         border-radius: 5px;
     }
 
     &__divider {
-        width: 300px;
+        width: 100%;
         height: 1px;
         margin-top: 30px;
-        margin-right: 10px;
-        margin-left: 10px;
         background: #DBDBDB;
     }
 
     &__forget-password {
-        width: 300px;
+        width: 100%;
         height: 17px;
         text-align: center;
         margin-top: 30px;
-        margin-left: 10px;
-        margin-right: 10px;
     }
 
     &__forget-password-question {
@@ -186,12 +173,10 @@ export default class LoginComponent extends Vue {
     }
 
     &__have-not-account {
-        width: 300px;
+        width: 100%;
         height: 17px;
         text-align: center;
         margin-top: 10px;
-        margin-left: 10px;
-        margin-right: 10px;
         vertical-align: middle;
     }
 
@@ -217,8 +202,7 @@ export default class LoginComponent extends Vue {
       &__label {
           width: 403px;
           height: 44px;
-          margin-left: 169px;
-          margin-right: 171px;
+          margin: auto;
           font-size: 36px;
       }
 
@@ -229,8 +213,7 @@ export default class LoginComponent extends Vue {
           background: #fff
             url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 17px;
           padding-left: 50px;
-          margin-right: 104px;
-          margin-left: 104px;
+          margin: auto;
       }
 
       &__password-input {
@@ -238,35 +221,29 @@ export default class LoginComponent extends Vue {
           height: 50px;
           background: #fff url("/images/svg/registration/password-icon.svg")
               no-repeat scroll 22px 17px;
-          margin-right: 104px;
-          margin-left: 104px;
+          margin: auto;
       }
 
       &__btn {
           width: 392px;
           height: 44px;
-          margin-right: 104px;
-          margin-left: 104px;
+          margin: auto;
       }
 
       &__divider {
           width: 392px;
-          margin-right: 104px;
-          margin-left: 104px;
+          margin: auto;
       }
 
       &__forget-password {
           width: 185px;
-          margin-left: 207px;
-          margin-right: 208px;
+          margin: auto;
           vertical-align: middle;
       }
 
       &__have-not-account {
           width: 251px;
-          margin-top: 30px;
-          margin-left: 174px;
-          margin-right: 175px;
+          margin: 30px auto 0;
       }
     }
   }

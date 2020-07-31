@@ -4,8 +4,6 @@ interface UserState {
   isAuthorize: boolean;
   token?: string;
   toAfterLogin?: RawLocation;
-  isShowLogin: boolean;
-  isShowRegistration: boolean;
 }
 
 export default UserState;

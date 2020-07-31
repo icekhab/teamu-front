@@ -228,8 +228,6 @@ const namespace = 'user';
 export default class LandingPageComponent extends Vue {
   @State('isAuthorize', { namespace }) isAuthorize!: boolean;
 
-  @Mutation('setIsShowRegistration', { namespace }) setIsShowRegistration!: (setIsShowRegistration: boolean) => void;
-
   @Mutation('setToAfterLogin', { namespace }) setToAfterLogin!: (toAfterLogin?: RawLocation) => void;
 
   projectsLink = {
@@ -243,7 +241,7 @@ export default class LandingPageComponent extends Vue {
   goToProjectsAfterLogin() {
     if (!this.isAuthorize) {
       this.setToAfterLogin(this.projectsLink);
-      this.setIsShowRegistration(true);
+      this.$modal.show('registration-modal');
     } else {
       this.$router.push(this.projectsLink);
     }
@@ -252,7 +250,7 @@ export default class LandingPageComponent extends Vue {
   goToProjectNewAfterLogin() {
     if (!this.isAuthorize) {
       this.setToAfterLogin(this.projectNewLink);
-      this.setIsShowRegistration(true);
+      this.$modal.show('registration-modal');
     } else {
       this.$router.push(this.projectNewLink);
     }
