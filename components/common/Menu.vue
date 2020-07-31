@@ -239,8 +239,8 @@ export default class MenuComponent extends Vue {
           padding: 9px;
           border-radius: 100%;
           font-weight: bold;
-          font-size: 25px;
-          line-height: 28px;
+          font-size: 26px;
+          line-height: 31px;
           text-decoration: none;
           display: flex;
           align-items: center;
@@ -310,8 +310,8 @@ export default class MenuComponent extends Vue {
         }
 
         &.teamu-logo {
-          height: 41px;
-          width: 41px;
+          height: 36px;
+          width: 36px;
           font-size: 26px;
           line-height: 31px;
         }
