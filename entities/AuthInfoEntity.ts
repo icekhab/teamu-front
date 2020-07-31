@@ -1,7 +1,7 @@
 class AuthInfoEntity {
   string!: string;
 
-  userId!: number;
+  userID!: number;
 
   expiresAt!: string;
 }

@@ -1,5 +1,5 @@
 <template>
-  <modal name="registration-modal" transition="pop-out" width="640" height="754" adaptive>
+  <modal name="registration-modal" width="640" height="754" adaptive>
     <div class="registration">
       <span class="registration__cross" @click="$emit('close')">X</span>
       <span class="registration__label">Регистрация в UTEAM</span>

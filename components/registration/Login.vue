@@ -1,5 +1,5 @@
 <template>
-  <modal name="login-modal" transition="pop-out" width="640" height="558" adaptive>
+  <modal name="login-modal" width="640" height="558" adaptive>
     <div class="login">
       <span class="login__cross" @click="$emit('close')">X</span>
       <span class="login__label">Вход в UTEAM</span>
