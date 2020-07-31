@@ -18,7 +18,7 @@ export const state = (): RegistrationState => ({
   authInfo: {
     expiresAt: '',
     string: '',
-    userId: 0,
+    userID: 0,
   },
 });
 
@@ -27,8 +27,7 @@ export const actions : any = {
     const authInfo: AuthInfoEntity = await RegistrationService.postSignUp(signup);
 
     context.commit('setSignUpInfo', authInfo);
-    context.commit('user/setIsAuthorize', true, { root: true });
-    context.commit('user/setToken', authInfo.string, { root: true });
+    await context.dispatch('user/login', authInfo, { root: true });
 
     if (context.rootState.user.toAfterLogin) {
       await this.$router.push(context.rootState.user.toAfterLogin);
@@ -39,8 +38,7 @@ export const actions : any = {
     const authInfo: AuthInfoEntity = await RegistrationService.postLogin(login);
 
     context.commit('setSignUpInfo', authInfo);
-    context.commit('user/setIsAuthorize', true, { root: true });
-    context.commit('user/setToken', authInfo.string, { root: true });
+    await context.dispatch('user/login', authInfo, { root: true });
 
     if (context.rootState.user.toAfterLogin) {
       await this.$router.push(context.rootState.user.toAfterLogin);

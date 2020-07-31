@@ -3,7 +3,7 @@
     <nuxt-link class="menu__item teamu-logo" :to="projectsLink">
       <TeamuLogo />
     </nuxt-link>
-    <CircleAvatar class="menu__item avatar" @click="$modal.show('login-modal')" />
+    <CircleAvatar class="menu__item avatar" @click="onClickAvatar" />
     <nuxt-link class="menu__item my-idea" :class="getClass(myProjectsLink)" :to="myProjectsLink">
       <MyIdeaIcon />
     </nuxt-link>
@@ -12,9 +12,38 @@
     <nuxt-link class="menu__item all-idea" :class="getClass(projectsLink)" :to="projectsLink">
       <AllIdeasIcon />
     </nuxt-link>
-    <NotificationIcon class="menu__item notification" />
+    <!--    <div class="menu__item notification" />-->
     <HelpIcon class="menu__item help" />
-    <UsersIcon class="menu__item users" />
+    <!--    <UsersIcon class="menu__item users" />-->
+    <client-only>
+      <modal
+        v-if="isAuthorize"
+        name="user-menu"
+        :shift-x="0"
+        :shift-y="1"
+        transition="user-menu"
+        :min-width="320"
+        :height="231"
+        :max-width="420"
+        adaptive
+      >
+        <div class="user-menu">
+          <div class="user-menu__about-user">
+            <CircleAvatar class="user-menu__avatar" @click="onClickAvatar" />
+            <span class="user-menu__email">{{ user.email }}</span>
+          </div>
+          <div class="line" />
+          <div class="user-menu__item help-item">
+            <HelpIcon class="user-menu__item-icon" />
+            <span class="user-menu__item-label">Помощь</span>
+          </div>
+          <div class="user-menu__item" @click="logoutAndCloseMenu">
+            <LogoutIcon class="user-menu__item-icon" />
+            <span class="user-menu__item-label">Выйти</span>
+          </div>
+        </div>
+      </modal>
+    </client-only>
   </div>
 </template>
 
@@ -25,8 +54,11 @@ import MyIdeaIcon from '@/static/images/svg/menu/my-idea-icon.svg';
 import NotificationIcon from '@/static/images/svg/menu/notification-icon.svg';
 import SearchIcon from '@/static/images/svg/menu/search-icon.svg';
 import HelpIcon from '@/static/images/svg/menu/help-icon.svg';
+import LogoutIcon from '@/static/images/svg/menu/logout-icon.svg';
 import TeamuLogo from '@/static/images/svg/menu/teamu-logo.svg';
 import UsersIcon from '@/static/images/svg/menu/users-icon.svg';
+import { State, Action } from 'vuex-class';
+import UserEntity from '@/entities/UserEntity';
 
 @Component({
   components: {
@@ -37,9 +69,16 @@ import UsersIcon from '@/static/images/svg/menu/users-icon.svg';
     HelpIcon,
     TeamuLogo,
     UsersIcon,
+    LogoutIcon,
   },
 })
 export default class MenuComponent extends Vue {
+  @State('isAuthorize', { namespace: 'user' }) isAuthorize!: boolean;
+
+  @State('user', { namespace: 'user' }) user?: UserEntity;
+
+  @Action('logout', { namespace: 'user' }) logout!: () => Promise<void>;
+
   projectsLink = {
     name: 'project',
   };
@@ -51,15 +90,89 @@ export default class MenuComponent extends Vue {
   getClass(to: any) {
     return { active: to.name === this.$router.currentRoute.name };
   }
+
+  onClickAvatar() {
+    if (this.isAuthorize) {
+      this.$modal.show('user-menu');
+    } else {
+      this.$modal.show('login-modal');
+    }
+  }
+
+  async logoutAndCloseMenu() {
+    await this.logout();
+    this.$modal.hide('user-menu');
+  }
 }
 </script>
 
-<style lang="postcss" scoped>
+<style lang="postcss">
   .menu {
     display: flex;
     background: #FFFFFF;
     justify-content: space-around;
     align-items: center;
+
+    .user-menu {
+      display: flex;
+      flex-direction: column;
+      padding: 30px;
+
+      &__about-user {
+        display: flex;
+        align-items: center;
+      }
+
+      &__avatar {
+        width: 35px;
+        height: 35px;
+      }
+
+      &__email {
+        color: #0085FF;
+        font-size: 16px;
+        line-height: 19px;
+        margin-left: 10px;
+      }
+
+      &__item {
+        display: flex;
+        align-items: center;
+        color: var(--greyColor);
+        width: auto;
+        align-self: flex-start;
+        cursor: pointer;
+
+        &:hover {
+          color: var(--blackColor);
+        }
+
+        &:not(:last-child) {
+          margin-bottom: 20px;
+        }
+      }
+
+      &__item-icon {
+        width: 25px;
+        height: 25px;
+      }
+
+      &__item-label {
+        margin-left: 10px;
+      }
+
+      .line {
+        width: 240px;
+        height: 1px;
+        background: var(--borderColor);
+        border-radius: var(--defaultBorderRadius);
+        margin: 30px 0 30px 3px;
+      }
+    }
+
+    .vm--modal {
+      min-width: 100%;
+    }
 
     &__item {
       height: 20px;
@@ -87,6 +200,24 @@ export default class MenuComponent extends Vue {
       flex-direction: column;
       justify-content: space-between;
       padding: 20px 0;
+
+      .vm--container {
+        padding: 40px;
+      }
+
+      .vm--modal {
+        min-width: auto;
+        max-width: 306px;
+        max-height: 181px;
+        position: absolute!important;
+        top: auto!important;
+        left: 10px!important;
+        bottom: 70px!important;
+      }
+
+      .help-item {
+        display: none;
+      }
 
       &__item {
         height: 25px;
@@ -149,6 +280,10 @@ export default class MenuComponent extends Vue {
 
   @media (min-width: 1200px) {
     .menu {
+      .vm--modal {
+        left: 16px!important;
+      }
+
       &__item {
         &.help {
           margin-bottom: 30px;
@@ -171,5 +306,15 @@ export default class MenuComponent extends Vue {
         }
       }
     }
+  }
+
+  .user-menu-enter-active,
+  .user-menu-leave-active {
+    transition: all 400ms;
+  }
+  .user-menu-enter,
+  .user-menu-leave-active {
+    opacity: 0;
+    transform: translateY(50px);
   }
 </style>

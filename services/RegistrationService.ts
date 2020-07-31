@@ -1,7 +1,6 @@
 import SignUpEntity from '@/entities/SignUpEntity';
 import AuthInfoEntity from '@/entities/AuthInfoEntity';
 import LoginEntity from '@/entities/LoginEntity';
-import CookieHelper from '@/helpers/CookieHelper';
 import BaseApiService from './BaseApiService';
 
 class RegistrationService extends BaseApiService {
@@ -10,11 +9,7 @@ class RegistrationService extends BaseApiService {
     data.verifyPassword = data.password;
 
     return this.http.post<AuthInfoEntity>('/signup', data)
-      .then((x) => {
-        this.setTokenInLocalStorage(x.data.string);
-
-        return x.data;
-      });
+      .then((x) => x.data);
   }
 
   public postLogin(data: LoginEntity): Promise<AuthInfoEntity> {
@@ -24,15 +19,7 @@ class RegistrationService extends BaseApiService {
       headers: {
         Authorization: `Basic ${window.btoa(stringToBase)}`,
       },
-    }).then((x) => {
-      this.setTokenInLocalStorage(x.data.string);
-
-      return x.data;
-    });
-  }
-
-  private setTokenInLocalStorage(token: string) {
-    CookieHelper.setCookie('token', token);
+    }).then((x) => x.data);
   }
 }
 

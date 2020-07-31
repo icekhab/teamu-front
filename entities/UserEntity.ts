@@ -5,6 +5,8 @@ class UserEntity {
 
   email!: string;
 
+  role?: string;
+
   imagePath?: string;
 }
 
