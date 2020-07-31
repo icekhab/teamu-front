@@ -1,7 +1,7 @@
 <template>
   <div class="menu">
-    <nuxt-link class="menu__item teamu-logo" :to="projectsLink">
-      <TeamuLogo />
+    <nuxt-link class="menu__item teamu-logo" to="/">
+      <span class="logo">U</span>
     </nuxt-link>
     <CircleAvatar class="menu__item avatar" @click="onClickAvatar" />
     <MyIdeaIcon class="menu__item my-idea" />
@@ -28,7 +28,7 @@
         <div class="user-menu">
           <div class="user-menu__about-user">
             <CircleAvatar class="user-menu__avatar" @click="onClickAvatar" />
-            <span class="user-menu__email">{{ user.email }}</span>
+            <span class="user-menu__email">{{ user.name || user.email }}</span>
           </div>
           <div class="line" />
           <div class="user-menu__item help-item">
@@ -231,10 +231,20 @@ export default class MenuComponent extends Vue {
         }
 
         &.teamu-logo {
-          height: 19px;
-          width: 25px;
-          display: inline;
+          height: 35px;
+          width: 35px;
           margin-bottom: 50px;
+          background: #4f56f1;
+          color: white;
+          padding: 9px;
+          border-radius: 100%;
+          font-weight: bold;
+          font-size: 25px;
+          line-height: 28px;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         &.users {
@@ -297,6 +307,13 @@ export default class MenuComponent extends Vue {
 
         &.notification {
           margin-bottom: 30px;
+        }
+
+        &.teamu-logo {
+          height: 41px;
+          width: 41px;
+          font-size: 26px;
+          line-height: 31px;
         }
       }
     }
