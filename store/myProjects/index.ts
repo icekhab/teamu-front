@@ -69,6 +69,10 @@ export const actions : any = {
   async draftProject(context: ActionContext<MyProjectsState, RootState>, id: number) {
     await ProjectService.draft(id);
   },
+
+  async deleteProject(context: ActionContext<MyProjectsState, RootState>, id: number) {
+    await ProjectService.delete(id);
+  },
 };
 
 export const mutations = {

@@ -1,5 +1,6 @@
 <template>
   <div class="project-card">
+    <div v-if="isMy" class="project-card__dots" @click="showModal" />
     <nuxt-link :to="projectLink" class="project-card__link-block">
       <div class="project-card__header">
         <span :to="projectLink" class="project-card__title">
@@ -52,6 +53,29 @@
         В черновик
       </TButton>
     </div>
+    <client-only>
+      <modal
+        name="edit-menu"
+        :shift-x="0.4"
+        :shift-y="0.4"
+        transition="edit-menu"
+        :min-width="211"
+        :height="101"
+        :max-width="211"
+        adaptive
+      >
+        <div class="edit-menu">
+          <div class="edit-menu__edit-block" @click="edit">
+            <span class="edit-menu__edit-block__edit-icon" />
+            Редактировать
+          </div>
+          <div class="edit-menu__delete-block" @click="deleteProject">
+            <span class="edit-menu__delete-block__delete-icon" />
+            Удалить
+          </div>
+        </div>
+      </modal>
+    </client-only>
   </div>
 </template>
 
@@ -74,6 +98,20 @@ export default class ProjectCardComponent extends Vue {
 
   @Prop({ default: false, type: Boolean }) readonly isDraft!: boolean;
 
+  private showModal() {
+    this.$modal.show('edit-menu');
+  }
+
+  private edit() {
+    this.$modal.hide('edit-menu');
+    this.$emit('edit', this.project.id);
+  }
+
+  private deleteProject() {
+    this.$modal.hide('edit-menu');
+    this.$emit('delete', this.project.id);
+  }
+
   projectLink = {
     name: 'project-id',
     params: {
@@ -85,6 +123,7 @@ export default class ProjectCardComponent extends Vue {
 
 <style lang="postcss" scoped>
   .project-card {
+    position: relative;
     padding: 15px 10px 20px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.06);
     border-radius: var(--defaultBorderRadius);
@@ -97,6 +136,10 @@ export default class ProjectCardComponent extends Vue {
     max-width: 356px;
     text-decoration: none;
     transition: all .15s ease-in;
+
+    &__dots {
+      display: none;
+    }
 
     &__link-block {
       display: flex;
@@ -197,5 +240,63 @@ export default class ProjectCardComponent extends Vue {
         border-radius: 5px;
       }
     }
+  }
+
+  @media (min-width: 992px) {
+    .project-card {
+      &__dots {
+        display: inline;
+        position: absolute;
+        cursor: pointer;
+        width: 30px;
+        height: 15px;
+        top: 10px;
+        right: -35px;
+        z-index: 100;
+        background: transparent
+          url("/images/svg/dots.svg") no-repeat scroll;
+      }
+    }
+
+    .edit-menu {
+      z-index: 101;
+      padding: 22px;
+      &__edit-block {
+        display: block;
+
+        &__edit-icon {
+          vertical-align: bottom;
+          display: inline-block;
+          width: 23px;
+          height: 23px;
+          background: transparent
+            url("/images/svg/edit.svg") no-repeat scroll;
+        }
+      }
+
+      &__delete-block {
+        display: block;
+        margin-top: 16px;
+
+        &__delete-icon {
+          vertical-align: bottom;
+          display: inline-block;
+          width: 23px;
+          height: 23px;
+          background: transparent
+            url("/images/svg/close.svg") no-repeat scroll;
+        }
+      }
+    }
+  }
+
+  .edit-menu-enter-active,
+  .edit-menu-leave-active {
+    transition: all 400ms;
+  }
+  .edit-menu-enter,
+  .edit-menu-leave-active {
+    opacity: 0;
+    transform: translateY(50px);
   }
 </style>

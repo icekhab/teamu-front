@@ -15,6 +15,11 @@
       </div>
 
       <template v-else>
+        <!-- <div class="my-projects__menu">
+          <span class="published-projects__label">Опубликованные</span>
+          <span class="draft-projects__label">Черновики</span>
+        </div> -->
+
         <div v-if="publishedProjects.length" key="published" class="published-projects">
           <span class="published-projects__label">Опубликованные</span>
           <ProjectList
@@ -22,6 +27,8 @@
             :projects="publishedProjects"
             is-my
             @toDraft="toDraft"
+            @edit="editProject"
+            @delete="onDeleteProject"
           />
         </div>
         <div v-if="draftProjects.length" key="draft" class="draft-projects">
@@ -32,6 +39,8 @@
             is-my
             is-draft
             @publish="publish"
+            @edit="editProject"
+            @delete="deleteProject"
           />
         </div>
       </template>
@@ -65,6 +74,8 @@ export default class MyProjectsPageComponent extends Vue {
 
   @Action('draftProject', { namespace }) draftProject!: (id: number) => void;
 
+  @Action('deleteProject', { namespace }) deleteProject!: (id: number) => void;
+
   @Getter('draftProjects', { namespace }) draftProjects!: ProjectEntity[];
 
   @Getter('publishedProjects', { namespace }) publishedProjects!: ProjectEntity[];
@@ -85,6 +96,21 @@ export default class MyProjectsPageComponent extends Vue {
     await this.getPublishedProjects();
     await this.getDraftProjects();
   }
+
+  async onDeleteProject(id: number) {
+    await this.deleteProject(id);
+    await this.getPublishedProjects();
+    await this.getDraftProjects();
+  }
+
+  async editProject(id: number) {
+    this.$router.push({
+      name: 'project-edit-id',
+      params: {
+        id: String(id),
+      },
+    });
+  }
 }
 </script>
 
@@ -99,6 +125,13 @@ export default class MyProjectsPageComponent extends Vue {
     &__project-list {
       width: 100%;
       margin-top: 20px;
+    }
+
+    &__menu {
+      display: flex;
+      align-items: center;
+      justify-content: left;
+      width: 100%;
     }
   }
 

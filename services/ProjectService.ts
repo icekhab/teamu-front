@@ -35,6 +35,10 @@ class ProjectService extends BaseApiService {
   public draft(id: number): Promise<number> {
     return this.http.put<DescriptionProjectEntity>(`/project/${id}/checkout`).then((x) => x.data.id);
   }
+
+  public delete(id: number): Promise<number> {
+    return this.http.delete<DescriptionProjectEntity>(`/project/${id}`).then((x) => x.data.id);
+  }
 }
 
 export default new ProjectService();
