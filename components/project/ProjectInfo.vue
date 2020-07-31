@@ -59,7 +59,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { State } from 'vuex-class';
 import DetailProjectEntity from '@/entities/DetailProjectEntity';
-import ProjectLabel from '~/components/common/ProjectLabel.vue';
+import ProjectLabel from '@/components/common/ProjectLabel.vue';
 
 const namespace = 'project';
 

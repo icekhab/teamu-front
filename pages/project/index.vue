@@ -2,7 +2,11 @@
   <MenuLayout>
     <div class="main">
       <AllProjectsHeader class="main__header" />
-      <ProjectList class="main__project-list" :projects="projects" />
+      <ProjectList v-if="projects.length" class="main__project-list" :projects="projects" />
+      <div v-else class="main__not-found">
+        <span class="main__not-found-text">К сожалению, по вашим параметрам проектов не найдено.</span>
+        <img class="main__not-found-img" src="/images/svg/projects/not-found.svg" alt="">
+      </div>
     </div>
   </MenuLayout>
 </template>
@@ -43,6 +47,27 @@ export default class MainPageComponent extends Vue {
     align-items: center;
     max-width: 356px;
 
+    &__not-found {
+      display: flex;
+      flex-direction: column;
+      margin-top: 60px;
+      align-items: center;
+      width: 100%;
+    }
+
+    &__not-found-text {
+      font-weight: 500;
+      font-size: 17px;
+      line-height: 20px;
+      color: var(--blackColor);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    &__not-found-img {
+      width: 100%;
+    }
+
     &__project-list {
       width: 100%;
       margin-top: 20px;
@@ -57,10 +82,34 @@ export default class MainPageComponent extends Vue {
         width: auto;
         margin-top: 50px;
       }
+
+      &__not-found {
+        margin-top: 50px;
+      }
+
+      &__not-found-text {
+        font-size: 20px;
+        line-height: 25px;
+        margin-bottom: 35px;
+      }
+
+      &__not-found-img {
+        width: auto;
+      }
     }
 
     @media (min-width: 1200px) {
       width: 1140px;
+
+      &__not-found {
+        margin-top: 80px;
+      }
+
+      &__not-found-text {
+        font-size: 22px;
+        line-height: 27px;
+        margin-bottom: 45px;
+      }
     }
   }
 </style>

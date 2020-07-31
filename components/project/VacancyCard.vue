@@ -19,7 +19,13 @@
       </span>
     </div>
 
-    <TButton class="vacancy-card__send-request-btn" theme="primary">
+    <TButton
+      v-if="!my"
+      class="vacancy-card__send-request-btn"
+      theme="primary"
+      target="_blank"
+      :href="`mailto:${vacancy.contact.email}`"
+    >
       Подать заявку
     </TButton>
   </div>
@@ -40,6 +46,8 @@ import CheckIcon from '@/static/images/svg/check-icon.svg';
 })
 export default class VacancyCardComponent extends Vue {
   @Prop({ required: true, type: Object }) vacancy!: VacancyEntity;
+
+  @Prop({ default: false, type: Boolean }) my!: boolean;
 
   VacancyShareType = VacancyShareType;
 
@@ -116,7 +124,10 @@ export default class VacancyCardComponent extends Vue {
     }
 
     &__send-request-btn {
+      display: inline-flex;
       width: 100%;
+      align-items: center;
+      justify-content: center;
     }
   }
 

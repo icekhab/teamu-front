@@ -1,14 +1,16 @@
 <template>
   <MenuLayout>
     <div class="project-page">
-      <ProjectInfo />
-      <div
-        v-if="project.vacancy.length"
-        class="project-page__vacancies"
-      >
-        <span class="project-page__vacancy-header">Мы ищем</span>
-        <Vacancies :vacancies="project.vacancy" />
-      </div>
+      <client-only v-if="!loading">
+        <ProjectInfo />
+        <div
+          v-if="project.vacancy.length"
+          class="project-page__vacancies"
+        >
+          <span class="project-page__vacancy-header">Мы ищем</span>
+          <Vacancies :vacancies="project.vacancy" :my="isMy" />
+        </div>
+      </client-only>
     </div>
   </MenuLayout>
 </template>
@@ -20,6 +22,7 @@ import MenuLayout from '@/components/layout/MenuLayout.vue';
 import DetailProjectEntity from '@/entities/DetailProjectEntity';
 import ProjectInfo from '@/components/project/ProjectInfo.vue';
 import Vacancies from '@/components/project/Vacancies.vue';
+import UserEntity from '@/entities/UserEntity';
 
 const namespace = 'project';
 
@@ -30,11 +33,11 @@ const namespace = 'project';
     MenuLayout,
   },
 
-  async fetch({
-    store, params: { id },
-  }) {
-    await store.dispatch('project/getProject', id);
-  },
+  // async fetch({
+  //   store, params: { id },
+  // }) {
+  //   await store.dispatch('project/getProject', id);
+  // },
 
   validate({ params }: any) {
     return !!params.id;
@@ -42,6 +45,20 @@ const namespace = 'project';
 })
 export default class MainPageComponent extends Vue {
   @State('project', { namespace }) project!: DetailProjectEntity;
+
+  @State('user', { namespace: 'user' }) user?: UserEntity;
+
+  loading = false;
+
+  async created() {
+    this.loading = true;
+    await this.$store.dispatch('project/getProject', this.$route.params.id);
+    this.loading = false;
+  }
+
+  get isMy() {
+    return this.user?.id === this.project.user.id;
+  }
 }
 </script>
 

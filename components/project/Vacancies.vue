@@ -4,6 +4,7 @@
       v-for="vacancy in vacancies"
       :key="vacancy.id"
       :vacancy="vacancy"
+      :my="my"
     />
   </div>
 </template>
@@ -20,6 +21,8 @@ import VacancyEntity from '@/entities/VacancyEntity';
 })
 export default class ProjectInfoComponent extends Vue {
   @Prop({ required: true, type: Array }) vacancies!: VacancyEntity[];
+
+  @Prop({ default: false, type: Boolean }) my!: boolean;
 }
 </script>
 
