@@ -295,6 +295,7 @@ export default class ProjectCardComponent extends Vue {
       background: #FFFFFF;
       box-shadow: var(--defaultBoxShadow);
       color: var(--greyColor);
+      border-radius: var(--defaultBorderRadius);
       //padding: 20px;
 
       &__edit-block {
