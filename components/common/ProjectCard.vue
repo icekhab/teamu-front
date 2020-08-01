@@ -55,7 +55,7 @@
     </div>
     <client-only>
       <modal
-        name="edit-menu"
+        :name="modalName"
         :shift-x="0.4"
         :shift-y="0.4"
         transition="edit-menu"
@@ -98,17 +98,24 @@ export default class ProjectCardComponent extends Vue {
 
   @Prop({ default: false, type: Boolean }) readonly isDraft!: boolean;
 
+  get modalName() {
+    return `edit-menu-${this.project.id}`;
+  }
+
   private showModal() {
-    this.$modal.show('edit-menu');
+    this.$modal.show(this.modalName);
   }
 
   private edit() {
-    this.$modal.hide('edit-menu');
+    this.$modal.hide(this.modalName);
     this.$emit('edit', this.project.id);
   }
 
   private deleteProject() {
+    // eslint-disable-next-line no-debugger
+    debugger;
     this.$modal.hide('edit-menu');
+    console.log(this.project.id);
     this.$emit('delete', this.project.id);
   }
 
