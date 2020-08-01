@@ -31,7 +31,7 @@
       <TButton
         class="my-projects-header__filter-btn"
         theme="white-grey"
-        @click="isVisibleMobileFilter = !isVisibleMobileFilter"
+        @click="$modal.show('my-projects-filter-modal')"
       >
         <span class="my-projects-header__add-project-btn-slot">
           <FilterIcon class="my-projects-header__add-project-btn-icon" />
@@ -55,13 +55,21 @@
         </template>
       </div>
     </div>
-    <div v-if="isVisibleMobileFilter" class="my-projects-header__mobile-filter-popup">
-      <MobileFilter
-        class="my-projects-header__mobile-filter"
-        :checked-labels="filter.projectLabels"
-        @filter="changeMobileFilter"
-      />
-    </div>
+
+    <client-only>
+      <modal
+        name="my-projects-filter-modal"
+        class="my-projects-header__mobile-filter-popup"
+        height="auto"
+        adaptive
+      >
+        <MobileFilter
+          class="my-projects-header__mobile-filter"
+          :checked-labels="filter.projectLabels"
+          @filter="changeMobileFilter"
+        />
+      </modal>
+    </client-only>
   </div>
 </template>
 
@@ -99,7 +107,7 @@ export default class MyProjectsHeaderComponent extends Vue {
 
   @Mutation('deleteMyProjectLabelFilter', { namespace }) deleteMyProjectLabelFilter!: (label: ProjectLabelEnum) => void;
 
-  @Mutation('setProjectLabelFilter', { namespace }) setProjectLabelFilter!: (labels: ProjectLabelEnum[]) => void;
+  @Mutation('setMyProjectLabelFilter', { namespace }) setProjectLabelFilter!: (labels: ProjectLabelEnum[]) => void;
 
   setSearchFilterDebounce = debounce(this.setMySearchFilter, 500);
 
@@ -123,6 +131,7 @@ export default class MyProjectsHeaderComponent extends Vue {
 
   changeMobileFilter(labels: ProjectLabelEnum[]) {
     this.setProjectLabelFilter(labels);
+    this.$modal.hide('my-projects-filter-modal');
     this.isVisibleMobileFilter = false;
   }
 }
@@ -172,21 +181,21 @@ export default class MyProjectsHeaderComponent extends Vue {
     }
 
     &__mobile-filter-popup {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
       width: 100%;
-      background: rgba(#333333, .85);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
+      //position: fixed;
+      //top: 0;
+      //left: 0;
+      //height: 100vh;
+      //width: 100%;
+      //background: rgba(#333333, .85);
+      //display: flex;
+      //justify-content: center;
+      //align-items: center;
+      //padding: 10px;
     }
 
     &__mobile-filter {
       width: 100%;
-      max-width: 480px;
       padding: 30px 10px 42px;
       background: var(--backgroundPageColor);
     }

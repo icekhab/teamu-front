@@ -41,7 +41,7 @@
       <TButton
         class="all-projects-header__filter-btn"
         theme="white-grey"
-        @click="isVisibleMobileFilter = !isVisibleMobileFilter"
+        @click="$modal.show('all-project-filter-modal')"
       >
         <span class="all-projects-header__add-project-btn-slot">
           <FilterIcon class="all-projects-header__add-project-btn-icon" />
@@ -65,13 +65,18 @@
         </template>
       </div>
     </div>
-    <div v-if="isVisibleMobileFilter" class="all-projects-header__mobile-filter-popup">
+    <modal
+      name="all-project-filter-modal"
+      class="all-projects-header__mobile-filter-popup"
+      height="auto"
+      adaptive
+    >
       <MobileFilter
         class="all-projects-header__mobile-filter"
         :checked-labels="filter.projectLabels"
         @filter="changeMobileFilter"
       />
-    </div>
+    </modal>
   </div>
 </template>
 
@@ -140,6 +145,7 @@ export default class AllProjectsHeaderComponent extends Vue {
 
   changeMobileFilter(labels: ProjectLabelEnum[]) {
     this.setProjectLabelFilter(labels);
+    this.$modal.hide('all-project-filter-modal');
     this.isVisibleMobileFilter = false;
   }
 }
@@ -188,22 +194,9 @@ export default class AllProjectsHeaderComponent extends Vue {
       display: none;
     }
 
-    &__mobile-filter-popup {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
-      width: 100%;
-      background: rgba(#333333, .85);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
-    }
+    &__mobile-filter-popup {}
 
     &__mobile-filter {
-      width: 100%;
-      max-width: 480px;
       padding: 30px 10px 42px;
       background: var(--backgroundPageColor);
     }
