@@ -27,7 +27,7 @@
     "nuxt": "^2.11.0",
     "nuxt-svg-loader": "^1.0.1",
     "on-finished": "^2.3.0",
-    "v-tooltip": "^2.0.3",
+    "v-tooltip": "^2.0.2",
     "vue": "^2.6.11",
     "vue-js-modal": "^2.0.0-rc.6",
     "vue-property-decorator": "^8.3.0",
