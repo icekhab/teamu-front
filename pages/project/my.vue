@@ -215,7 +215,6 @@ export default class MyProjectsPageComponent extends Vue {
     flex-direction: column;
     width: 100%;
     align-items: center;
-    max-width: 356px;
 
     &__label {
         width: 100%;
