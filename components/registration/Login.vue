@@ -65,14 +65,13 @@ export default class LoginComponent extends Vue {
 
   private currentShow: boolean = false;
 
-  private login: LoginEntity = {
-    email: '',
-    password: '',
-  };
+  private login: LoginEntity = this.getDefaultLoginData();
 
   private async onClick() {
     try {
       await this.postLogin(this.login);
+
+      this.login = this.getDefaultLoginData();
       this.$emit('close');
     } catch (err) {
       alert(err);
@@ -82,6 +81,13 @@ export default class LoginComponent extends Vue {
   @Watch('value', { immediate: true })
   private onValue(newVal: boolean): void {
     this.currentShow = newVal;
+  }
+
+  private getDefaultLoginData() {
+    return {
+      email: '',
+      password: '',
+    };
   }
 }
 </script>

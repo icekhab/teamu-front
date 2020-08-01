@@ -81,18 +81,13 @@ export default class RegistrationComponent extends Vue {
 
   private currentShow: boolean = false;
 
-  private signup: SignUpEntity = {
-    name: '',
-    email: '',
-    password: '',
-    verifyPassword: '',
-    userRole: '',
-    openLandProfileLink: '',
-  };
+  private signup: SignUpEntity = this.getDefaultSignupData();
 
   private async onClick() {
     try {
       await this.postSignUp(this.signup);
+      this.signup = this.getDefaultSignupData();
+
       this.$emit('close');
     } catch (err) {
       alert(err);
@@ -102,6 +97,17 @@ export default class RegistrationComponent extends Vue {
   @Watch('value', { immediate: true })
   private onValue(newVal: boolean): void {
     this.currentShow = newVal;
+  }
+
+  private getDefaultSignupData() {
+    return {
+      name: '',
+      email: '',
+      password: '',
+      verifyPassword: '',
+      userRole: '',
+      openLandProfileLink: '',
+    };
   }
 }
 </script>

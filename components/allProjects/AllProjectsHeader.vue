@@ -65,18 +65,20 @@
         </template>
       </div>
     </div>
-    <modal
-      name="all-project-filter-modal"
-      class="all-projects-header__mobile-filter-popup"
-      height="auto"
-      adaptive
-    >
-      <MobileFilter
-        class="all-projects-header__mobile-filter"
-        :checked-labels="filter.projectLabels"
-        @filter="changeMobileFilter"
-      />
-    </modal>
+    <client-only>
+      <modal
+        name="all-project-filter-modal"
+        class="all-projects-header__mobile-filter-popup"
+        height="auto"
+        adaptive
+      >
+        <MobileFilter
+          class="all-projects-header__mobile-filter"
+          :checked-labels="filter.projectLabels"
+          @filter="changeMobileFilter"
+        />
+      </modal>
+    </client-only>
   </div>
 </template>
 

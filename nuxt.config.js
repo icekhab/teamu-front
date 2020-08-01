@@ -63,6 +63,7 @@ module.exports = {
   plugins: [
     '~/plugins/filters/dateFilter.ts',
     '~/plugins/controls/index.ts',
+    '~/plugins/vTooltip',
     { src: '~/plugins/vueJsModal', mode: 'client' },
     { src: '~/plugins/storeHooks/nuxtClientInit.ts', mode: 'client' },
   ],

@@ -14,6 +14,11 @@ export type LoginActionParam = {
 
 export const state = (): UserState => ({
   isAuthorize: false,
+  user: {
+    id: 0,
+    name: '',
+    email: '',
+  },
 });
 
 export const actions : any = {
@@ -42,9 +47,10 @@ export const actions : any = {
 
   logout({ commit }: ActionContext<UserState, RootState>) {
     CookieHelper.setCookie('token', '');
+    CookieHelper.setCookie('user', '');
 
     commit('setToken', undefined);
-    commit('setUser', undefined);
+    commit('setUser', {});
     commit('setIsAuthorize', false);
   },
 };
@@ -58,8 +64,8 @@ export const mutations = {
     currentState.token = token;
   },
 
-  setUser(currentState: UserState, user?: UserEntity): void {
-    currentState.user = user;
+  setUser(currentState: UserState, user: UserEntity): void {
+    currentState.user = { ...user };
   },
 
   setToAfterLogin(currentState: UserState, toAfterLogin?: RawLocation): void {
