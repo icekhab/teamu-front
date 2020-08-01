@@ -1,94 +1,118 @@
 <template>
-  <div class="project-card">
-    <div v-if="isMy" class="project-card__dots" @click="showModal" />
-    <nuxt-link :to="projectLink" class="project-card__link-block">
-      <div class="project-card__header">
-        <span :to="projectLink" class="project-card__title">
-          {{ project.name }}
-        </span>
-        <span v-if="project.accounts" class="project-card__accounts">
-          <ProfileIcon class="project-card__accounts-icon" />
-          {{ project.accounts }}
-        </span>
-        <span>{{ project.created | formatDate }}</span>
-      </div>
-      <div class="project-card__text">
-        {{ project.description }}
-      </div>
-      <div class="project-card__footer">
-        <div class="project-card__author">
-          Автор:
-          <CircleAvatar class="project-card__author-avatar" />
-          <span class="project-card__author-name">
-            {{ project.user.name || project.user.email }}
+  <div class="project-card__wrap" style="display: flex">
+    <div class="project-card">
+      <nuxt-link :to="projectLink" class="project-card__link-block">
+        <div class="project-card__header">
+          <span :to="projectLink" class="project-card__title">
+            {{ project.name }}
           </span>
+          <span v-if="project.accounts" class="project-card__accounts">
+            <ProfileIcon class="project-card__accounts-icon" />
+            {{ project.accounts }}
+          </span>
+          <span>{{ project.created | formatDate }}</span>
         </div>
-        <div class="project-card__labels">
-          <ProjectLabel
-            v-for="label in project.labels.slice(0, 2)"
-            :key="label.id"
-            :label="label.title"
-            check
-            class="project-card__label"
-          />
+        <div class="project-card__text">
+          {{ project.description }}
         </div>
+        <div class="project-card__footer">
+          <div class="project-card__author">
+            Автор:
+            <CircleAvatar class="project-card__author-avatar" />
+            <span class="project-card__author-name">
+              {{ project.user.name || project.user.email }}
+            </span>
+          </div>
+          <div class="project-card__labels">
+            <ProjectLabel
+              v-for="label in project.labels.slice(0, 2)"
+              :key="label.id"
+              :label="label.title"
+              check
+              class="project-card__label"
+            />
+          </div>
+        </div>
+      </nuxt-link>
+      <div v-if="isMy" class="project-card__buttons">
+        <TButton
+          v-if="isDraft"
+          class="project-card__buttons__btn"
+          theme="outline-primary"
+          type="button"
+          @click="$emit('publish', project.id)"
+        >
+          Опубликовать
+        </TButton>
+        <TButton
+          v-else
+          class="project-card__buttons__btn"
+          theme="outline-primary"
+          type="button"
+          @click="$emit('toDraft', project.id)"
+        >
+          В черновик
+        </TButton>
       </div>
-    </nuxt-link>
-    <div v-if="isMy" class="project-card__buttons">
-      <TButton
-        v-if="isDraft"
-        class="project-card__buttons__btn"
-        type="button"
-        @click="$emit('publish', project.id)"
-      >
-        Опубликовать
-      </TButton>
-      <TButton
-        v-else
-        class="project-card__buttons__btn"
-        theme="primary"
-        type="button"
-        @click="$emit('toDraft', project.id)"
-      >
-        В черновик
-      </TButton>
+      <client-only>
+        <modal
+          :name="modalName"
+          :shift-x="0.4"
+          :shift-y="0.4"
+          transition="edit-menu"
+          :min-width="211"
+          :height="101"
+          :max-width="211"
+          adaptive
+        >
+          <div class="edit-menu">
+            <div class="edit-menu__edit-block" @click="edit">
+              <span class="edit-menu__edit-block__edit-icon" />
+              Редактировать
+            </div>
+            <div class="edit-menu__delete-block" @click="deleteProject">
+              <span class="edit-menu__delete-block__delete-icon" />
+              Удалить
+            </div>
+          </div>
+        </modal>
+      </client-only>
     </div>
-    <client-only>
-      <modal
-        :name="modalName"
-        :shift-x="0.4"
-        :shift-y="0.4"
-        transition="edit-menu"
-        :min-width="211"
-        :height="101"
-        :max-width="211"
-        adaptive
-      >
+
+    <v-popover v-if="isMy">
+      <DotsIcon class="project-card__dots" />
+      <template slot="popover">
         <div class="edit-menu">
           <div class="edit-menu__edit-block" @click="edit">
-            <span class="edit-menu__edit-block__edit-icon" />
+            <EditIcon class="edit-menu__edit-block__edit-icon" />
             Редактировать
           </div>
           <div class="edit-menu__delete-block" @click="deleteProject">
-            <span class="edit-menu__delete-block__delete-icon" />
+            <CloseIcon class="edit-menu__delete-block__delete-icon" />
             Удалить
           </div>
         </div>
-      </modal>
-    </client-only>
+      </template>
+    </v-popover>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import ProjectEntity from '@/entities/ProjectEntity';
+import EditIcon from '@/static/images/svg/edit.svg';
 import ProfileIcon from '@/static/images/svg/profile-icon.svg';
+import CloseIcon from '@/static/images/svg/close.svg';
+import DotsIcon from '@/static/images/svg/dots.svg';
 import ProjectLabel from '@/components/common/ProjectLabel.vue';
 
 @Component({
   components: {
     ProfileIcon,
     ProjectLabel,
+    EditIcon,
+    CloseIcon,
+    DotsIcon,
   },
 })
 export default class ProjectCardComponent extends Vue {
@@ -125,7 +149,7 @@ export default class ProjectCardComponent extends Vue {
 }
 </script>
 
-<style lang="postcss" scoped>
+<style lang="postcss">
   .project-card {
     position: relative;
     padding: 15px 10px 20px;
@@ -136,8 +160,7 @@ export default class ProjectCardComponent extends Vue {
     background: #FFFFFF;
     color: var(--greyColor);
     line-height: 17px;
-    min-width: 300px;
-    max-width: 356px;
+    width: 100%;
     text-decoration: none;
     transition: all .15s ease-in;
 
@@ -235,60 +258,81 @@ export default class ProjectCardComponent extends Vue {
       &__btn {
         width: 280px;
         height: 37px;
-        margin: 0 auto;
-        margin-top: 20px;
-        color: #4F56F1;
-        background: #FFFFFF;
-        border: 1px solid #4F56F1;
-        box-sizing: border-box;
-        border-radius: 5px;
+        margin: 20px auto 0;
+        //color: #4F56F1;
+        //background: #FFFFFF;
+        //border: 1px solid #4F56F1;
+        //box-sizing: border-box;
+        //border-radius: 5px;
       }
     }
   }
 
   @media (min-width: 992px) {
     .project-card {
+      width: 370px;
       &__dots {
-        display: inline;
-        position: absolute;
+        margin-left: 10px;
+        display: inline-block;
+        //position: absolute;
         cursor: pointer;
-        width: 30px;
-        height: 15px;
-        top: 10px;
-        right: -35px;
-        z-index: 100;
-        background: transparent
-          url("/images/svg/dots.svg") no-repeat scroll;
+        //width: 30px;
+        height: 25px;
+        //top: 10px;
+        //right: -35px;
+        color: var(--greyColor);
+        transition: all .15s ease-in-out;
+
+        &:hover {
+          color: var(--blackColor);
+        }
       }
     }
 
     .edit-menu {
-      z-index: 101;
-      padding: 22px;
+      //z-index: 101;
+      padding: 20px;
+      background: #FFFFFF;
+      box-shadow: var(--defaultBoxShadow);
+      color: var(--greyColor);
+      //padding: 20px;
+
       &__edit-block {
-        display: block;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: all .15s ease-in-out;
 
         &__edit-icon {
+          margin-right: 8px;
           vertical-align: bottom;
           display: inline-block;
           width: 23px;
           height: 23px;
-          background: transparent
-            url("/images/svg/edit.svg") no-repeat scroll;
+        }
+
+        &:hover {
+          color: var(--blackColor);
         }
       }
 
       &__delete-block {
-        display: block;
+        display: flex;
+        align-items: center;
         margin-top: 16px;
+        cursor: pointer;
+        transition: all .15s ease-in-out;
 
         &__delete-icon {
+          margin-right: 8px;
           vertical-align: bottom;
           display: inline-block;
           width: 23px;
           height: 23px;
-          background: transparent
-            url("/images/svg/close.svg") no-repeat scroll;
+        }
+
+        &:hover {
+          color: var(--blackColor);
         }
       }
     }
@@ -302,5 +346,24 @@ export default class ProjectCardComponent extends Vue {
   .edit-menu-leave-active {
     opacity: 0;
     transform: translateY(50px);
+  }
+
+  .tooltip {
+    .tooltip-inner {
+      top: -28px;
+      left: 79px;
+    }
+
+    &[aria-hidden='true'] {
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity .25s ease-out, visibility .15s ease-out;
+    }
+
+    &[aria-hidden='false'] {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity .25s ease-out;
+    }
   }
 </style>
