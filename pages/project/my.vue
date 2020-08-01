@@ -40,7 +40,7 @@
               is-draft
               @publish="publish"
               @edit="editProject"
-              @delete="deleteProject"
+              @delete="onDeleteProject"
             />
           </div>
         </template>

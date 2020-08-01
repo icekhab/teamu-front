@@ -112,7 +112,7 @@ export default class ProjectCardComponent extends Vue {
   }
 
   private deleteProject() {
-    this.$modal.hide('edit-menu');
+    this.$modal.hide(this.modalName);
     this.$emit('delete', this.project.id);
   }
 
