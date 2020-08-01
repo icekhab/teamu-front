@@ -1,9 +1,10 @@
 <template>
-  <div class="project-list">
+  <div :class="projectListClass">
     <ProjectCard
       v-for="project in projects"
       :key="project.id"
       :project="project"
+      :is-my="isMy"
       v-bind="$attrs"
       v-on="$listeners"
     />
@@ -22,6 +23,15 @@ import ProjectCard from '@/components/common/ProjectCard.vue';
 })
 export default class ProjectListComponent extends Vue {
   @Prop() readonly projects!: ProjectEntity[];
+
+  @Prop({ default: false, type: Boolean }) readonly isMy!: boolean;
+
+  get projectListClass() {
+    return [
+      'project-list',
+      { 'project-list__is-my': this.isMy },
+    ];
+  }
 }
 </script>
 
@@ -38,11 +48,21 @@ export default class ProjectListComponent extends Vue {
 
     @media (min-width: 1110px) {
       grid-template-columns: 1fr 1fr 1fr;
+
+      &__is-my {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     @media (min-width: 1200px) {
       grid-column-gap: 36px;
       grid-row-gap: 36px;
+    }
+
+    @media (min-width: 1350px) {
+      &__is-my {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
     }
   }
 </style>

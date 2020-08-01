@@ -65,7 +65,7 @@ export default class MainPageComponent extends Vue {
     }
 
     &__not-found-img {
-      width: 100%;
+      width: 275px;
     }
 
     &__project-list {
@@ -95,11 +95,12 @@ export default class MainPageComponent extends Vue {
 
       &__not-found-img {
         width: auto;
+        max-width: 460px;
       }
     }
 
     @media (min-width: 1200px) {
-      width: 1140px;
+      width: 1400px;
 
       &__not-found {
         margin-top: 80px;
@@ -109,6 +110,10 @@ export default class MainPageComponent extends Vue {
         font-size: 22px;
         line-height: 27px;
         margin-bottom: 45px;
+      }
+
+      &__not-found-img {
+        max-width: none;
       }
     }
   }

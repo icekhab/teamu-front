@@ -1,49 +1,50 @@
 <template>
   <MenuLayout>
     <div class="my-projects">
-      <MyProjectsHeader class="my-projects__header" />
-
-      <div
-        v-if="!publishedProjects.length && !draftProjects.length"
-        key="empty"
-        class="empty-projects__empty-data"
-      >
-        <span class="empty-projects__empty-text">
-          Пусто :( Добавьте ваш первый проект и соберите команду
-        </span>
-        <span class="empty-projects__idea-img" />
-      </div>
-
-      <template v-else>
-        <!-- <div class="my-projects__menu">
-          <span class="published-projects__label">Опубликованные</span>
-          <span class="draft-projects__label">Черновики</span>
-        </div> -->
-
-        <div v-if="publishedProjects.length" key="published" class="published-projects">
-          <span class="published-projects__label">Опубликованные</span>
-          <ProjectList
-            class="published-projects__project-list"
-            :projects="publishedProjects"
-            is-my
-            @toDraft="toDraft"
-            @edit="editProject"
-            @delete="onDeleteProject"
-          />
+      <client-only v-if="!loading">
+        <MyProjectsHeader class="my-projects__header" />
+        <div
+          v-if="!publishedProjects.length && !draftProjects.length"
+          key="empty"
+          class="empty-projects__empty-data"
+        >
+          <span class="empty-projects__empty-text">
+            Пусто :( Добавьте ваш первый проект и соберите команду
+          </span>
+          <span class="empty-projects__idea-img" />
         </div>
-        <div v-if="draftProjects.length" key="draft" class="draft-projects">
-          <span class="draft-projects__label">Черновики</span>
-          <ProjectList
-            class="draft-projects__project-list"
-            :projects="draftProjects"
-            is-my
-            is-draft
-            @publish="publish"
-            @edit="editProject"
-            @delete="deleteProject"
-          />
-        </div>
-      </template>
+
+        <template v-else>
+          <!-- <div class="my-projects__menu">
+            <span class="published-projects__label">Опубликованные</span>
+            <span class="draft-projects__label">Черновики</span>
+          </div> -->
+
+          <div v-if="publishedProjects.length" key="published" class="published-projects">
+            <span class="published-projects__label">Опубликованные</span>
+            <ProjectList
+              class="published-projects__project-list"
+              :projects="publishedProjects"
+              is-my
+              @toDraft="toDraft"
+              @edit="editProject"
+              @delete="onDeleteProject"
+            />
+          </div>
+          <div v-if="draftProjects.length" key="draft" class="draft-projects">
+            <span class="draft-projects__label">Черновики</span>
+            <ProjectList
+              class="draft-projects__project-list"
+              :projects="draftProjects"
+              is-my
+              is-draft
+              @publish="publish"
+              @edit="editProject"
+              @delete="deleteProject"
+            />
+          </div>
+        </template>
+      </client-only>
     </div>
   </MenuLayout>
 </template>
@@ -80,9 +81,13 @@ export default class MyProjectsPageComponent extends Vue {
 
   @Getter('publishedProjects', { namespace }) publishedProjects!: ProjectEntity[];
 
+  loading = false;
+
   async mounted() {
+    this.loading = true;
     await this.getPublishedProjects();
     await this.getDraftProjects();
+    this.loading = false;
   }
 
   async toDraft(id: number) {
@@ -138,19 +143,21 @@ export default class MyProjectsPageComponent extends Vue {
   .empty-projects {
     &__empty-data {
       text-align: center;
+      margin: 0 auto;
     }
 
     &__empty-text {
       display: inline-block;
-      margin-top: 30px;
+      margin-top: 60px;
+      font-size: 17px;
+      line-height: 20px;
     }
 
     &__idea-img {
       display: inline-block;
-      width: 148px;
-      height: 188px;
+      width: 214px;
+      height: 270px;
       margin-top: 30px;
-      margin-bottom: 32px;
       background: transparent url("/images/svg/idea-application.svg") no-repeat scroll;
     }
   }
@@ -160,7 +167,6 @@ export default class MyProjectsPageComponent extends Vue {
     flex-direction: column;
     width: 100%;
     align-items: center;
-    max-width: 356px;
 
     &__label {
         width: 100%;
@@ -174,7 +180,7 @@ export default class MyProjectsPageComponent extends Vue {
         line-height: 22px;
 
         display: flex;
-        align-items: left;
+        align-self: flex-start;
         text-align: center;
 
         color: #878E99;
@@ -223,7 +229,7 @@ export default class MyProjectsPageComponent extends Vue {
         line-height: 22px;
 
         display: flex;
-        align-items: left;
+        align-self: flex-start;
         text-align: center;
 
         color: #878E99;
@@ -253,14 +259,20 @@ export default class MyProjectsPageComponent extends Vue {
 
         &__empty-text {
           width: 100%;
-          margin-top: 30px;
+          margin-top: 35px;
+          font-weight: 500;
+
+          font-size: 20px;
+          line-height: 25px;
+          margin-bottom: 35px;
         }
 
         &__idea-img {
           display: inline-block;
-          width: 413px;
-          height: 522px;
-          margin-top: 30px;
+          width: 261px;
+          height: 330px;
+          margin: 0;
+
           background: transparent url("/images/svg/idea-application.svg") no-repeat scroll;
         }
       }
@@ -268,6 +280,23 @@ export default class MyProjectsPageComponent extends Vue {
   }
 
   @media (min-width: 1200px) {
-    width: 1140px;
+    .my-projects {
+      width: 1400px;
+
+      .empty-projects {
+        &__empty-text {
+          margin-top: 80px;
+
+          font-size: 22px;
+          line-height: 27px;
+          margin-bottom: 45px;
+        }
+
+        &__idea-img {
+          width: 370px;
+          height: 466px;
+        }
+      }
+    }
   }
 </style>

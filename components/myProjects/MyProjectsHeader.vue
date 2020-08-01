@@ -147,7 +147,7 @@ export default class MyProjectsHeaderComponent extends Vue {
 
     &__add-project-btn {
       width: 100%;
-      margin-top: 30px;
+      margin: 15px 0;
       display: flex;
       align-items: center;
       justify-content: center;
