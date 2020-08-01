@@ -112,10 +112,7 @@ export default class ProjectCardComponent extends Vue {
   }
 
   private deleteProject() {
-    // eslint-disable-next-line no-debugger
-    debugger;
     this.$modal.hide('edit-menu');
-    console.log(this.project.id);
     this.$emit('delete', this.project.id);
   }
 
