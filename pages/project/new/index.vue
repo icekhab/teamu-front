@@ -63,6 +63,15 @@ const namespace = 'savingProject';
     store,
   }) {
     await store.dispatch('labels/getLabels');
+
+    store.commit('savingProject/setLabels', []);
+    store.commit('savingProject/setLinks', []);
+    store.commit('savingProject/setVacancies', []);
+    store.commit('savingProject/setProject', {
+      id: 0,
+      description: '',
+      name: '',
+    });
   },
 })
 export default class ProjectNewPageComponent extends Vue {
@@ -84,6 +93,10 @@ export default class ProjectNewPageComponent extends Vue {
       disabled: true,
     },
   ];
+
+  mounted() {
+
+  }
 
   selectedTab = 'description';
 

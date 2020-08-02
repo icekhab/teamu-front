@@ -4,9 +4,15 @@
       <span class="logo">U</span>
     </nuxt-link>
     <CircleAvatar class="menu__item avatar" @click="onClickAvatar" />
-    <nuxt-link class="menu__item my-idea" :class="getClass(myProjectsLink)" :to="myProjectsLink">
-      <MyIdeaIcon />
-    </nuxt-link>
+    <client-only>
+      <nuxt-link v-if="isAuthorize" class="menu__item my-idea" :class="getClass(myProjectsLink)" :to="myProjectsLink">
+        <MyIdeaIcon />
+      </nuxt-link>
+      <MyIdeaIcon v-else class="menu__item my-idea" @click="authAndGoMyProjects" />
+      <slot slot="placeholder">
+        <MyIdeaIcon class="menu__item my-idea" @click="authAndGoMyProjects" />
+      </slot>
+    </client-only>
     <SearchIcon class="menu__item search" />
     <div class="menu__item empty" />
     <nuxt-link class="menu__item all-idea" :class="getClass(projectsLink)" :to="projectsLink">
@@ -59,8 +65,9 @@ import HelpIcon from '@/static/images/svg/menu/help-icon.svg';
 import LogoutIcon from '@/static/images/svg/menu/logout-icon.svg';
 import TeamuLogo from '@/static/images/svg/menu/teamu-logo.svg';
 import UsersIcon from '@/static/images/svg/menu/users-icon.svg';
-import { State, Action } from 'vuex-class';
+import { State, Action, Mutation } from 'vuex-class';
 import UserEntity from '@/entities/UserEntity';
+import { RawLocation } from 'vue-router/types/router';
 
 @Component({
   components: {
@@ -80,6 +87,8 @@ export default class MenuComponent extends Vue {
   @State('user', { namespace: 'user' }) user?: UserEntity;
 
   @Action('logout', { namespace: 'user' }) logout!: () => Promise<void>;
+
+  @Mutation('setToAfterLogin', { namespace: 'user' }) setToAfterLogin!: (toAfterLogin?: RawLocation) => void;
 
   projectsLink = {
     name: 'project',
@@ -104,6 +113,11 @@ export default class MenuComponent extends Vue {
   async logoutAndCloseMenu() {
     await this.logout();
     this.$modal.hide('user-menu');
+  }
+
+  authAndGoMyProjects() {
+    this.setToAfterLogin(this.myProjectsLink);
+    this.$modal.show('login-modal');
   }
 }
 </script>

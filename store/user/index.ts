@@ -52,6 +52,8 @@ export const actions : any = {
     commit('setToken', undefined);
     commit('setUser', {});
     commit('setIsAuthorize', false);
+
+    window.location.href = '/project';
   },
 };
 
