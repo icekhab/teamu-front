@@ -51,7 +51,7 @@ export default class ProjectListComponent extends Vue {
       grid-row-gap: 36px;
     }
 
-    @media (min-width: 1450px) {
+    @media (min-width: 1430px) {
       grid-template-columns: 1fr 1fr 1fr;
       grid-column-gap: 60px;
       grid-row-gap: 45px;

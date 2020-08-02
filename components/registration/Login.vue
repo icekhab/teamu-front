@@ -1,5 +1,5 @@
 <template>
-  <modal name="login-modal" width="640" height="auto" adaptive @closed="$v.$reset()">
+  <modal name="login-modal" width="640" height="auto" adaptive @closed="onClosed">
     <div class="login">
       <span class="login__cross" @click="$emit('close')">X</span>
       <span class="login__label">Вход в UTEAM</span>
@@ -122,7 +122,7 @@ export default class LoginComponent extends Vue {
   serverError = '';
 
   statusErrors: { [key: number]: string } = {
-    401: 'Неверный логин или пароль',
+    401: 'Неверный email или пароль',
   };
 
   private async onClick() {
@@ -140,8 +140,9 @@ export default class LoginComponent extends Vue {
       this.$emit('close');
       this.loading = false;
     } catch (err) {
-      this.serverError = this.statusErrors[err?.response?.status] || 'Что-то пошло не так';
-
+      this.serverError = this.statusErrors[err?.response?.status] || 'Oops, что-то пошло не так';
+      this.login.password = '';
+      this.$v.login.password.$reset();
       this.loading = false;
     }
   }
@@ -156,6 +157,12 @@ export default class LoginComponent extends Vue {
       email: '',
       password: '',
     };
+  }
+
+  private onClosed() {
+    this.$v.$reset();
+    this.serverError = '';
+    this.login.password = '';
   }
 }
 </script>
@@ -198,7 +205,7 @@ export default class LoginComponent extends Vue {
         height: 40px;
         padding-left: 50px;
         margin-top: 40px;
-        background: #fff url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 13px;
+        background: #fff url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 14px;
     }
 
     &__password-input {
@@ -208,7 +215,7 @@ export default class LoginComponent extends Vue {
         padding-left: 50px;
         margin-top: 10px;
         background: #fff
-          url("/images/svg/registration/password-icon.svg") no-repeat scroll 22px 13px;
+          url("/images/svg/registration/password-icon.svg") no-repeat scroll 22px 11px;
     }
 
     &__btn {

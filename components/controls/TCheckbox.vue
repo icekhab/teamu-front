@@ -102,6 +102,7 @@ export default class MCheckboxComponent extends Vue {
     display: flex;
     align-items: center;
     user-select: none;
+    color: var(--blackColor);
 
     cursor: pointer;
 
@@ -128,6 +129,9 @@ export default class MCheckboxComponent extends Vue {
       text-align: left;
       padding-left: 15px;
       transition: color .15s ease-out;
+      color: var(--blackColor);
+      font-size: 14px;
+      line-height: 17px;
     }
 
     &.t-checkbox__theme_default {

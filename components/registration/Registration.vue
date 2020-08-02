@@ -1,54 +1,113 @@
 <template>
-  <modal name="registration-modal" width="640" height="754" adaptive>
+  <modal name="registration-modal" width="640" height="auto" adaptive @closed="onClosed">
     <div class="registration">
       <span class="registration__cross" @click="$emit('close')">X</span>
       <span class="registration__label">Регистрация в UTEAM</span>
-      <TInput
-        v-model="signup.email"
-        class="registration__email-input"
-        placeholder="Email"
-      />
-      <TInput
-        v-model="signup.password"
-        type="password"
-        class="registration__password-input"
-        placeholder="Пароль"
-      />
-      <TInput
-        v-model="signup.openLandProfileLink"
-        class="registration__link-on-profile-input"
-        placeholder="Ссылка на профиль в MESTO"
-      />
-      <TInput
-        v-model="signup.userRole"
-        class="registration__role-in-project"
-        placeholder="Ваша роль в проекте"
-      />
-      <div class="registration__policy">
-        <TInput
-          type="checkbox"
-          class="registration__policy-cbx"
-        />
-        <span class="registration__policy-text">
-          Я принимаю
-        </span>
-        <span class="registration__policy-link">
-          политику конфиденциальности
-        </span>
-      </div>
-      <TButton
-        class="registration__register-btn"
-        theme="primary"
-        @click="onClick"
+      <TFormControl
+        :is-error="$v.signup.email.$error"
+        class="registration__form-control"
       >
-        Зарегистрироваться
-      </TButton>
+        <TInput
+          v-model="signup.email"
+          class="registration__email-input"
+          placeholder="Email"
+          maxlength="255"
+          @blur="$v.signup.email.$touch()"
+        />
+        <template slot="errors">
+          <template v-if="!$v.signup.email.required">
+            Заполните email
+          </template>
+          <template v-else-if="!$v.signup.email.email">
+            Некорректный email
+          </template>
+        </template>
+      </TFormControl>
+
+      <TFormControl
+        :is-error="$v.signup.password.$error"
+        class="registration__form-control"
+      >
+        <TInput
+          v-model="signup.password"
+          type="password"
+          class="registration__password-input"
+          placeholder="Пароль"
+          maxlength="255"
+          @blur="$v.signup.password.$touch()"
+        />
+        <template slot="errors">
+          <template v-if="!$v.signup.password.required">
+            Заполните пароль
+          </template>
+          <template v-if="!$v.signup.password.minLength">
+            Минимум 6 символов
+          </template>
+        </template>
+      </TFormControl>
+
+      <TFormControl
+        :is-error="$v.signup.openLandProfileLink.$error"
+        class="registration__form-control"
+      >
+        <TInput
+          v-model="signup.openLandProfileLink"
+          class="registration__link-on-profile-input"
+          placeholder="Ссылка на профиль в MESTO"
+          maxlength="255"
+          @blur="$v.signup.openLandProfileLink.$touch()"
+        />
+        <template slot="errors">
+          <template v-if="!$v.signup.openLandProfileLink.url">
+            Некорректный URL
+          </template>
+        </template>
+      </TFormControl>
+
+      <TFormControl
+        :is-error="$v.isAccept.$error"
+        class="registration__form-control"
+      >
+        <TCheckbox v-model="isAccept">
+          <span>
+            <span>
+              Я принимаю
+            </span>
+            <span class="uteam-link">
+              политику конфиденциальности
+            </span>
+          </span>
+        </TCheckbox>
+        <template slot="errors">
+          <template v-if="!$v.isAccept.checked">
+            Примите политику конфиденциальности
+          </template>
+        </template>
+      </TFormControl>
+
+      <TFormControl
+        :is-error="serverError"
+        class="registration__form-control"
+      >
+        <TButton
+          class="registration__register-btn"
+          theme="primary"
+          :loading="loading"
+          :disabled="loading"
+          @click="onClick"
+        >
+          Зарегистрироваться
+        </TButton>
+        <template slot="errors">
+          {{ serverError }}
+        </template>
+      </TFormControl>
       <span class="registration__divider" />
       <div class="registration__account">
         <span class="registration__account-question">
           Есть аккаунт?
         </span>
-        <span class="registration__account-entry" @click="$emit('showLogin')">
+        <span class="registration__account-entry uteam-link" @click="$emit('showLogin')">
           Войти
         </span>
       </div>
@@ -63,7 +122,12 @@ import {
 import { Action } from 'vuex-class';
 import TButton from '@/components/controls/TButton.vue';
 import TInput from '@/components/controls/TInput.vue';
+import TFormControl from '@/components/controls/TFormControl.vue';
+import TCheckbox from '@/components/controls/TCheckbox.vue';
 import SignUpEntity from '@/entities/SignUpEntity';
+import {
+  email, required, url, minLength,
+} from 'vuelidate/lib/validators';
 
 const namespace = 'registration';
 
@@ -71,8 +135,29 @@ const namespace = 'registration';
   components: {
     TButton,
     TInput,
+    TFormControl,
+    TCheckbox,
   },
-})
+
+  validations: {
+    signup: {
+      email: {
+        required,
+        email,
+      },
+      password: {
+        required,
+        minLength: minLength(6),
+      },
+      openLandProfileLink: {
+        url,
+      },
+    },
+    isAccept: {
+      checked: (value?: boolean) => value === true,
+    },
+  },
+} as any)
 export default class RegistrationComponent extends Vue {
   @Action('postSignUp', { namespace }) postSignUp!: (signup: SignUpEntity) => void;
 
@@ -81,16 +166,34 @@ export default class RegistrationComponent extends Vue {
 
   private currentShow: boolean = false;
 
+  serverError = '';
+
+  loading = false;
+
+  isAccept = false;
+
   private signup: SignUpEntity = this.getDefaultSignupData();
 
   private async onClick() {
     try {
+      this.serverError = '';
+
+      this.$v.$touch();
+
+      if (this.$v.$invalid) return;
+
+      this.loading = true;
+
       await this.postSignUp(this.signup);
       this.signup = this.getDefaultSignupData();
+      this.loading = false;
 
       this.$emit('close');
     } catch (err) {
-      alert(err);
+      this.serverError = 'Oops, что-то пошло не так';
+      this.signup.password = '';
+      this.$v.signup.password.$reset();
+      this.loading = false;
     }
   }
 
@@ -108,6 +211,13 @@ export default class RegistrationComponent extends Vue {
       userRole: '',
       openLandProfileLink: '',
     };
+  }
+
+  private onClosed() {
+    this.$v.$reset();
+    this.serverError = '';
+    this.signup.password = '';
+    this.isAccept = false;
   }
 }
 </script>
@@ -131,22 +241,24 @@ export default class RegistrationComponent extends Vue {
     &__label {
         width: 100%;
         text-align: center;
-        margin-top: 50px;
-        margin-left: 10px;
-        margin-right: 10px;
+        margin: 50px auto 20px;
         font-weight: 600;
         font-size: 26px;
         line-height: 44px;
         color: #333333;
     }
 
+    &__form-control {
+      width: 100%;
+      margin: 0 auto 10px;
+    }
+
     &__email-input {
-        display: inline;
-        width: 100%;
-        height: 40px;
-        background: #fff url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 15px;
-        padding-left: 50px;
-        margin: 30px auto 0;
+      display: inline;
+      width: 100%;
+      height: 40px;
+      background: #fff url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 14px;
+      padding-left: 50px;
     }
 
     &__password-input {
@@ -154,9 +266,8 @@ export default class RegistrationComponent extends Vue {
         width: 100%;
         height: 40px;
         background: #fff url("/images/svg/registration/password-icon.svg")
-            no-repeat scroll 22px 12px;
+            no-repeat scroll 22px 11px;
         padding-left: 50px;
-        margin: 30px auto 0;
     }
 
     &__link-on-profile-input {
@@ -164,7 +275,6 @@ export default class RegistrationComponent extends Vue {
         width: 100%;
         height: 40px;
         padding-left: 23px;
-        margin: 30px auto 0;
     }
 
     &__role-in-project {
@@ -172,11 +282,10 @@ export default class RegistrationComponent extends Vue {
         width: 100%;
         height: 50px;
         padding-left: 23px;
-        margin: 30px auto 0;
     }
 
     &__policy {
-        margin: 30px auto 0;
+        //margin: 0 auto;
         vertical-align: middle;
         font-size: 12px;
     }
@@ -195,14 +304,14 @@ export default class RegistrationComponent extends Vue {
     }
 
     &__policy-cbx {
-        display: inline-block;
-        width: 15px;
-        height: 15px;
+        //display: inline-block;
+        //width: 15px;
+        //height: 15px;
         margin-right: 10px;
-        background: #FFFFFF;
-        border: 1px solid #DBDBDB;
-        box-sizing: border-box;
-        border-radius: 5px;
+        //background: #FFFFFF;
+        //border: 1px solid #DBDBDB;
+        //box-sizing: border-box;
+        //border-radius: 5px;
     }
 
     &__register-btn {
@@ -211,13 +320,13 @@ export default class RegistrationComponent extends Vue {
         height: 40px;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.06);
         border-radius: 5px;
-        margin: 30px auto 0;
+        margin: 10px auto 0;
     }
 
     &__divider {
         width: 100%;
         height: 1px;
-        margin: 30px auto 0;
+        margin: 15px auto 0;
         background: #DBDBDB;
     }
 
@@ -250,9 +359,14 @@ export default class RegistrationComponent extends Vue {
       max-width: 600px;
       padding: 20px;
 
+      &__form-control {
+        width: auto;
+        margin-bottom: 15px;
+      }
+
       &__label {
           width: 100%;
-          margin: 50px auto 0;
+          margin: 50px auto 58px;
           font-size: 36px;
       }
 
@@ -260,15 +374,14 @@ export default class RegistrationComponent extends Vue {
           width: 392px;
           height: 50px;
           background: #fff
-            url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 15px;
-          margin-top: 58px;
+            url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 19px;
       }
 
       &__password-input {
           width: 392px;
           height: 50px;
           background: #fff url("/images/svg/registration/password-icon.svg")
-              no-repeat scroll 22px 12px;
+              no-repeat scroll 22px 16px;
       }
 
       &__link-on-profile-input {
@@ -281,8 +394,8 @@ export default class RegistrationComponent extends Vue {
       }
 
       &__policy {
-          margin-left: 104px;
-          margin-right: 104px;
+          //margin-left: 104px;
+          //margin-right: 104px;
           font-size: 14px;
       }
 
@@ -294,7 +407,7 @@ export default class RegistrationComponent extends Vue {
       &__register-btn {
           width: 392px;
           min-height: 44px;
-          margin-top: 53px;
+          margin-top: 10px;
       }
 
       &__divider {
