@@ -13,7 +13,9 @@
       <AllIdeasIcon />
     </nuxt-link>
     <!--    <div class="menu__item notification" />-->
-    <HelpIcon class="menu__item help" />
+    <nuxt-link class="menu__item help" :to="{ name: 'routeName'}" href="https://t.me/joinchat/CbUfXVP2Djjr4DtSxls0CA" target="_blank">
+      <HelpIcon />
+    </nuxt-link>
     <!--    <UsersIcon class="menu__item users" />-->
     <client-only>
       <modal
