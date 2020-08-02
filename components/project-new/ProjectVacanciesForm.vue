@@ -9,26 +9,56 @@
         :key="index"
         class="project-vacancies-form__vacancy-block"
       >
-        <div class="project-vacancies-form__row">
-          <div class="project-vacancies-form__label">
+        <div class="project-vacancies-form__row project-vacancies-form__row-input">
+          <div class="project-vacancies-form__label project-vacancies-form__label-for-input">
             Роль
           </div>
           <div class="project-vacancies-form__content">
-            <TInput v-model="vacancy.title" class="input-text" />
+            <!-- РОЛЬ -->
+            <TFormControl
+              :is-error="$v.newVacancies.$each.$iter[index].title.$error"
+              class="project-links-form__title"
+            >
+              <TInput
+                v-model="vacancy.title"
+                class="input-text"
+                @blur="$v.newVacancies.$each.$iter[index].title.$touch()"
+              />
+              <template slot="errors">
+                <template v-if="!$v.newVacancies.$each.$iter[index].title.required">
+                  Заполните роль
+                </template>
+              </template>
+            </TFormControl>
           </div>
         </div>
-        <div class="project-vacancies-form__row">
-          <div class="project-vacancies-form__label">
+        <div class="project-vacancies-form__row project-vacancies-form__row-input">
+          <div class="project-vacancies-form__label project-vacancies-form__label-for-input">
             Доля в проекте (%)
           </div>
           <div class="project-vacancies-form__content">
-            <TInput
-              :value="vacancy.value"
-              type="number"
-              class="input-text"
-              :disabled="vacancy.shareType !== VacancyShareType.share"
-              @input="changeVacancyValue(index, $event)"
-            />
+            <!-- РОЛЬ -->
+            <TFormControl
+              :is-error="$v.newVacancies.$each.$iter[index].value.$error"
+              class="project-links-form__title"
+            >
+              <TInput
+                :value="vacancy.value"
+                type="number"
+                class="input-text"
+                :disabled="vacancy.shareType !== VacancyShareType.share"
+                @input="changeVacancyValue(index, $event)"
+                @blur="$v.newVacancies.$each.$iter[index].value.$touch()"
+              />
+              <template slot="errors">
+                <template v-if="!$v.newVacancies.$each.$iter[index].value.minValue">
+                  Не меньше 0
+                </template>
+                <template v-if="!$v.newVacancies.$each.$iter[index].value.maxValue">
+                  Не больше 100
+                </template>
+              </template>
+            </TFormControl>
           </div>
         </div>
         <div
@@ -66,10 +96,14 @@
 
     <div class="project-vacancies-form__btn-panel">
       <div
-        class="project-vacancies-form__saved-text"
-        :style="{visibility: isSaved ? 'visible' : 'hidden'}"
+        :style="{visibility: isSaved || serverError ? 'visible' : 'hidden'}"
       >
-        Успешно сохранено!
+        <span v-if="isSaved" class="project-vacancies-form__saved-text">
+          Успешно сохранено!
+        </span>
+        <span v-else-if="serverError" class="project-vacancies-form__error-text">
+          {{ serverError }}
+        </span>
       </div>
       <TButton
         class="project-vacancies-form__submit-btn"
@@ -91,21 +125,38 @@ import VacancyEntity from '@/entities/VacancyEntity';
 import VacancyShareType from '@/enums/VacancyShareType';
 import TInput from '@/components/controls/TInput.vue';
 import TRadioButton from '@/components/controls/TRadioButton.vue';
+import TFormControl from '@/components/controls/TFormControl.vue';
 import deepCopyFunction from '@/helpers/deepCopy';
 import { Action, State } from 'vuex-class';
+import { required, minValue, maxValue } from 'vuelidate/lib/validators';
 
 const namespace = 'savingProject';
 
 const emptyVacancy: VacancyEntity = {
-  id: 0, title: '', shareType: VacancyShareType.share,
+  id: 0, title: '', shareType: VacancyShareType.share, value: undefined,
 };
 
 @Component({
   components: {
     TInput,
     TRadioButton,
+    TFormControl,
   },
-})
+
+  validations: {
+    newVacancies: {
+      $each: {
+        title: {
+          required,
+        },
+        value: {
+          minValue: minValue(0),
+          maxValue: maxValue(100),
+        },
+      },
+    },
+  },
+} as any)
 export default class ProjectVacanciesFormComponent extends Vue {
   @State('vacancies', { namespace }) readonly vacancies!: VacancyEntity[];
 
@@ -120,6 +171,8 @@ export default class ProjectVacanciesFormComponent extends Vue {
   loading = false;
 
   isSaved = false;
+
+  serverError = '';
 
   dictionaryShareType = [
     {
@@ -161,11 +214,21 @@ export default class ProjectVacanciesFormComponent extends Vue {
 
   @Emit('afterSubmit')
   async submitForm() {
-    this.loading = true;
-    this.isSaved = false;
-    await this.saveVacancies(this.newVacancies);
-    this.isSaved = true;
-    this.loading = false;
+    try {
+      this.serverError = '';
+      this.$v.$touch();
+
+      if (this.$v.$invalid) return;
+
+      this.loading = true;
+      this.isSaved = false;
+      await this.saveVacancies(this.newVacancies);
+      this.isSaved = true;
+      this.loading = false;
+    } catch (e) {
+      this.loading = false;
+      this.serverError = 'Oops, что-то пошло не так';
+    }
   }
 }
 </script>
@@ -201,15 +264,23 @@ export default class ProjectVacanciesFormComponent extends Vue {
       width: 100%;
       color: var(--greyColor);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
 
-      &:not(:first-child) {
-        margin-top: 20px;
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+
+      &.project-vacancies-form__row-input {
+        margin-bottom: 10px;
       }
     }
 
     &__label {
       max-width: 135px;
+    }
+
+    &__label-for-input {
+      margin-top: 12px;
     }
 
     &__content {
@@ -231,6 +302,10 @@ export default class ProjectVacanciesFormComponent extends Vue {
 
     &__saved-text {
       color: #61C9A8;
+    }
+
+    &__error-text {
+      color: rgba(#FF4B3E, .7);
     }
 
     &__submit-btn {
@@ -283,6 +358,11 @@ export default class ProjectVacanciesFormComponent extends Vue {
 
       &__saved-text {
         color: #61C9A8;
+        white-space: nowrap;
+      }
+
+      &__error-text {
+        color: rgba(#FF4B3E, .7);
         white-space: nowrap;
       }
 

@@ -5,18 +5,48 @@
     </div>
     <div class="project-description-form__controls">
       <div class="project-description-form__inputs">
-        <TInput
-          v-model="newProject.name"
-          class="project-description-form__name"
-          placeholder="Название"
-        />
-        <TTextArea
-          v-model="newProject.description"
-          class="project-description-form__description"
-          maxlength="6000"
-          rows="5"
-          placeholder="Описание"
-        />
+        <TFormControl
+          :is-error="$v.newProject.name.$error"
+          class="registration__form-control"
+        >
+          <TInput
+            v-model="newProject.name"
+            class="project-description-form__name"
+            maxlength="255"
+            placeholder="Название"
+            @blur="$v.newProject.name.$touch()"
+          />
+
+          <template slot="errors">
+            <template v-if="!$v.newProject.name.required">
+              Заполните название проекта
+            </template>
+          </template>
+        </TFormControl>
+
+        <TFormControl
+          :is-error="$v.newProject.description.$error"
+          class="registration__form-control"
+        >
+          <TTextArea
+            v-model="newProject.description"
+            class="project-description-form__description"
+            maxlength="6000"
+            rows="5"
+            placeholder="Описание"
+            @blur="$v.newProject.description.$touch()"
+          />
+
+          <template slot="errors">
+            <template v-if="!$v.newProject.description.required">
+              Заполните название проекта
+            </template>
+            <template v-if="!$v.newProject.description.minLength">
+              Минимум 3 символа
+            </template>
+          </template>
+        </TFormControl>
+
         <div class="project-description-form__labels-wrap">
           <span class="project-description-form__labels-header">Метка проекта</span>
           <ProjectLabelListCheck v-model="newLabels" class="project-description-form__labels" />
@@ -32,10 +62,15 @@
 
     <div class="project-description-form__btn-panel">
       <div
-        class="project-description-form__saved-text"
-        :style="{visibility: isSaved ? 'visible' : 'hidden'}"
+        class="project-description-form__info-about-request-text"
+        :style="{visibility: isSaved || serverError ? 'visible' : 'hidden'}"
       >
-        Успешно сохранено!
+        <span v-if="isSaved" class="project-description-form__saved-text">
+          Успешно сохранено!
+        </span>
+        <span v-else-if="serverError" class="project-description-form__error-text">
+          {{ serverError }}
+        </span>
       </div>
       <TButton
         class="project-description-form__submit"
@@ -51,7 +86,7 @@
 
 <script lang="ts">
 import {
-  Component, Emit, Prop, Vue, Watch,
+  Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
 import TInput from '@/components/controls/TInput.vue';
 import TTextArea from '@/components/controls/TTextArea.vue';
@@ -60,7 +95,11 @@ import ImageChooser from '@/components/controls/ImageChooser.vue';
 import LabelEntity from '@/entities/LabelEntity';
 import deepCopyFunction from '@/helpers/deepCopy';
 import { Action, State } from 'vuex-class';
+import {
+  minLength, required,
+} from 'vuelidate/lib/validators';
 import TCheckbox from '~/components/controls/TCheckbox.vue';
+import TFormControl from '~/components/controls/TFormControl.vue';
 import TButton from '~/components/controls/TButton.vue';
 import ProjectLabelListCheck from '~/components/common/ProjectLabelListCheck.vue';
 
@@ -74,8 +113,21 @@ const namespace = 'savingProject';
     TCheckbox,
     TButton,
     ImageChooser,
+    TFormControl,
   },
-})
+
+  validations: {
+    newProject: {
+      name: {
+        required,
+      },
+      description: {
+        required,
+        minLength: minLength(3),
+      },
+    },
+  },
+} as any)
 export default class ProjectDescriptionFormComponent extends Vue {
   @State('project', { namespace }) readonly project!: DescriptionProjectEntity;
 
@@ -95,6 +147,8 @@ export default class ProjectDescriptionFormComponent extends Vue {
 
   isSaved = false;
 
+  serverError = '';
+
   @Watch('project', { immediate: true })
   private onProject(newVal: DescriptionProjectEntity): void {
     this.newProject = { ...newVal };
@@ -105,14 +159,26 @@ export default class ProjectDescriptionFormComponent extends Vue {
     this.newLabels = deepCopyFunction(newVal);
   }
 
-  @Emit('afterSubmit')
   async submitForm() {
-    this.loading = true;
-    this.isSaved = false;
-    await this.saveProject(this.newProject);
-    await this.saveLabels(this.newLabels);
-    this.isSaved = true;
-    this.loading = false;
+    try {
+      this.serverError = '';
+      this.$v.$touch();
+
+      if (this.$v.$invalid) return;
+
+      this.loading = true;
+      this.isSaved = false;
+
+      await this.saveProject(this.newProject);
+      await this.saveLabels(this.newLabels);
+      this.isSaved = true;
+      this.loading = false;
+
+      this.$emit('afterSubmit');
+    } catch (e) {
+      this.loading = false;
+      this.serverError = 'Oops, что-то пошло не так';
+    }
   }
 }
 </script>
@@ -173,6 +239,10 @@ export default class ProjectDescriptionFormComponent extends Vue {
       color: #61C9A8;
     }
 
+    &__error-text {
+      color: rgba(#FF4B3E, .7);
+    }
+
     &__submit {
       width: 100%;
       margin-top: 15px;
@@ -220,6 +290,10 @@ export default class ProjectDescriptionFormComponent extends Vue {
 
       &__saved-text {
         color: #61C9A8;
+        white-space: nowrap;
+      }
+
+      &__error-text {
         white-space: nowrap;
       }
 

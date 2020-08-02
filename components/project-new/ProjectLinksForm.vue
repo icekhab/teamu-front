@@ -5,16 +5,47 @@
     </span>
     <div class="project-links-form__links">
       <div v-for="(link, index) in newLinks" :key="index" class="project-links-form__link-block">
-        <TInput
-          v-model="link.title"
+        <!-- Название ссылки-->
+        <TFormControl
+          :is-error="$v.newLinks.$each.$iter[index].title.$error"
           class="project-links-form__title"
-          placeholder="Наименования"
-        />
-        <TInput
-          v-model="link.link"
+        >
+          <TInput
+            v-model="link.title"
+            class="project-links-form__input"
+            placeholder="Наименования"
+            @blur="$v.newLinks.$each.$iter[index].title.$touch()"
+          />
+          <template slot="errors">
+            <template v-if="!$v.newLinks.$each.$iter[index].title.required">
+              Заполните наименование ссылки
+            </template>
+          </template>
+        </TFormControl>
+
+        <!-- Ссылка-->
+        <TFormControl
+          :is-error="$v.newLinks.$each.$iter[index].link.$error"
           class="project-links-form__link"
-          placeholder="Ссылка"
-        />
+        >
+          <TInput
+            v-model="link.link"
+            class="project-links-form__input"
+            placeholder="Ссылка"
+            @blur="$v.newLinks.$each.$iter[index].link.$touch()"
+          />
+
+          <template slot="errors">
+            <template v-if="!$v.newLinks.$each.$iter[index].link.required">
+              Заполните ссылку
+            </template>
+            <template v-else-if="!$v.newLinks.$each.$iter[index].link.link">
+              Некорректный URL
+            </template>
+          </template>
+        </TFormControl>
+
+        <!-- Кнопка удалить-->
         <span class="project-links-form__remove" @click="removeLink(index)">Удалить</span>
       </div>
       <TButton
@@ -30,10 +61,15 @@
 
     <div class="project-links-form__btn-panel">
       <div
-        class="project-links-form__saved-text"
-        :style="{visibility: isSaved ? 'visible' : 'hidden'}"
+        class="project-links-form"
+        :style="{visibility: isSaved || serverError ? 'visible' : 'hidden'}"
       >
-        Успешно сохранено!
+        <span v-if="isSaved" class="project-links-form__saved-text">
+          Успешно сохранено!
+        </span>
+        <span v-else-if="serverError" class="project-links-form__error-text">
+          {{ serverError }}
+        </span>
       </div>
       <TButton
         class="project-links-form__submit-btn"
@@ -53,14 +89,32 @@ import {
 } from 'vue-property-decorator';
 import LinkEntity from '@/entities/LinkEntity';
 import deepCopyFunction from '@/helpers/deepCopy';
+import TFormControl from '@/components/controls/TFormControl.vue';
 import { Action, State } from 'vuex-class';
+import { required, url } from 'vuelidate/lib/validators';
 
 const namespace = 'savingProject';
 const emptyLink: LinkEntity = { id: 0, link: '', title: '' };
 
 @Component({
-  components: {},
-})
+  components: {
+    TFormControl,
+  },
+
+  validations: {
+    newLinks: {
+      $each: {
+        title: {
+          required,
+        },
+        link: {
+          required,
+          url,
+        },
+      },
+    },
+  },
+} as any)
 export default class ProjectLinksFormComponent extends Vue {
   @State('links', { namespace }) readonly links!: LinkEntity[];
 
@@ -73,6 +127,8 @@ export default class ProjectLinksFormComponent extends Vue {
   loading = false;
 
   isSaved = false;
+
+  serverError = '';
 
   @Watch('links', { immediate: true })
   private onLabels(newVal: LinkEntity[]): void {
@@ -89,11 +145,21 @@ export default class ProjectLinksFormComponent extends Vue {
 
   @Emit('afterSubmit')
   async submitForm() {
-    this.loading = true;
-    this.isSaved = false;
-    await this.saveLinks(this.newLinks);
-    this.isSaved = true;
-    this.loading = false;
+    try {
+      this.serverError = '';
+      this.$v.$touch();
+
+      if (this.$v.$invalid) return;
+
+      this.loading = true;
+      this.isSaved = false;
+      await this.saveLinks(this.newLinks);
+      this.isSaved = true;
+      this.loading = false;
+    } catch (e) {
+      this.loading = false;
+      this.serverError = 'Oops, что-то пошло не так';
+    }
   }
 }
 </script>
@@ -112,15 +178,21 @@ export default class ProjectLinksFormComponent extends Vue {
       text-align: center;
 
       &:not(:first-child) {
-        margin-top: 30px;
+        margin-top: 10px;
       }
     }
 
+    &__input {
+      width: 100%;
+    }
+
     &__title {
+      align-items: flex-start;
       width: 100%;
     }
 
     &__link {
+      align-items: flex-start;
       width: 100%;
       margin-top: 10px;
     }
@@ -153,6 +225,10 @@ export default class ProjectLinksFormComponent extends Vue {
       color: #61C9A8;
     }
 
+    &__error-text {
+      color: rgba(#FF4B3E, .7);
+    }
+
     &__submit-btn {
       width: 100%;
       margin-top: 15px;
@@ -174,9 +250,8 @@ export default class ProjectLinksFormComponent extends Vue {
       }
 
       &__remove {
-        margin: 0 0 0 30px;
+        margin: 12px 0 0 30px;
         display: flex;
-        align-items: center;
       }
 
       &__link {
@@ -196,6 +271,11 @@ export default class ProjectLinksFormComponent extends Vue {
 
       &__saved-text {
         color: #61C9A8;
+        white-space: nowrap;
+      }
+
+      &__error-text {
+        color: rgba(#FF4B3E, .7);
         white-space: nowrap;
       }
 

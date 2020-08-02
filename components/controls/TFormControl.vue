@@ -53,7 +53,7 @@ export default class TFormControlComponent extends Vue {
   }
   .form-control__error {
     & >>> {
-      .t-input, .t-input:focus {
+      .t-input, .t-input:focus, .t-text-area, .t-text-area:focus {
         border-color: rgba(#FF4B3E, .7) !important;
         color: rgba(#FF4B3E, .7) !important;
 
