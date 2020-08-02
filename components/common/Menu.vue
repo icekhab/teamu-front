@@ -6,7 +6,7 @@
     <CircleAvatar class="menu__item avatar" @click="onClickAvatar" />
     <client-only>
       <nuxt-link v-if="isAuthorize" class="menu__item my-idea" :class="getClass(myProjectsLink)" :to="myProjectsLink">
-        <MyIdeaIcon />
+        <MyIdeaIcon class="menu__item my-idea" />
       </nuxt-link>
       <MyIdeaIcon v-else class="menu__item my-idea" @click="authAndGoMyProjects" />
       <slot slot="placeholder">
@@ -16,11 +16,11 @@
     <SearchIcon class="menu__item search" />
     <div class="menu__item empty" />
     <nuxt-link class="menu__item all-idea" :class="getClass(projectsLink)" :to="projectsLink">
-      <AllIdeasIcon />
+      <AllIdeasIcon class="menu__item all-idea" />
     </nuxt-link>
     <!--    <div class="menu__item notification" />-->
     <nuxt-link class="menu__item help" :to="{ name: 'routeName'}" href="https://t.me/joinchat/CbUfXVP2Djjr4DtSxls0CA" target="_blank">
-      <HelpIcon />
+      <HelpIcon class="menu__item help" />
     </nuxt-link>
     <!--    <UsersIcon class="menu__item users" />-->
     <client-only>
@@ -41,10 +41,10 @@
             <span class="user-menu__email">{{ user.name || user.email }}</span>
           </div>
           <div class="line" />
-          <div class="user-menu__item help-item">
+          <a class="user-menu__item help-item" href="https://t.me/joinchat/CbUfXVP2Djjr4DtSxls0CA" target="_blank">
             <HelpIcon class="user-menu__item-icon" />
             <span class="user-menu__item-label">Помощь</span>
-          </div>
+          </a>
           <div class="user-menu__item" @click="logoutAndCloseMenu">
             <LogoutIcon class="user-menu__item-icon" />
             <span class="user-menu__item-label">Выйти</span>
@@ -158,6 +158,7 @@ export default class MenuComponent extends Vue {
         width: auto;
         align-self: flex-start;
         cursor: pointer;
+        text-decoration: none;
 
         &:hover {
           color: var(--blackColor);
@@ -233,6 +234,7 @@ export default class MenuComponent extends Vue {
 
       .help-item {
         display: none;
+        text-decoration: none;
       }
 
       &__item {
