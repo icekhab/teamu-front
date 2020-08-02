@@ -360,6 +360,8 @@ h1 {
   justify-content: space-between;
 
   &__callToAction {
+    &__link {
+    }
   }
   &__leftPart {
     flex: 50%;
@@ -669,6 +671,10 @@ h1 {
   &__callToAction {
     &__link {
       padding: 11px 20px 11px 20px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 }
