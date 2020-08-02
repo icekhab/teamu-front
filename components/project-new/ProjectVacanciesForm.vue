@@ -119,7 +119,7 @@
 
 <script lang="ts">
 import {
-  Component, Emit, Prop, Vue, Watch,
+  Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
 import VacancyEntity from '@/entities/VacancyEntity';
 import VacancyShareType from '@/enums/VacancyShareType';
@@ -212,7 +212,6 @@ export default class ProjectVacanciesFormComponent extends Vue {
     this.newVacancies.splice(index, 1);
   }
 
-  @Emit('afterSubmit')
   async submitForm() {
     try {
       this.serverError = '';
@@ -225,6 +224,8 @@ export default class ProjectVacanciesFormComponent extends Vue {
       await this.saveVacancies(this.newVacancies);
       this.isSaved = true;
       this.loading = false;
+
+      this.$emit('afterSubmit');
     } catch (e) {
       this.loading = false;
       this.serverError = 'Oops, что-то пошло не так';

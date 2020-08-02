@@ -85,7 +85,7 @@
 
 <script lang="ts">
 import {
-  Component, Emit, Prop, Vue, Watch,
+  Component, Prop, Vue, Watch,
 } from 'vue-property-decorator';
 import LinkEntity from '@/entities/LinkEntity';
 import deepCopyFunction from '@/helpers/deepCopy';
@@ -143,7 +143,6 @@ export default class ProjectLinksFormComponent extends Vue {
     this.newLinks.splice(index, 1);
   }
 
-  @Emit('afterSubmit')
   async submitForm() {
     try {
       this.serverError = '';
@@ -156,6 +155,8 @@ export default class ProjectLinksFormComponent extends Vue {
       await this.saveLinks(this.newLinks);
       this.isSaved = true;
       this.loading = false;
+
+      this.$emit('afterSubmit');
     } catch (e) {
       this.loading = false;
       this.serverError = 'Oops, что-то пошло не так';
