@@ -15,6 +15,8 @@ class DetailProjectEntity implements DescriptionProjectEntity {
 
   created!: string;
 
+  isPublished?: boolean;
+
   user!: UserEntity;
 
   vacancy!: VacancyEntity[];

@@ -2,7 +2,7 @@
   <MenuLayout>
     <div class="project-page">
       <client-only v-if="!loading">
-        <ProjectInfo />
+        <ProjectInfo :my="isMy" />
         <div
           v-if="project.vacancy.length"
           class="project-page__vacancies"
@@ -84,7 +84,7 @@ export default class MainPageComponent extends Vue {
 
   @media (min-width: 992px) {
     .project-page {
-      max-width: 800px;
+      max-width: 930px;
       display: flex;
     }
   }

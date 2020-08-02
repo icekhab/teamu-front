@@ -3,7 +3,18 @@
     <div class="project-info__main">
       <div class="project-info__about-creating">
         <span>Добавлена: {{ project.created | formatDate(true) }}</span>
-        <span class="project-info__author">
+        <span v-if="my" class="project-info__btn-panel">
+          <TButton class="project-info__btn" theme="outline-primary" :to="projectEditLink">
+            Редактировать
+          </TButton>
+          <TButton v-if="!project.isPublished" class="project-info__publish-btn" @click="publish">
+            Опубликовать
+          </TButton>
+          <TButton v-else class="project-info__publish-btn" @click="toDraft">
+            В черновик
+          </TButton>
+        </span>
+        <span v-else class="project-info__author">
           Автор:
           <CircleAvatar class="project-info__author-avatar" />
           <span class="project-info__author-name">{{ project.user.name }}</span>
@@ -56,22 +67,49 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { State } from 'vuex-class';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Action, State } from 'vuex-class';
 import DetailProjectEntity from '@/entities/DetailProjectEntity';
 import ProjectLabel from '@/components/common/ProjectLabel.vue';
+import TButton from '@/components/controls/TButton.vue';
 
 const namespace = 'project';
 
 @Component({
   components: {
     ProjectLabel,
+    TButton,
   },
 })
 export default class ProjectInfoComponent extends Vue {
   @State('project', { namespace }) project!: DetailProjectEntity;
 
+  @Prop({ default: false, type: Boolean }) my!: boolean;
+
   noLogoUrl = '/images/svg/no-photo.svg';
+
+  @Action('publishProject', { namespace: 'myProjects' }) publishProject!: (id: number) => void;
+
+  @Action('draftProject', { namespace: 'myProjects' }) draftProject!: (id: number) => void;
+
+  async publish() {
+    await this.publishProject(this.project.id);
+    await this.$store.dispatch('project/getProject', this.$route.params.id);
+  }
+
+  async toDraft() {
+    await this.draftProject(this.project.id);
+    await this.$store.dispatch('project/getProject', this.$route.params.id);
+  }
+
+  get projectEditLink() {
+    return {
+      name: 'project-edit-id',
+      params: {
+        id: String(this.project.id),
+      },
+    };
+  }
 }
 </script>
 
@@ -89,6 +127,16 @@ export default class ProjectInfoComponent extends Vue {
     &__author {
       display: flex;
       align-items: center;
+      margin-top: 15px;
+    }
+
+    &__btn-panel {
+      display: flex;
+      flex-direction: column;
+      margin-top: 15px;
+    }
+
+    &__publish-btn {
       margin-top: 15px;
     }
 
@@ -165,6 +213,12 @@ export default class ProjectInfoComponent extends Vue {
     &__logo {
       display: none;
     }
+
+    &__btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   @media (min-width: 992px) {
@@ -173,7 +227,16 @@ export default class ProjectInfoComponent extends Vue {
       display: flex;
 
       &__main {
-        width: 450px;
+        width: 550px;
+      }
+
+      &__btn-panel {
+        flex-direction: row;
+        margin-top: 0;
+      }
+
+      &__publish-btn {
+        margin: 0 0 0 15px;
       }
 
       &__about-creating {
