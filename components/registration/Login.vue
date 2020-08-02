@@ -1,38 +1,73 @@
 <template>
-  <modal name="login-modal" width="640" height="558" adaptive>
+  <modal name="login-modal" width="640" height="auto" adaptive @closed="$v.$reset()">
     <div class="login">
       <span class="login__cross" @click="$emit('close')">X</span>
       <span class="login__label">Вход в UTEAM</span>
-      <TInput
-        v-model="login.email"
-        class="login__email-input"
-        placeholder="Email"
-      />
-      <TInput
-        v-model="login.password"
-        type="password"
-        class="login__password-input"
-        placeholder="Пароль"
-      />
-      <TButton
-        class="login__btn"
-        theme="primary"
-        @click="onClick"
+      <TFormControl
+        :is-error="$v.login.email.$error"
+        class="login__form-control"
       >
-        Войти в сервис
-      </TButton>
+        <TInput
+          v-model="login.email"
+          class="login__email-input"
+          placeholder="Email"
+          @blur="$v.login.email.$touch()"
+        />
+        <template slot="errors">
+          <template v-if="!$v.login.email.required">
+            Заполните email
+          </template>
+          <template v-else-if="!$v.login.email.email">
+            Некорректный email
+          </template>
+        </template>
+      </TFormControl>
+      <TFormControl
+        :is-error="$v.login.password.$error"
+        class="login__form-control"
+      >
+        <TInput
+          v-model="login.password"
+          type="password"
+          class="login__password-input"
+          placeholder="Пароль"
+          @blur="$v.login.password.$touch()"
+        />
+        <template slot="errors">
+          <template v-if="!$v.login.password.required">
+            Заполните пароль
+          </template>
+        </template>
+      </TFormControl>
+      <TFormControl
+        :is-error="!!serverError"
+        class="login__form-control"
+      >
+        <TButton
+          class="login__btn"
+          theme="primary"
+          :disabled="loading"
+          :loading="loading"
+          @click="onClick"
+        >
+          Войти в сервис
+        </TButton>
+        <template slot="errors">
+          {{ serverError }}
+        </template>
+      </TFormControl>
       <span class="login__divider" />
       <div class="login__forget-password">
         <span class="login__forget-password-question">
           Забыли пароль?
         </span>
-        <span class="login__forget-password-reset">Сбросить</span>
+        <span class="login__forget-password-reset uteam-link">Сбросить</span>
       </div>
       <div class="login__have-not-account">
         <span class="login__have-not-account-question">
           Нет аккаунта?
         </span>
-        <span class="login__have-not-account-registration" @click="$emit('showRegistration')">
+        <span class="login__have-not-account-registration uteam-link" @click="$emit('showRegistration')">
           Пройти регистрацию
         </span>
       </div>
@@ -47,7 +82,9 @@ import {
 import { Action } from 'vuex-class';
 import TButton from '@/components/controls/TButton.vue';
 import TInput from '@/components/controls/TInput.vue';
+import TFormControl from '@/components/controls/TFormControl.vue';
 import LoginEntity from '@/entities/LoginEntity';
+import { required, email } from 'vuelidate/lib/validators';
 
 const namespace = 'registration';
 
@@ -55,8 +92,21 @@ const namespace = 'registration';
   components: {
     TButton,
     TInput,
+    TFormControl,
   },
-})
+
+  validations: {
+    login: {
+      email: {
+        required,
+        email,
+      },
+      password: {
+        required,
+      },
+    },
+  },
+} as any)
 export default class LoginComponent extends Vue {
   @Action('postLogin', { namespace }) postLogin!: (login: LoginEntity) => void;
 
@@ -65,16 +115,34 @@ export default class LoginComponent extends Vue {
 
   private currentShow: boolean = false;
 
-  private login: LoginEntity = this.getDefaultLoginData();
+  login: LoginEntity = this.getDefaultLoginData();
+
+  loading = false;
+
+  serverError = '';
+
+  statusErrors: { [key: number]: string } = {
+    401: 'Неверный логин или пароль',
+  };
 
   private async onClick() {
     try {
+      this.serverError = '';
+      this.$v.$touch();
+
+      if (this.$v.$invalid) return;
+
+      this.loading = true;
+
       await this.postLogin(this.login);
 
       this.login = this.getDefaultLoginData();
       this.$emit('close');
+      this.loading = false;
     } catch (err) {
-      alert(err);
+      this.serverError = this.statusErrors[err?.response?.status] || 'Что-то пошло не так';
+
+      this.loading = false;
     }
   }
 
@@ -97,8 +165,8 @@ export default class LoginComponent extends Vue {
     display: flex;
     flex-direction: column;
     width: 320px;
-    height: 470px;
-    padding: 20px;
+    //height: 470px;
+    padding: 40px 0;
     margin: auto;
 
     &__cross {
@@ -109,12 +177,9 @@ export default class LoginComponent extends Vue {
     }
 
     &__label {
-        width: 300px;
         height: 44px;
-        margin-left: 10px;
         font-size: 26px;
         text-align: center;
-        margin-top: 30px;
         font-family: Inter;
         font-style: normal;
         font-weight: 600;
@@ -123,12 +188,16 @@ export default class LoginComponent extends Vue {
         color: #333333;
     }
 
+    &__form-control {
+      width: auto;
+    }
+
     &__email-input {
         display: inline;
         width: 100%;
         height: 40px;
         padding-left: 50px;
-        margin-top: 58px;
+        margin-top: 40px;
         background: #fff url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 13px;
     }
 
@@ -137,7 +206,7 @@ export default class LoginComponent extends Vue {
         width: 100%;
         height: 40px;
         padding-left: 50px;
-        margin-top: 30px;
+        margin-top: 10px;
         background: #fff
           url("/images/svg/registration/password-icon.svg") no-repeat scroll 22px 13px;
     }
@@ -146,7 +215,7 @@ export default class LoginComponent extends Vue {
         display: inline;
         width: 100%;
         height: 40px;
-        margin-top: 30px;
+        margin-top: 10px;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.06);
         border-radius: 5px;
     }
@@ -154,7 +223,7 @@ export default class LoginComponent extends Vue {
     &__divider {
         width: 100%;
         height: 1px;
-        margin-top: 30px;
+        margin-top: 20px;
         background: #DBDBDB;
     }
 
@@ -202,13 +271,11 @@ export default class LoginComponent extends Vue {
 
   @media (min-width: 992px) {
     .login {
-      width: 600px;
-      height: 518px;
+      width: 392px;
 
       &__label {
           width: 403px;
           height: 44px;
-          margin: auto;
           font-size: 36px;
       }
 
@@ -217,9 +284,9 @@ export default class LoginComponent extends Vue {
           width: 392px;
           height: 50px;
           background: #fff
-            url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 17px;
+            url("/images/svg/registration/email-icon.svg") no-repeat scroll 22px 19px;
           padding-left: 50px;
-          margin: auto;
+          margin-top: 58px;
       }
 
       &__password-input {
@@ -227,23 +294,23 @@ export default class LoginComponent extends Vue {
           height: 50px;
           background: #fff url("/images/svg/registration/password-icon.svg")
               no-repeat scroll 22px 17px;
-          margin: auto;
+          margin-top: 10px;
       }
 
       &__btn {
-          width: 392px;
-          height: 44px;
-          margin: auto;
+        width: 100%;
+        height: 44px;
+        margin: 10px 0 5px;
       }
 
       &__divider {
-          width: 392px;
-          margin: auto;
+          width: 100%;
+          margin-top: 30px;
       }
 
       &__forget-password {
           width: 185px;
-          margin: auto;
+          margin: 30px auto 0;
           vertical-align: middle;
       }
 

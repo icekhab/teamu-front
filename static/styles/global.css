@@ -32,3 +32,11 @@ h1 {
     box-sizing: border-box;
     margin: 0;
 }
+
+.uteam-link {
+    color: #0085FF;
+    cursor: pointer;
+}
+.uteam-link:hover {
+    text-decoration: underline;
+}
