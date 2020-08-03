@@ -89,9 +89,11 @@ import {
 } from 'vue-property-decorator';
 import LinkEntity from '@/entities/LinkEntity';
 import deepCopyFunction from '@/helpers/deepCopy';
+import UrlHelper from '@/helpers/UrlHelper';
 import TFormControl from '@/components/controls/TFormControl.vue';
 import { Action, State } from 'vuex-class';
-import { required, url } from 'vuelidate/lib/validators';
+import { url } from '@/helpers/validators';
+import { required } from 'vuelidate/lib/validators';
 
 const namespace = 'savingProject';
 const emptyLink: LinkEntity = { id: 0, link: '', title: '' };
@@ -152,6 +154,12 @@ export default class ProjectLinksFormComponent extends Vue {
 
       this.loading = true;
       this.isSaved = false;
+
+      this.newLinks = this.newLinks.map((link) => ({
+        ...link,
+        link: UrlHelper.getUrlWithHttpIfNeed(link.link),
+      }));
+
       await this.saveLinks(this.newLinks);
       this.isSaved = true;
       this.loading = false;

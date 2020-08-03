@@ -126,8 +126,10 @@ import TFormControl from '@/components/controls/TFormControl.vue';
 import TCheckbox from '@/components/controls/TCheckbox.vue';
 import SignUpEntity from '@/entities/SignUpEntity';
 import {
-  email, required, url, minLength,
+  email, required, minLength,
 } from 'vuelidate/lib/validators';
+import { url } from '@/helpers/validators';
+import UrlHelper from '@/helpers/UrlHelper';
 
 const namespace = 'registration';
 
@@ -183,6 +185,8 @@ export default class RegistrationComponent extends Vue {
       if (this.$v.$invalid) return;
 
       this.loading = true;
+
+      this.signup.openLandProfileLink = UrlHelper.getUrlWithHttpIfNeed(this.signup.openLandProfileLink);
 
       await this.postSignUp(this.signup);
       this.signup = this.getDefaultSignupData();
