@@ -4,6 +4,24 @@
       <span class="registration__cross" @click="$emit('close')">X</span>
       <span class="registration__label">Регистрация в UTEAM</span>
       <TFormControl
+        :is-error="$v.signup.name.$error"
+        class="registration__form-control"
+      >
+        <TInput
+          v-model="signup.name"
+          class="registration__name-input"
+          placeholder="Имя"
+          maxlength="255"
+          @blur="$v.signup.name.$touch()"
+        />
+        <template slot="errors">
+          <template v-if="!$v.signup.name.required">
+            Заполните имя
+          </template>
+        </template>
+      </TFormControl>
+
+      <TFormControl
         :is-error="$v.signup.email.$error"
         class="registration__form-control"
       >
@@ -143,6 +161,9 @@ const namespace = 'registration';
 
   validations: {
     signup: {
+      name: {
+        required,
+      },
       email: {
         required,
         email,
@@ -186,7 +207,8 @@ export default class RegistrationComponent extends Vue {
 
       this.loading = true;
 
-      this.signup.openLandProfileLink = UrlHelper.getUrlWithHttpIfNeed(this.signup.openLandProfileLink);
+      this.signup.openLandProfileLink = this.signup.openLandProfileLink
+          && UrlHelper.getUrlWithHttpIfNeed(this.signup.openLandProfileLink);
 
       await this.postSignUp(this.signup);
       this.signup = this.getDefaultSignupData();
@@ -255,6 +277,14 @@ export default class RegistrationComponent extends Vue {
     &__form-control {
       width: 100%;
       margin: 0 auto 10px;
+    }
+
+    &__name-input {
+      display: inline;
+      width: 100%;
+      height: 40px;
+      background: #fff url("/images/svg/registration/profile-icon.svg") no-repeat scroll 20px 11px;
+      padding-left: 50px;
     }
 
     &__email-input {
@@ -372,6 +402,12 @@ export default class RegistrationComponent extends Vue {
           width: 100%;
           margin: 50px auto 58px;
           font-size: 36px;
+      }
+
+      &__name-input {
+        width: 392px;
+        height: 50px;
+        background: #fff url("/images/svg/registration/profile-icon.svg") no-repeat scroll 20px 16px;
       }
 
       &__email-input {
