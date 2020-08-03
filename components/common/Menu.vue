@@ -141,6 +141,7 @@ export default class MenuComponent extends Vue {
 
       &__avatar {
         width: 35px;
+        min-width: 35px;
         height: 35px;
       }
 
@@ -223,13 +224,20 @@ export default class MenuComponent extends Vue {
       }
 
       .vm--modal {
-        min-width: auto;
-        max-width: 306px;
+        width: auto!important;
+        min-width: 306px;
+        max-width: 400px;
         max-height: 181px;
         position: absolute!important;
         top: auto!important;
         left: 10px!important;
         bottom: 70px!important;
+      }
+
+      .user-menu {
+        .line {
+          width: 100%;
+        }
       }
 
       .help-item {
