@@ -24,6 +24,7 @@ export default class ProjectLabelComponent extends Vue {
     [ProjectLabelEnum.mvpReady]: 'mvp-ready',
     [ProjectLabelEnum.scaling]: 'scaling',
     [ProjectLabelEnum.working]: 'working',
+    [ProjectLabelEnum.fundraising]: 'fundraising',
   };
 
   get classes() {
@@ -165,6 +166,22 @@ export default class ProjectLabelComponent extends Vue {
 
       &.active:hover {
         border-color: #B8EBDE;
+      }
+    }
+
+    &.fundraising {
+      border-color: #FFE9CB;
+
+      &.check {
+        background: #FFE9CB;
+
+        &.active:hover {
+          background: #FFD398;
+        }
+      }
+
+      &.active:hover {
+        border-color: #FFD398;
       }
     }
   }

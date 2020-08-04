@@ -6,6 +6,7 @@ enum ProjectLabelEnum {
   existSpecification = 'есть ТЗ',
   analyzing = 'делаем анализ',
   scaling = 'масштабируем',
+  fundraising = 'ищем деньги',
 }
 
 export default ProjectLabelEnum;
