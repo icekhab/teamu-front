@@ -223,6 +223,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import RegistrationLogin from '@/components/common/RegistrationLogin.vue';
 import { Mutation, State } from 'vuex-class';
 import { RawLocation } from 'vue-router/types/router';
+import YandexMetrikaHelper from '@/helpers/YandexMetrikaHelper';
 
 const namespace = 'user';
 
@@ -245,6 +246,7 @@ export default class LandingPageComponent extends Vue {
   };
 
   goToProjectsAfterLogin() {
+    YandexMetrikaHelper.loginButtonPressed();
     if (!this.isAuthorize) {
       this.setToAfterLogin(this.projectsLink);
       this.$modal.show('registration-modal');
