@@ -56,7 +56,7 @@
 
         <!-- Block about for who the service is -->
         <div id="for-whom" class="featuresBlock">
-          <h2>Для кого наш сервис</h2>
+          <h2>Для кого наш сревис</h2>
           <div class="infoBlock">
             <div class="infoBlock__leftPart">
               <div class="imgContainer">
@@ -103,12 +103,12 @@
             <p
               class="featuresBlock__subTitle"
             >
-              Наша цель - помочь авторам идей (или проектов) найти тех, кто готов и может помочь в их реализации. Людям, которые ищут для себя новые возможности развития и самореализации - найти интересные для них идеи и проекты, участие в которых выведет их на новый уровень.
+              Наша цель - помочь авторам идей (или проектов) найти тех, кто готов и может помочь в их реализации. Людям, которые ищут для себя новые возмоности развития и самореализации - найти интересные для них идеи и проекты, участие в которых выведет их на новый уровень.
             </p>
             <div class="featurePanels">
               <div class="featurePanels__item">
                 <div class="featurePanels__icon">
-                  <img src="/images/svg/landing/search.svg" alt>
+                  <img src="/images/svg/landing/icon1.svg" alt>
                 </div>
                 <div class="featurePanels__title">
                   Описать проект
@@ -121,7 +121,7 @@
               </div>
               <div class="featurePanels__item">
                 <div class="featurePanels__icon">
-                  <img src="/images/svg/landing/write.svg" alt>
+                  <img src="/images/svg/landing/icon2.svg" alt>
                 </div>
                 <div class="featurePanels__title">
                   Описать команду
@@ -132,7 +132,7 @@
               </div>
               <div class="featurePanels__item">
                 <div class="featurePanels__icon">
-                  <img src="/images/svg/landing/discuss.svg" alt>
+                  <img src="/images/svg/landing/icon3.svg" alt>
                 </div>
                 <div class="featurePanels__title">
                   Оговорить условия
@@ -162,13 +162,7 @@
                 Команда проекта будет очень благодарна за любые комментарии, советы и критику. Расскажите нам - что вам не хватает, какую проблему вы бы хотели решить с помощью подобного сервиса.
               </p>
               <div class="infoBlockTypeTwo__callToAction">
-                <TButton
-                  theme="outline-primary"
-                  class="infoBlockTypeTwo__callToAction__link"
-                  size="m"
-                  target="_blank"
-                  href="https://t.me/joinchat/CbUfXVP2Djjr4DtSxls0CA"
-                >
+                <TButton theme="outline-primary">
                   Написать нам
                 </TButton>
               </div>
@@ -197,13 +191,13 @@
               </div>
               <div class="footer__creators">
                 <!-- TODO: fill linkedin links -->
-                <a href="https://openland.com/generalsupport" target="_blank">Антон Захаров</a>
-                <a href="https://openland.com/bondarev" target="_blank">Дмитрий Бондарев</a>
-                <a href="https://openland.com/icekhab" target="_blank">Евгений Опрышко</a>
+                <a href="https://www.linkedin.com/in/..." target="_blank">Антон Захаров</a>
+                <a href="https://www.linkedin.com/in/..." target="_blank">Дмитрий Бондарев</a>
+                <a href="https://www.linkedin.com/in/..." target="_blank">Евгений Опрышко</a>
                 <a href="https://www.linkedin.com/in/..." target="_blank">Дмитрий Шевчук</a>
-                <a href="https://openland.com/uraganschik" target="_blank">Михаил Серёгин</a>
-                <a href="https://openland.com/skob_ak" target="_blank">Александр Скобельцын</a>
-                <a href="https://openland.com/logvinov_ek" target="_blank">Евгений Логвинов</a>
+                <a href="https://www.linkedin.com/in/..." target="_blank">Михаил Серёгин</a>
+                <a href="https://www.linkedin.com/in/..." target="_blank">Александр Скобельцын</a>
+                <a href="https://www.linkedin.com/in/..." target="_blank">Евгений Логвинов</a>
               </div>
             </div>
           </div>
@@ -223,6 +217,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import RegistrationLogin from '@/components/common/RegistrationLogin.vue';
 import { Mutation, State } from 'vuex-class';
 import { RawLocation } from 'vue-router/types/router';
+import YandexMetrikaHelper from '@/helpers/YandexMetrikaHelper';
 
 const namespace = 'user';
 
@@ -245,6 +240,8 @@ export default class LandingPageComponent extends Vue {
   };
 
   goToProjectsAfterLogin() {
+    YandexMetrikaHelper.loginButtonPressed();
+
     if (!this.isAuthorize) {
       this.setToAfterLogin(this.projectsLink);
       this.$modal.show('registration-modal');
@@ -360,8 +357,6 @@ h1 {
   justify-content: space-between;
 
   &__callToAction {
-    &__link {
-    }
   }
   &__leftPart {
     flex: 50%;
@@ -665,16 +660,6 @@ h1 {
       left: 0px;
       background-color: #333;
       margin: 0px 0px 0px 0px;
-    }
-  }
-
-  &__callToAction {
-    &__link {
-      padding: 11px 20px 11px 20px;
-
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
     }
   }
 }
