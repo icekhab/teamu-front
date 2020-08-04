@@ -10,9 +10,6 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1, minimum-scale=1' },
     ],
-    script: [ { src: '/js/yandex-matrika.js' } ],
-    noscript: [{ innerHTML: '<div><img src="https://mc.yandex.ru/watch/66123097" style="position:absolute; left:-9999px;" alt="" /></div>' }],
-    __dangerouslyDisableSanitizers: ['noscript', 'script'],
   },
   /*
   ** Customize the progress bar color
@@ -83,5 +80,16 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     'vue-scrollto/nuxt',
+    [
+      '@nuxtjs/yandex-metrika',
+      {
+        id: '66123097',
+        webvisor: true,
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true
+      }
+    ],
   ],
 };
