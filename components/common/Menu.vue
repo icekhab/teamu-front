@@ -5,18 +5,18 @@
     </nuxt-link>
     <CircleAvatar class="menu__item avatar" @click="onClickAvatar" />
     <client-only>
-      <nuxt-link v-if="isAuthorize" class="menu__item my-idea" :class="getClass(myProjectsLink)" :to="myProjectsLink">
-        <MyIdeaIcon class="menu__item my-idea" />
+      <nuxt-link v-if="isAuthorize" class="menu__item my-idea" :to="myProjectsLink">
+        <MyIdeaIcon class="menu__item my-idea" :class="getClass(myProjectsLink)" />
       </nuxt-link>
-      <MyIdeaIcon v-else class="menu__item my-idea" @click="authAndGoMyProjects" />
+      <MyIdeaIcon v-else class="menu__item my-idea" :class="getClass(myProjectsLink)" @click="authAndGoMyProjects" />
       <slot slot="placeholder">
-        <MyIdeaIcon class="menu__item my-idea" @click="authAndGoMyProjects" />
+        <MyIdeaIcon class="menu__item my-idea" :class="getClass(myProjectsLink)" @click="authAndGoMyProjects" />
       </slot>
     </client-only>
     <SearchIcon class="menu__item search" />
     <div class="menu__item empty" />
-    <nuxt-link class="menu__item all-idea" :class="getClass(projectsLink)" :to="projectsLink">
-      <AllIdeasIcon class="menu__item all-idea" />
+    <nuxt-link class="menu__item all-idea" :to="projectsLink">
+      <AllIdeasIcon class="menu__item all-idea" :class="getClass(projectsLink)" />
     </nuxt-link>
     <!--    <div class="menu__item notification" />-->
     <nuxt-link class="menu__item help" :to="{ name: 'routeName'}" href="https://t.me/joinchat/CbUfXVP2Djjr4DtSxls0CA" target="_blank">
