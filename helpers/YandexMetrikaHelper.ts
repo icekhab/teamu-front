@@ -10,6 +10,8 @@ class YandexMetrikaHelper {
 
     // @ts-ignore
     ym(id, 'reachGoal', goalName);
+    // @ts-ignore
+    ym(id, 'params', {params: {test: {myParam: 'clickedButton'}}});
   }
 }
 
