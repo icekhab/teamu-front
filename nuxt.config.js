@@ -88,8 +88,7 @@ module.exports = {
         clickmap: true,
         trackLinks: true,
         accurateTrackBounce: true,
-        webvisor: true
-      }
+      },
     ],
   ],
 };

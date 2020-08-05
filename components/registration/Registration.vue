@@ -112,7 +112,7 @@
           theme="primary"
           :loading="loading"
           :disabled="loading"
-          @click="onClick"
+          @click="onRegistration"
         >
           Зарегистрироваться
         </TButton>
@@ -148,6 +148,7 @@ import {
 } from 'vuelidate/lib/validators';
 import { url } from '@/helpers/validators';
 import UrlHelper from '@/helpers/UrlHelper';
+import MetrikaHelper from '@/helpers/MetrikaHelper';
 
 const namespace = 'registration';
 
@@ -197,7 +198,9 @@ export default class RegistrationComponent extends Vue {
 
   private signup: SignUpEntity = this.getDefaultSignupData();
 
-  private async onClick() {
+  private async onRegistration() {
+    MetrikaHelper.registrationButtonPressed();
+
     try {
       this.serverError = '';
 

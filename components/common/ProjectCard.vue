@@ -66,7 +66,7 @@
           adaptive
         >
           <div class="edit-menu">
-            <div class="edit-menu__edit-block" @click="edit">
+            <div class="edit-menu__edit-block" @click="editProject">
               <span class="edit-menu__edit-block__edit-icon" />
               Редактировать
             </div>
@@ -83,7 +83,7 @@
       <DotsIcon class="project-card__dots" />
       <template slot="popover">
         <div class="edit-menu">
-          <div class="edit-menu__edit-block" @click="edit">
+          <div class="edit-menu__edit-block" @click="editProject">
             <EditIcon class="edit-menu__edit-block__edit-icon" />
             Редактировать
           </div>
@@ -105,6 +105,7 @@ import ProfileIcon from '@/static/images/svg/profile-icon.svg';
 import CloseIcon from '@/static/images/svg/close.svg';
 import DotsIcon from '@/static/images/svg/dots.svg';
 import ProjectLabel from '@/components/common/ProjectLabel.vue';
+import MetrikaHelper from '@/helpers/MetrikaHelper';
 
 @Component({
   components: {
@@ -130,12 +131,16 @@ export default class ProjectCardComponent extends Vue {
     this.$modal.show(this.modalName);
   }
 
-  private edit() {
+  private editProject() {
+    MetrikaHelper.editProjectButtonPressed();
+
     this.$modal.hide(this.modalName);
     this.$emit('edit', this.project.id);
   }
 
   private deleteProject() {
+    MetrikaHelper.deleteProjectButtonPressed();
+
     this.$modal.hide(this.modalName);
     this.$emit('delete', this.project.id);
   }

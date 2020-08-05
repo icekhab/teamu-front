@@ -1,17 +1,20 @@
 class YandexMetrikaHelper {
-  private static taskId: number = 66123097;
-
-  static loginButtonPressed() {
-    this.target(this.taskId, 'entryButton');
-  }
-
   static target(id: number, goalName: string) {
-    console.log('UTEam debug', id, goalName);
-
+    console.log(id, goalName);
     // @ts-ignore
     ym(id, 'reachGoal', goalName);
+  }
+
+  static filterParams(id: number, name: string, place: string) {
+    console.log(id, 'params', { params: { filter: { name, place } } });
     // @ts-ignore
-    ym(id, 'params', {params: {test: {myParam: 'clickedButton'}}});
+    ym(id, 'params', { params: { filter: { name, place } } });
+  }
+
+  static mobileFilterParams(id: number, name: string, place: string) {
+    console.log(id, 'params', { params: { mobileFilter: { name, place } } });
+    // @ts-ignore
+    ym(id, 'params', { params: { mobileFilter: { name, place } } });
   }
 }
 

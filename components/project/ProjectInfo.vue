@@ -4,7 +4,7 @@
       <div class="project-info__about-creating">
         <span>Добавлена: {{ project.created | formatDate(true) }}</span>
         <span v-if="my" class="project-info__btn-panel">
-          <TButton class="project-info__btn" theme="outline-primary" :to="projectEditLink">
+          <TButton class="project-info__btn" theme="outline-primary" :to="projectEditLink" @click="editProjectPressed">
             Редактировать
           </TButton>
           <TButton v-if="!project.isPublished" class="project-info__publish-btn" @click="publish">
@@ -72,6 +72,7 @@ import { Action, State } from 'vuex-class';
 import DetailProjectEntity from '@/entities/DetailProjectEntity';
 import ProjectLabel from '@/components/common/ProjectLabel.vue';
 import TButton from '@/components/controls/TButton.vue';
+import MetrikaHelper from '@/helpers/MetrikaHelper';
 
 const namespace = 'project';
 
@@ -93,13 +94,21 @@ export default class ProjectInfoComponent extends Vue {
   @Action('draftProject', { namespace: 'myProjects' }) draftProject!: (id: number) => void;
 
   async publish() {
+    MetrikaHelper.publishProjectButtonPressed();
+
     await this.publishProject(this.project.id);
     await this.$store.dispatch('project/getProject', this.$route.params.id);
   }
 
   async toDraft() {
+    MetrikaHelper.draftProjectButtonPressed();
+
     await this.draftProject(this.project.id);
     await this.$store.dispatch('project/getProject', this.$route.params.id);
+  }
+
+  editProjectPressed() {
+    MetrikaHelper.editProjectButtonPressed();
   }
 
   get projectEditLink() {

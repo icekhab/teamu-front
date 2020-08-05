@@ -12,10 +12,10 @@
           </div>
           <div class="nav">
             <div class="nav__link">
-              <a v-scroll-to="'#for-whom'" href="#">Кому подойдет?</a>
+              <a v-scroll-to="'#for-whom'" href="#" @click="onForWhom">Кому подойдет?</a>
             </div>
             <div class="nav__link">
-              <a v-scroll-to="{ el: '#possibility', duration: 700 }" href="#">Возможности</a>
+              <a v-scroll-to="{ el: '#possibility', duration: 700 }" href="#" @click="onPossibility">Возможности</a>
             </div>
             <div class="nav__link">
               <a v-scroll-to="{ el: '#feedback', duration: 900 }" href="#">Написать нам</a>
@@ -25,7 +25,7 @@
             <TButton
               class="rigthNav__loginBtn"
               theme="outline-primary"
-              @click="goToProjectsAfterLogin"
+              @click="onEntry"
             >
               Войти
             </TButton>
@@ -42,7 +42,7 @@
               Находи единомышленников и партнеров для их реализации
             </p>
             <div class="block__callToAction">
-              <TButton class="block__link" theme="primary" :to="projectsLink">
+              <TButton class="block__link" theme="primary" :to="projectsLink" @click="onTryFree">
                 Попробовать бесплатно
               </TButton>
             </div>
@@ -90,7 +90,7 @@
               <h3>Профессионалам</h3>
               <p>Хватит обменивать свое время на деньги! Делай то, что нравится и во что ты веришь — с командой единомышленников. Это шанс стать свободным и независимым.</p>
               <div class="infoBlock__callToAction">
-                <TButton theme="outline-primary" @click="goToProjectsAfterLogin">
+                <TButton theme="outline-primary" @click="onFindProject">
                   Найти проект
                 </TButton>
               </div>
@@ -223,7 +223,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import RegistrationLogin from '@/components/common/RegistrationLogin.vue';
 import { Mutation, State } from 'vuex-class';
 import { RawLocation } from 'vue-router/types/router';
-import YandexMetrikaHelper from '@/helpers/YandexMetrikaHelper';
+import MetrikaHelper from '@/helpers/MetrikaHelper';
 
 const namespace = 'user';
 
@@ -245,8 +245,23 @@ export default class LandingPageComponent extends Vue {
     name: 'project-new',
   };
 
+  onTryFree() {
+    MetrikaHelper.tryFreeButtonPressed();
+  }
+
+  onFindProject() {
+    MetrikaHelper.findProjectButtonPressed();
+
+    this.goToProjectsAfterLogin();
+  }
+
+  onEntry() {
+    MetrikaHelper.loginButtonPressed();
+
+    this.goToProjectsAfterLogin();
+  }
+
   goToProjectsAfterLogin() {
-    YandexMetrikaHelper.loginButtonPressed();
     if (!this.isAuthorize) {
       this.setToAfterLogin(this.projectsLink);
       this.$modal.show('registration-modal');
@@ -256,12 +271,22 @@ export default class LandingPageComponent extends Vue {
   }
 
   goToProjectNewAfterLogin() {
+    MetrikaHelper.findPeolpeButtonPressed();
+
     if (!this.isAuthorize) {
       this.setToAfterLogin(this.projectNewLink);
       this.$modal.show('registration-modal');
     } else {
       this.$router.push(this.projectNewLink);
     }
+  }
+
+  onForWhom() {
+    MetrikaHelper.forWhomMenuPressed();
+  }
+
+  onPossibility() {
+    MetrikaHelper.possibilityMenuPressed();
   }
 }
 </script>

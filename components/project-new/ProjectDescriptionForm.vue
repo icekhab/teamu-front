@@ -93,6 +93,7 @@ import TTextArea from '@/components/controls/TTextArea.vue';
 import DescriptionProjectEntity from '@/entities/DescriptionProjectEntity';
 import ImageChooser from '@/components/controls/ImageChooser.vue';
 import LabelEntity from '@/entities/LabelEntity';
+import MetrikaHelper from '@/helpers/MetrikaHelper';
 import deepCopyFunction from '@/helpers/deepCopy';
 import { Action, State } from 'vuex-class';
 import {
@@ -160,6 +161,8 @@ export default class ProjectDescriptionFormComponent extends Vue {
   }
 
   async submitForm() {
+    MetrikaHelper.saveEditedProjectButtonPressed();
+
     try {
       this.serverError = '';
       this.$v.$touch();
