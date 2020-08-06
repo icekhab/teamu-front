@@ -15,7 +15,7 @@
     <TButton
       class="all-projects-mobile-filter__confirm"
       theme="primary"
-      @click="$emit('filter', labels)"
+      @click="applyFilter"
     >
       Применить
     </TButton>
@@ -25,6 +25,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import ProjectLabelEnum from '@/enums/ProjectLabelEnum';
+import MetrikaHelper from '@/helpers/MetrikaHelper';
 import ProjectCard from '~/components/common/ProjectCard.vue';
 import FilterIcon from '~/static/images/svg/filter-icon.svg';
 import ProjectLabel from '~/components/common/ProjectLabel.vue';
@@ -39,11 +40,15 @@ import ProjectLabel from '~/components/common/ProjectLabel.vue';
 export default class MobileFilterComponent extends Vue {
   @Prop() checkedLabels!: ProjectLabelEnum[];
 
+  @Prop({ default: 'noname' }) name!: string;
+
   labels = [...this.checkedLabels];
 
   ProjectLabelEnum = ProjectLabelEnum;
 
   changeLabel(label: ProjectLabelEnum) {
+    MetrikaHelper.mobileFilterChanged(label, this.name);
+
     const isLabelChecked = this.labels.includes(label);
 
     if (isLabelChecked) {
@@ -52,6 +57,12 @@ export default class MobileFilterComponent extends Vue {
     } else {
       this.labels.push(label);
     }
+  }
+
+  applyFilter() {
+    MetrikaHelper.filterMobilePressed();
+
+    this.$emit('filter', this.labels);
   }
 }
 </script>

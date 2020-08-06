@@ -46,6 +46,7 @@ import DescriptionProjectEntity from '@/entities/DescriptionProjectEntity';
 import ProjectDescriptionForm from '@/components/project-new/ProjectDescriptionForm.vue';
 import ProjectVacanciesForm from '@/components/project-new/ProjectVacanciesForm.vue';
 import { State } from 'vuex-class';
+import MetrikaHelper from '@/helpers/MetrikaHelper';
 
 const namespace = 'savingProject';
 
@@ -111,6 +112,8 @@ export default class ProjectNewPageComponent extends Vue {
   }
 
   async submitVacanciesForm() {
+    MetrikaHelper.saveProjectButtonPressed();
+
     await this.$router.push({
       name: 'project-id',
       params: {

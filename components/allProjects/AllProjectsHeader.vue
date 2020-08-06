@@ -16,6 +16,7 @@
           class="all-projects-header__add-project-btn"
           theme="primary"
           :to="createProjectLink"
+          @click="onCreateProject"
         >
           Добавить проект
         </TButton>
@@ -33,6 +34,7 @@
             class="all-projects-header__add-project-btn"
             theme="primary"
             type="button"
+            @click="onCreateProject"
           >
             Добавить проект
           </TButton>
@@ -74,6 +76,7 @@
       >
         <MobileFilter
           class="all-projects-header__mobile-filter"
+          name="all-projects"
           :checked-labels="filter.projectLabels"
           @filter="changeMobileFilter"
         />
@@ -88,6 +91,7 @@ import ProjectLabelEnum from '@/enums/ProjectLabelEnum';
 import { Mutation, State } from 'vuex-class';
 import ProjectsFilterEntity from '@/entities/ProjectsFilterEntity';
 import debounce from '@/helpers/debounce';
+import MetrikaHelper from '@/helpers/MetrikaHelper';
 import FilterIcon from '@/static/images/svg/filter-icon.svg';
 import { RawLocation } from 'vue-router/types/router';
 import ProjectCard from '~/components/common/ProjectCard.vue';
@@ -129,13 +133,19 @@ export default class AllProjectsHeaderComponent extends Vue {
     name: 'project-new',
   };
 
+  onCreateProject() {
+    MetrikaHelper.addProjectButtonButtonPressed();
+  }
+
   openLogin() {
+    this.onCreateProject();
     this.setToAfterLogin(this.createProjectLink);
 
     this.$modal.show('login-modal');
   }
 
   changeLabel(label: ProjectLabelEnum) {
+    MetrikaHelper.filterChanged(label, 'all-projects');
     const isLabelChecked = this.filter.projectLabels.includes(label);
 
     if (isLabelChecked) {

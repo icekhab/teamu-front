@@ -56,6 +56,7 @@ import MyProjectsHeader from '@/components/myProjects/MyProjectsHeader.vue';
 import ProjectList from '@/components/common/ProjectList.vue';
 import { Action, Getter } from 'vuex-class';
 import ProjectEntity from '@/entities/ProjectEntity';
+import MetrikaHelper from '@/helpers/MetrikaHelper';
 
 const namespace = 'myProjects';
 
@@ -91,12 +92,16 @@ export default class MyProjectsPageComponent extends Vue {
   }
 
   async toDraft(id: number) {
+    MetrikaHelper.draftProjectButtonPressed();
+
     await this.draftProject(id);
     await this.getPublishedProjects();
     await this.getDraftProjects();
   }
 
   async publish(id: number) {
+    MetrikaHelper.publishProjectButtonPressed();
+
     await this.publishProject(id);
     await this.getPublishedProjects();
     await this.getDraftProjects();

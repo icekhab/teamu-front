@@ -80,5 +80,15 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     'vue-scrollto/nuxt',
+    [
+      '@nuxtjs/yandex-metrika',
+      {
+        id: '66123097',
+        webvisor: true,
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+      },
+    ],
   ],
 };

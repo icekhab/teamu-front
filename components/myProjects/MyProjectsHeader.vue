@@ -16,6 +16,7 @@
         class="my-projects-header__add-project-btn"
         theme="primary"
         :to="createProjectLink"
+        @click="onCreateProject"
       >
         Добавить проект
       </TButton>
@@ -24,7 +25,7 @@
         class="my-projects-header__add-project-btn"
         theme="primary"
         type="button"
-        @click.native="setIsShowLogin(true)"
+        @click.native="onCreateProjectNotAuthorized"
       >
         Добавить проект
       </TButton>
@@ -65,6 +66,7 @@
       >
         <MobileFilter
           class="my-projects-header__mobile-filter"
+          name="my-projects"
           :checked-labels="filter.projectLabels"
           @filter="changeMobileFilter"
         />
@@ -83,6 +85,7 @@ import FilterIcon from '@/static/images/svg/filter-icon.svg';
 import ProjectCard from '@/components/common/ProjectCard.vue';
 import ProjectLabel from '@/components/common/ProjectLabel.vue';
 import MobileFilter from '@/components/allProjects/MobileFilter.vue';
+import MetrikaHelper from '@/helpers/MetrikaHelper';
 
 const namespace = 'myProjects';
 
@@ -119,7 +122,18 @@ export default class MyProjectsHeaderComponent extends Vue {
     name: 'project-new',
   };
 
+  onCreateProject() {
+    MetrikaHelper.addProjectButtonButtonPressed();
+  }
+
+  onCreateProjectNotAuthorized() {
+    this.onCreateProject();
+    this.setIsShowLogin(true);
+  }
+
   changeLabel(label: ProjectLabelEnum) {
+    MetrikaHelper.filterChanged(label, 'my-projects');
+
     const isLabelChecked = this.filter.projectLabels.includes(label);
 
     if (isLabelChecked) {
