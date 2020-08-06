@@ -6,15 +6,15 @@ class YandexMetrikaHelper {
   }
 
   static filterParams(id: number, name: string, place: string) {
-    console.log(id, 'params', { params: { filter: { name, place } } });
+    console.log(id, 'params', { params: { filter: { [place]: name } } });
     // @ts-ignore
-    ym(id, 'params', { params: { filter: { name, place } } });
+    ym(id, 'params', { params: { filter: { [place]: name } } });
   }
 
   static mobileFilterParams(id: number, name: string, place: string) {
-    console.log(id, 'params', { params: { mobileFilter: { name, place } } });
+    console.log(id, 'params', { params: { mobileFilter: { [place]: name } } });
     // @ts-ignore
-    ym(id, 'params', { params: { mobileFilter: { name, place } } });
+    ym(id, 'params', { params: { mobileFilter: { [place]: name } } });
   }
 }
 
