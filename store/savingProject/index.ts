@@ -9,12 +9,14 @@ import VacancyEntity from '@/entities/VacancyEntity';
 import LabelService from '@/services/LabelService';
 import LinkService from '@/services/LinkService';
 import VacancyService from '@/services/VacancyService';
+import FileEntity from '@/entities/FileEntity';
 
 export const state = (): SavingProjectState => ({
   project: {
     id: 0,
     description: '',
     name: '',
+    imagePath: '',
   },
   labels: [],
   links: [],
@@ -35,6 +37,10 @@ export const actions : any = {
     context: ActionContext<SavingProjectState, RootState>,
     project: DescriptionProjectEntity,
   ) {
+    // const { file, project: projectInfo } = context.state;
+    // console.log('projectInfo', JSON.stringify(projectInfo));
+    // console.log('project', project);
+
     if (project.id) {
       await ProjectService.update(project);
 
@@ -122,6 +128,17 @@ export const actions : any = {
 
     context.commit('setVacancies', vacancies);
   },
+
+  async saveImage(
+    context: ActionContext<SavingProjectState, RootState>,
+  ) {
+    const { project, file } = context.state;
+
+    if (file) {
+      const imagePath = await ProjectService.uploadImg(file.file);
+      context.commit('setProject', { ...project, imagePath });
+    }
+  },
 };
 
 export const mutations = {
@@ -139,5 +156,9 @@ export const mutations = {
 
   setVacancies(currentState: SavingProjectState, vacancies: VacancyEntity[]): void {
     currentState.vacancies = [...vacancies];
+  },
+
+  setFileForProject(currentState: SavingProjectState, file: FileEntity): void {
+    currentState.file = file;
   },
 };

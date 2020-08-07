@@ -57,6 +57,7 @@
         class="project-description-form__logo"
         name="project-logo"
         :base-src="newProject.imagePath"
+        @change="imageChanged"
       />
     </div>
 
@@ -93,9 +94,10 @@ import TTextArea from '@/components/controls/TTextArea.vue';
 import DescriptionProjectEntity from '@/entities/DescriptionProjectEntity';
 import ImageChooser from '@/components/controls/ImageChooser.vue';
 import LabelEntity from '@/entities/LabelEntity';
+import FileEntity from '@/entities/FileEntity';
 import MetrikaHelper from '@/helpers/MetrikaHelper';
 import deepCopyFunction from '@/helpers/deepCopy';
-import { Action, State } from 'vuex-class';
+import { Action, State, Mutation } from 'vuex-class';
 import {
   minLength, required,
 } from 'vuelidate/lib/validators';
@@ -136,7 +138,11 @@ export default class ProjectDescriptionFormComponent extends Vue {
 
   @Action('saveProject', { namespace }) readonly saveProject!: (project: DescriptionProjectEntity) => void;
 
+  @Action('saveImage', { namespace }) readonly saveImage!: () => void;
+
   @Action('saveLabels', { namespace }) readonly saveLabels!: (labels: LabelEntity[]) => void;
+
+  @Mutation('setFileForProject', { namespace }) setFileForProject!: (file: FileEntity) => void;
 
   @Prop({ default: 'Сохранить', type: String }) btnText!: string;
 
@@ -171,7 +177,7 @@ export default class ProjectDescriptionFormComponent extends Vue {
 
       this.loading = true;
       this.isSaved = false;
-
+      await this.saveImage();
       await this.saveProject(this.newProject);
       await this.saveLabels(this.newLabels);
       this.isSaved = true;
@@ -182,6 +188,10 @@ export default class ProjectDescriptionFormComponent extends Vue {
       this.loading = false;
       this.serverError = 'Oops, что-то пошло не так';
     }
+  }
+
+  async imageChanged(file: FileEntity) {
+    this.setFileForProject(file);
   }
 }
 </script>

@@ -59,6 +59,7 @@ module.exports = {
   */
   env: {
     API_URL: process.env.API_URL,
+    UTEAM_API_URL: process.env.UTEAM_API_URL,
   },
   plugins: [
     '~/plugins/filters/dateFilter.ts',
