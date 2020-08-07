@@ -39,6 +39,17 @@ class ProjectService extends BaseApiService {
   public delete(id: number): Promise<number> {
     return this.http.delete<DescriptionProjectEntity>(`/project/${id}`).then((x) => x.data.id);
   }
+
+  public uploadImg(file: any): Promise<string> {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    return this.uploaderHttp.post<any>('/image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }).then((x) => x.data);
+  }
 }
 
 export default new ProjectService();

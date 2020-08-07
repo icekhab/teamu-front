@@ -2,9 +2,12 @@ import axios, { AxiosInstance } from 'axios';
 import CookieHelper from '@/helpers/CookieHelper';
 
 const { API_URL: apiUrl } = process.env;
+const { UTEAM_API_URL: uploaderUrl } = process.env;
 
 class BaseApiService {
   public http: AxiosInstance;
+
+  public uploaderHttp: AxiosInstance;
 
   constructor() {
     this.http = axios.create({
@@ -19,6 +22,10 @@ class BaseApiService {
       }
 
       return config;
+    });
+
+    this.uploaderHttp = axios.create({
+      baseURL: `${uploaderUrl}/api/v1`,
     });
   }
 }

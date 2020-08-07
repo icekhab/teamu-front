@@ -12,11 +12,18 @@
       </TButton>
     </label>
 
-    <div class="image-uploader__max-size">
+    <div
+      class="image-uploader__max-size"
+      :class="{'image-uploader__max-size__error': !!isFileMaxSizeError }"
+    >
       jpg / png не более 1 mb
     </div>
 
-    <div :style="style" class="image-uploader">
+    <div
+      :style="style"
+      class="image-uploader"
+      :class="{'image-uploader__error': !!isFileMaxSizeError }"
+    >
       <label :for="name">
         <img
           v-if="!src && !baseSrc"
@@ -81,6 +88,7 @@ export default {
   data() {
     return {
       src: null,
+      isFileMaxSizeError: false,
     };
   },
   computed: {
@@ -106,6 +114,13 @@ export default {
   methods: {
     displayFile(event) {
       if (event.target.files && event.target.files[0]) {
+        if (event.target.files[0].size > 1000000) {
+          this.isFileMaxSizeError = true;
+
+          return;
+        }
+
+        this.isFileMaxSizeError = false;
         const reader = new FileReader();
         reader.onload = (e) => {
           this.src = e.target.result;
@@ -139,6 +154,10 @@ export default {
   margin: auto;
   transition: all .1s ease-in;
 
+  &__error {
+    border: 2px solid var(--errorColor);
+  }
+
   &__logo {
     width: 100%;
     height: 100%;
@@ -160,6 +179,9 @@ export default {
     margin-bottom: 20px;
     font-size: 10px;
     line-height: 12px;
+    &__error {
+      color: var(--errorColor);
+    }
   }
   label {
     cursor: pointer;
