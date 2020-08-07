@@ -3,6 +3,7 @@
     <div class="project-card">
       <nuxt-link :to="projectLink" class="project-card__link-block">
         <div class="project-card__header">
+          {{project.imagePath}}
           <span :to="projectLink" class="project-card__title">
             {{ project.name }}
           </span>
