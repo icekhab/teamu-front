@@ -1,7 +1,7 @@
 import UserContactEntity from '@/entities/UserContactEntity';
 
 class UserEntity {
-  id?: number;
+  id!: number;
 
   name?: string;
 

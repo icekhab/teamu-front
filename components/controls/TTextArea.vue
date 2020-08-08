@@ -61,6 +61,13 @@ export default class TTextAreaComponent extends Vue {
     transition-property: color, border-color;
     transition-duration: .15s;
     transition-timing-function: ease-out;
+    resize: none;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+
+    &::-webkit-scrollbar {
+      width: 0 !important
+    }
 
     &::placeholder {
       color: var(--greyColor);

@@ -51,6 +51,7 @@ export default class ProfileContactsComponent extends Vue {
       case 'twitter': return TwitterIcon;
       case 'facebook': return FacebookIcon;
       case 'openland': return OpenlandIcon;
+      case 'linkedin': return LinkedinIcon;
       default: return WebsiteIcon;
     }
   }
@@ -79,7 +80,7 @@ export default class ProfileContactsComponent extends Vue {
       align-items: center;
       color: #0085FF;
       text-decoration: none;
-      width: min-content;
+      width: max-content;
 
       &:hover {
         text-decoration: underline;
