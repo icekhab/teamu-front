@@ -15,6 +15,7 @@ export const state = (): ProjectState => ({
     name: '',
     user: {
       email: '',
+      contacts: [],
     },
   },
 });
