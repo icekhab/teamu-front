@@ -7,6 +7,10 @@
           class="profile-page__header"
         >
           Мой профиль
+
+          <nuxt-link class="profile-page__go-to-edit" :to="goToEditProfile">
+            <ToEditIcon />
+          </nuxt-link>
         </h1>
 
         <ProfileAvatar class="profile-page__avatar" :profile="profile" />
@@ -27,6 +31,7 @@ import ProfileAvatar from '@/components/profile/ProfileAvatar.vue';
 import ProfileBasicInfo from '@/components/profile/ProfileBasicInfo.vue';
 import ProfileAbout from '@/components/profile/ProfileAbout.vue';
 import ProfileContacts from '@/components/profile/ProfileContacts.vue';
+import ToEditIcon from '@/static/images/svg/to-edit-icon.svg';
 
 const namespace = 'profile';
 
@@ -37,6 +42,7 @@ const namespace = 'profile';
     ProfileBasicInfo,
     ProfileAvatar,
     MenuLayout,
+    ToEditIcon,
   },
 
   validate({ params }: any) {
@@ -59,6 +65,12 @@ export default class MainPageComponent extends Vue {
   get isMy() {
     return this.user?.id === this.profile.id;
   }
+
+  get goToEditProfile() {
+    return {
+      name: 'profile-edit',
+    };
+  }
 }
 </script>
 
@@ -71,6 +83,8 @@ export default class MainPageComponent extends Vue {
 
     &__header {
       margin-bottom: 30px;
+      display: flex;
+      align-items: center;
     }
 
     &__avatar {
@@ -79,6 +93,23 @@ export default class MainPageComponent extends Vue {
 
     &__block {
       margin-bottom: 30px;
+    }
+
+    &__go-to-edit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: var(--defaultBorderRadius);
+      background: var(--greyColor);
+      color: #FFFFFF;
+      margin-left: 10px;
+      transition: color .15s ease-out;
+
+      &:hover {
+        background: var(--primaryColor);
+      }
     }
   }
 
