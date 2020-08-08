@@ -18,6 +18,7 @@ export const state = (): UserState => ({
     id: 0,
     name: '',
     email: '',
+    contacts: [],
   },
 });
 

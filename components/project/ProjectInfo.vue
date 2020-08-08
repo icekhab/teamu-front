@@ -14,11 +14,17 @@
             В черновик
           </TButton>
         </span>
-        <span v-else class="project-info__author">
+        <nuxt-link v-else :to="toUserProfile" class="project-info__author">
           Автор:
-          <CircleAvatar class="project-info__author-avatar" />
+          <Avatar
+            class="project-info__author-avatar"
+            :size="25"
+            :username="project.user.name || ''"
+            :src="project.user.imagePath"
+            :custom-style="{ 'background-size': 'cover' }"
+          />
           <span class="project-info__author-name">{{ project.user.name }}</span>
-        </span>
+        </nuxt-link>
       </div>
 
       <div class="project-info__header">
@@ -73,6 +79,7 @@ import DetailProjectEntity from '@/entities/DetailProjectEntity';
 import ProjectLabel from '@/components/common/ProjectLabel.vue';
 import TButton from '@/components/controls/TButton.vue';
 import MetrikaHelper from '@/helpers/MetrikaHelper';
+import Avatar from 'vue-avatar';
 
 const namespace = 'project';
 
@@ -80,6 +87,7 @@ const namespace = 'project';
   components: {
     ProjectLabel,
     TButton,
+    Avatar,
   },
 })
 export default class ProjectInfoComponent extends Vue {
@@ -119,6 +127,13 @@ export default class ProjectInfoComponent extends Vue {
       },
     };
   }
+
+  get toUserProfile() {
+    return {
+      name: 'profile-id',
+      params: { id: this.project.user.id },
+    };
+  }
 }
 </script>
 
@@ -137,6 +152,8 @@ export default class ProjectInfoComponent extends Vue {
       display: flex;
       align-items: center;
       margin-top: 15px;
+      text-decoration: none;
+      color: var(--greyColor);
     }
 
     &__btn-panel {

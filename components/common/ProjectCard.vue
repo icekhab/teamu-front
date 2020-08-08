@@ -3,7 +3,6 @@
     <div class="project-card">
       <nuxt-link :to="projectLink" class="project-card__link-block">
         <div class="project-card__header">
-          {{project.imagePath}}
           <span :to="projectLink" class="project-card__title">
             {{ project.name }}
           </span>
@@ -19,9 +18,15 @@
         <div class="project-card__footer">
           <div class="project-card__author">
             Автор:
-            <CircleAvatar class="project-card__author-avatar" />
+            <Avatar
+              class="project-card__author-avatar"
+              :size="25"
+              :username="project.user.name || ''"
+              :src="project.user.imagePath"
+              :custom-style="{ 'background-size': 'cover' }"
+            />
             <span class="project-card__author-name">
-              {{ project.user.name || project.user.email }}
+              {{ project.user.name }}
             </span>
           </div>
           <div class="project-card__labels">
@@ -107,6 +112,7 @@ import CloseIcon from '@/static/images/svg/close.svg';
 import DotsIcon from '@/static/images/svg/dots.svg';
 import ProjectLabel from '@/components/common/ProjectLabel.vue';
 import MetrikaHelper from '@/helpers/MetrikaHelper';
+import Avatar from 'vue-avatar';
 
 @Component({
   components: {
@@ -115,6 +121,7 @@ import MetrikaHelper from '@/helpers/MetrikaHelper';
     EditIcon,
     CloseIcon,
     DotsIcon,
+    Avatar,
   },
 })
 export default class ProjectCardComponent extends Vue {

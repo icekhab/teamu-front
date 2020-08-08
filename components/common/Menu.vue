@@ -19,9 +19,9 @@
       <AllIdeasIcon class="menu__item all-idea" :class="getClass(projectsLink)" />
     </nuxt-link>
     <!--    <div class="menu__item notification" />-->
-    <nuxt-link class="menu__item help" :to="{ name: 'routeName'}" href="https://t.me/joinchat/CbUfXVP2Djjr4DtSxls0CA" target="_blank">
+    <a class="menu__item help" href="https://t.me/joinchat/CbUfXVP2Djjr4DtSxls0CA" target="_blank">
       <HelpIcon class="menu__item help" />
-    </nuxt-link>
+    </a>
     <!--    <UsersIcon class="menu__item users" />-->
     <client-only>
       <modal

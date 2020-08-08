@@ -1,4 +1,4 @@
-import ContactEntity from '@/entities/ContactEntity';
+import VacancyContactEntity from '@/entities/VacancyContactEntity';
 import VacancyShareType from '@/enums/VacancyShareType';
 
 class VacancyEntity {
@@ -12,7 +12,7 @@ class VacancyEntity {
 
   aboutVacancy?: string;
 
-  contact?: ContactEntity;
+  contact?: VacancyContactEntity;
 }
 
 export default VacancyEntity;
