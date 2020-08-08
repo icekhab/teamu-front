@@ -3,7 +3,15 @@
     <nuxt-link class="menu__item teamu-logo" to="/">
       <span class="logo">U</span>
     </nuxt-link>
-    <CircleAvatar class="menu__item avatar" @click="onClickAvatar" />
+    <client-only>
+      <Avatar
+        class="menu__item avatar"
+        :username="user.name || ''"
+        :src="user.imagePath || undefined"
+        :custom-style="{ 'background-size': 'cover' }"
+        @click.native="onClickAvatar"
+      />
+    </client-only>
     <client-only>
       <nuxt-link v-if="isAuthorize" class="menu__item my-idea" :to="myProjectsLink">
         <MyIdeaIcon class="menu__item my-idea" :class="getClass(myProjectsLink)" />
@@ -31,16 +39,31 @@
         :shift-y="1"
         transition="user-menu"
         :min-width="320"
-        :height="231"
+        :height="265"
         :max-width="420"
         adaptive
       >
         <div class="user-menu">
-          <div class="user-menu__about-user">
-            <CircleAvatar class="user-menu__avatar" @click="onClickAvatar" />
+          <nuxt-link
+            :to="myProfileLink"
+            class="user-menu__about-user"
+          >
+            <Avatar
+              class="user-menu__avatar"
+              :size="35"
+              :username="user.name || ''"
+              :src="user.imagePath"
+              :custom-style="{ 'background-size': 'cover' }"
+            />
             <span class="user-menu__email">{{ user.name || user.email }}</span>
-          </div>
+          </nuxt-link>
           <div class="line" />
+          <client-only>
+            <nuxt-link class="user-menu__item" :to="myProfileLink">
+              <ProfileIcon class="user-menu__item-icon" />
+              <span class="user-menu__item-label">Мой профиль</span>
+            </nuxt-link>
+          </client-only>
           <a class="user-menu__item help-item" href="https://t.me/joinchat/CbUfXVP2Djjr4DtSxls0CA" target="_blank">
             <HelpIcon class="user-menu__item-icon" />
             <span class="user-menu__item-label">Помощь</span>
@@ -65,8 +88,10 @@ import HelpIcon from '@/static/images/svg/menu/help-icon.svg';
 import LogoutIcon from '@/static/images/svg/menu/logout-icon.svg';
 import TeamuLogo from '@/static/images/svg/menu/teamu-logo.svg';
 import UsersIcon from '@/static/images/svg/menu/users-icon.svg';
+import ProfileIcon from '@/static/images/svg/menu/profile-logo.svg';
 import { State, Action, Mutation } from 'vuex-class';
 import UserEntity from '@/entities/UserEntity';
+import Avatar from 'vue-avatar';
 import { RawLocation } from 'vue-router/types/router';
 
 @Component({
@@ -79,6 +104,8 @@ import { RawLocation } from 'vue-router/types/router';
     TeamuLogo,
     UsersIcon,
     LogoutIcon,
+    ProfileIcon,
+    Avatar,
   },
 })
 export default class MenuComponent extends Vue {
@@ -97,6 +124,15 @@ export default class MenuComponent extends Vue {
   myProjectsLink = {
     name: 'project-my',
   };
+
+  get myProfileLink() {
+    return {
+      name: 'profile-id',
+      params: {
+        id: this.user?.id,
+      },
+    };
+  }
 
   getClass(to: any) {
     return { active: to.name === this.$router.currentRoute.name };
@@ -137,6 +173,7 @@ export default class MenuComponent extends Vue {
       &__about-user {
         display: flex;
         align-items: center;
+        text-decoration: none;
       }
 
       &__avatar {
@@ -210,6 +247,15 @@ export default class MenuComponent extends Vue {
       &.active {
         color: var(--blackColor);
       }
+
+      &.avatar {
+        height: 20px;
+        min-height: 20px;
+        max-height: 20px;
+        width: 20px;
+        min-width: 20px;
+        max-width: 20px;
+      }
     }
   }
 
@@ -227,7 +273,7 @@ export default class MenuComponent extends Vue {
         width: auto!important;
         min-width: 306px;
         max-width: 400px;
-        max-height: 181px;
+        max-height: 231px;
         position: absolute!important;
         top: auto!important;
         left: 10px!important;
@@ -251,7 +297,11 @@ export default class MenuComponent extends Vue {
 
         &.avatar {
           height: 37px;
+          min-height: 37px;
+          max-height: 37px;
           width: 37px;
+          min-width: 37px;
+          max-width: 37px;
           order: 7;
           justify-self: end;
         }
@@ -321,6 +371,15 @@ export default class MenuComponent extends Vue {
       }
 
       &__item {
+        &.avatar {
+          height: 40px;
+          min-height: 40px;
+          max-height: 40px;
+          width: 40px;
+          min-width: 40px;
+          max-width: 40px;
+        }
+
         &.help {
           margin-bottom: 30px;
         }

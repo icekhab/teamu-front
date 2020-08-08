@@ -40,10 +40,6 @@ const namespace = 'profile';
     AvatarChooser,
     ProfileEditForm,
   },
-
-  validate({ params }: any) {
-    return !!params.id;
-  },
 })
 export default class MainPageComponent extends Vue {
   @State('profile', { namespace }) profile!: UserEntity;
@@ -56,7 +52,7 @@ export default class MainPageComponent extends Vue {
 
   async created() {
     this.loading = true;
-    await this.$store.dispatch('profile/getProfile', this.$route.params.id);
+    await this.$store.dispatch('profile/getProfile', this.user!.id);
     this.loading = false;
   }
 

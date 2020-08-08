@@ -8,6 +8,7 @@ import ProjectService from '@/services/ProjectService';
 import FileEntity from '@/entities/FileEntity';
 import UserContactEntity from '@/entities/UserContactEntity';
 import UserContactService from '@/services/UserContactService';
+import CookieHelper from '@/helpers/CookieHelper';
 
 export const state = (): ProfileState => ({
   profile: {
@@ -45,7 +46,10 @@ export const actions : any = {
   ) {
     await UserService.update(profile);
 
+    CookieHelper.setCookie('user', JSON.stringify(profile));
+
     commit('setProfile', profile);
+    commit('user/setUser', profile, { root: true });
   },
 
   async saveContacts(
@@ -78,10 +82,16 @@ export const actions : any = {
 
     if (deletingPromises.length) await Promise.all(deletingPromises);
 
-    commit('setProfile', {
+    const newProfile = {
       ...currentState.profile,
       contacts,
-    });
+    };
+
+    commit('setProfile', newProfile);
+
+    CookieHelper.setCookie('user', JSON.stringify(newProfile));
+
+    commit('user/setUser', newProfile, { root: true });
   },
 };
 
