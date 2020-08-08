@@ -14,6 +14,7 @@ export const state = (): ProjectState => ({
     links: [],
     name: '',
     user: {
+      id: 0,
       email: '',
       contacts: [],
     },
