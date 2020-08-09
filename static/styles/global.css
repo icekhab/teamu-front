@@ -42,6 +42,7 @@ h3 {
 .uteam-link {
     color: #0085FF;
     cursor: pointer;
+    text-decoration: none;
 }
 .uteam-link:hover {
     text-decoration: underline;

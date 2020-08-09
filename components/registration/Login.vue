@@ -57,12 +57,12 @@
         </template>
       </TFormControl>
       <span class="login__divider" />
-      <div class="login__forget-password">
-        <span class="login__forget-password-question">
-          Забыли пароль?
-        </span>
-        <span class="login__forget-password-reset uteam-link">Сбросить</span>
-      </div>
+      <!--      <div class="login__forget-password">-->
+      <!--        <span class="login__forget-password-question">-->
+      <!--          Забыли пароль?-->
+      <!--        </span>-->
+      <!--        <span class="login__forget-password-reset uteam-link">Сбросить</span>-->
+      <!--      </div>-->
       <div class="login__have-not-account">
         <span class="login__have-not-account-question">
           Нет аккаунта?

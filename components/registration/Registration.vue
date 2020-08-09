@@ -91,9 +91,9 @@
             <span>
               Я принимаю
             </span>
-            <span class="uteam-link">
+            <a class="uteam-link" href="/privacy" target="_blank">
               политику конфиденциальности
-            </span>
+            </a>
           </span>
         </TCheckbox>
         <template slot="errors">
