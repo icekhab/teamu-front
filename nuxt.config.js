@@ -10,6 +10,11 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1, minimum-scale=1' },
     ],
+    link: [
+      {
+        rel: 'icon', type: 'image/png', href: '/favicon/favicon-16.png', sizes: '16x16',
+      },
+    ],
   },
   /*
   ** Customize the progress bar color

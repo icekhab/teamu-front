@@ -12,7 +12,7 @@
       />
 
       <div class="overlay">
-        <AttachmentIcon  style="width: 14px; height: 24px; color: #FFFFFF;" />
+        <AttachmentIcon style="width: 14px; height: 24px; color: #FFFFFF;" />
       </div>
     </label>
     <input
@@ -24,6 +24,12 @@
       style="display:none;"
       @change="displayFile"
     >
+    <div
+      class="image-uploader__max-size"
+      :class="{'image-uploader__max-size__error': !!isFileMaxSizeError }"
+    >
+      jpg / png не более 1 mb
+    </div>
   </div>
 </template>
 
@@ -128,11 +134,12 @@ export default {
   flex-direction: column;
   justify-content: center;
   position: relative;
-  overflow: hidden;
+  //overflow: hidden;
   min-width: 50px;
   min-height: 50px;
   margin: 0;
   transition: all .1s ease-in;
+  position: relative;
 
   &__avatar {
     background-size: cover!important;
@@ -158,19 +165,25 @@ export default {
     margin-right: 10px;
   }
   &__max-size {
+    position: absolute;
+    top: 104%;
+    color: black;
     text-align: center;
-    color: var(--greyColor);
+    display: none;
+    //color: var(--greyColor);
     margin-bottom: 20px;
     font-size: 10px;
     line-height: 12px;
     &__error {
       color: var(--errorColor);
+      display: block;
     }
   }
   label {
     cursor: pointer;
     height: 100%;
     box-sizing: border-box;
+    border-radius: 50%;
   }
   svg,
   p {
@@ -212,6 +225,7 @@ export default {
     justify-content: center;
     position: absolute;
     height: 100%;
+    border-radius: 50%;
   }
   &:hover {
     //box-shadow: var(--defaultBoxShadow);
