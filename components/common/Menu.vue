@@ -236,7 +236,7 @@ export default class MenuComponent extends Vue {
       color: var(--greyColor);
       transition: color .1s ease-in;
 
-      &.help, &.teamu-logo, &.users, &.empty {
+      &.help, &.teamu-logo, &.users, &.empty, &.search {
         display: none;
       }
 
