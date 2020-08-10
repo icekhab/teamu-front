@@ -9,6 +9,10 @@ class CookieHelper {
       expires = `expires=${d.toUTCString()}`;
     }
 
+    // eslint-disable-next-line no-debugger
+    debugger;
+    console.log(`${name}=${value};domain=.${window.location.host.replace('www.', '')};${expires};path=/`);
+
     document.cookie = `${name}=${value};domain=.${window.location.host.replace('www.', '')};${expires};path=/`;
   }
 
