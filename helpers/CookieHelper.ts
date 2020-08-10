@@ -11,7 +11,7 @@ class CookieHelper {
 
     const domain = this.getDomain() !== 'localhost' ? `domain=.${this.getDomain()};` : '';
 
-    document.cookie = `${name}=${value};${expires};${domain}path=/`;
+    document.cookie = `${name}=${value};${domain}${expires};path=/`;
   }
 
   static getCookie(cname: string) {
