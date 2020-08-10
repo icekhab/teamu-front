@@ -170,18 +170,18 @@ export default class ProjectLabelComponent extends Vue {
     }
 
     &.fundraising {
-      border-color: #FFE9CB;
+      border-color: #E4F6DC;
 
       &.check {
-        background: #FFE9CB;
+        background: #E4F6DC;
 
         &.active:hover {
-          background: #FFD398;
+          background: #C9F4B5;
         }
       }
 
       &.active:hover {
-        border-color: #FFD398;
+        border-color: #C9F4B5;
       }
     }
   }
