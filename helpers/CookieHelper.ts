@@ -9,7 +9,7 @@ class CookieHelper {
       expires = `expires=${d.toUTCString()}`;
     }
 
-    document.cookie = `${name}=${value};domain=${this.getDomain()};${expires};path=/`;
+    document.cookie = `${name}=${value};domain=.${window.location.host.replace('www.', '')};${expires};path=/`;
   }
 
   static getCookie(cname: string) {
@@ -26,26 +26,6 @@ class CookieHelper {
       if (c.indexOf(name) === 0) {
         return c.substring(name.length, c.length);
       }
-    }
-
-    return '';
-  }
-
-  private static getDomain() {
-    if (document.domain.length) {
-      const parts = document.domain.replace(/^(www\.)/, '').split('.');
-
-      // is there a subdomain?
-      while (parts.length > 2) {
-        // removing it from our array
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const subdomain = parts.shift();
-      }
-
-      // getting the remaining 2 elements
-      const domain = parts.join('.');
-
-      return domain.replace(/(^\.*)|(\.*$)/g, '');
     }
 
     return '';
