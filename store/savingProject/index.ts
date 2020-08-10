@@ -131,13 +131,11 @@ export const actions : any = {
 
   async saveImage(
     context: ActionContext<SavingProjectState, RootState>,
+    file: FileEntity,
   ) {
-    const { project, file } = context.state;
+    const imagePath = await ProjectService.uploadImg(file.file);
 
-    if (file) {
-      const imagePath = await ProjectService.uploadImg(file.file);
-      context.commit('setProject', { ...project, imagePath });
-    }
+    return imagePath;
   },
 };
 
@@ -156,9 +154,5 @@ export const mutations = {
 
   setVacancies(currentState: SavingProjectState, vacancies: VacancyEntity[]): void {
     currentState.vacancies = [...vacancies];
-  },
-
-  setFileForProject(currentState: SavingProjectState, file: FileEntity): void {
-    currentState.file = file;
   },
 };

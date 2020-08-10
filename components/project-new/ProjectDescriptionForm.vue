@@ -138,7 +138,7 @@ export default class ProjectDescriptionFormComponent extends Vue {
 
   @Action('saveProject', { namespace }) readonly saveProject!: (project: DescriptionProjectEntity) => void;
 
-  @Action('saveImage', { namespace }) readonly saveImage!: () => void;
+  @Action('saveImage', { namespace }) readonly saveImage!: (file: FileEntity) => Promise<string>;
 
   @Action('saveLabels', { namespace }) readonly saveLabels!: (labels: LabelEntity[]) => void;
 
@@ -155,6 +155,8 @@ export default class ProjectDescriptionFormComponent extends Vue {
   isSaved = false;
 
   serverError = '';
+
+  file?: FileEntity;
 
   @Watch('project', { immediate: true })
   private onProject(newVal: DescriptionProjectEntity): void {
@@ -177,7 +179,18 @@ export default class ProjectDescriptionFormComponent extends Vue {
 
       this.loading = true;
       this.isSaved = false;
-      await this.saveImage();
+
+      if (this.file) {
+        const imagePath = await this.saveImage(this.file);
+
+        this.newProject = {
+          ...this.newProject,
+          imagePath,
+        };
+
+        this.file = undefined;
+      }
+
       await this.saveProject(this.newProject);
       await this.saveLabels(this.newLabels);
       this.isSaved = true;
@@ -191,7 +204,7 @@ export default class ProjectDescriptionFormComponent extends Vue {
   }
 
   async imageChanged(file: FileEntity) {
-    this.setFileForProject(file);
+    this.file = file;
   }
 }
 </script>
