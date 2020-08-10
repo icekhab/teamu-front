@@ -9,11 +9,12 @@ class CookieHelper {
       expires = `expires=${d.toUTCString()}`;
     }
 
-    // eslint-disable-next-line no-debugger
-    debugger;
-    console.log(`${name}=${value};domain=.${window.location.host.replace('www.', '')};${expires};path=/`);
+    const domain = window.location.host.startsWith('localhost')
+      ? ''
+      : `domain=.${window.location.host.replace('www.', '')};`;
 
-    document.cookie = `${name}=${value};domain=.${window.location.host.replace('www.', '')};${expires};path=/`;
+    document.cookie = `${name}=${value};${domain}${expires};path=/`;
+    document.cookie = `${name}=;${expires};path=/`;
   }
 
   static getCookie(cname: string) {
