@@ -9,9 +9,7 @@ class CookieHelper {
       expires = `expires=${d.toUTCString()}`;
     }
 
-    const domain = this.getDomain() !== 'localhost' ? `domain=.${this.getDomain()};` : '';
-
-    document.cookie = `${name}=${value};${domain}${expires};path=/`;
+    document.cookie = `${name}=${value};domain=${this.getDomain()};${expires};path=/`;
   }
 
   static getCookie(cname: string) {
