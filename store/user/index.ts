@@ -50,8 +50,8 @@ export const actions : any = {
   },
 
   logout({ commit }: ActionContext<UserState, RootState>) {
-    CookieHelper.setCookie('token', '');
-    CookieHelper.setCookie('user', '');
+    CookieHelper.removeCookie('token');
+    CookieHelper.removeCookie('user');
 
     commit('setToken', undefined);
     commit('setUser', {});
