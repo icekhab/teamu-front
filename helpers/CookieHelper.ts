@@ -13,8 +13,8 @@ class CookieHelper {
       ? ''
       : `domain=.${window.location.host.replace('www.', '')};`;
 
-    document.cookie = `${name}=${value};${domain}${expires};path=/`;
     document.cookie = `${name}=;${expires};path=/`;
+    document.cookie = `${name}=${value};${domain}${expires};path=/`;
   }
 
   static getCookie(cname: string) {
