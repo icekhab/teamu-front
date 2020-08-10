@@ -27,6 +27,9 @@ export const actions : any = {
     const token = CookieHelper.getCookie('token');
     const user = CookieHelper.getCookie('user');
 
+    console.log('token', token);
+    console.log('user', user);
+
     commit('setToken', token);
     commit('setUser', user && JSON.parse(user));
     commit('setIsAuthorize', !!token);
