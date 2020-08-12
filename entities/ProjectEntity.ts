@@ -17,6 +17,8 @@ class ProjectEntity {
   labels!: LabelEntity[];
 
   user!: UserEntity;
+
+  imagePath?: string;
 }
 
 export default ProjectEntity;
