@@ -58,10 +58,11 @@
             </div>
           </div>
         </div>
-        <div v-if="!isMy" class="project-card__bookmark">
-          <BookmarkIcon />
-        </div>
       </nuxt-link>
+      <div v-if="!isMy && false" class="project-card__bookmark" @click="$emit('add-to-favorite', project.id)">
+        <BookmarkFilledIcon v-if="project.isFavorite"/>
+        <BookmarkIcon v-else/>
+      </div>
       <div v-if="isMy" class="project-card__buttons">
         <TButton
           v-if="isDraft"
@@ -111,6 +112,7 @@ import ProfileIcon from '@/static/images/svg/profile-icon.svg';
 import CloseIcon from '@/static/images/svg/close.svg';
 import DotsIcon from '@/static/images/svg/dots.svg';
 import BookmarkIcon from '@/static/images/svg/bookmark-icon.svg';
+import BookmarkFilledIcon from '@/static/images/svg/bookmark-filled-icon.svg';
 import PolygonIcon from '@/static/images/svg/polygon-icon.svg';
 import ProjectLabel from '@/components/common/ProjectLabel.vue';
 import MetrikaHelper from '@/helpers/MetrikaHelper';
@@ -125,6 +127,7 @@ import Avatar from 'vue-avatar';
     CloseIcon,
     DotsIcon,
     BookmarkIcon,
+    BookmarkFilledIcon,
     PolygonIcon,
     Avatar,
   },
@@ -197,6 +200,7 @@ export default class ProjectCardComponent extends Vue {
 
     &__content {
       padding: 0 10px;
+      z-index: 1;
     }
 
     &__link-block {
@@ -370,6 +374,7 @@ export default class ProjectCardComponent extends Vue {
       right: 10px;
       width: 25px;
       height: 25px;
+      z-index: 2;
     }
   }
 
@@ -423,6 +428,10 @@ export default class ProjectCardComponent extends Vue {
   @media (min-width: 992px) {
     .project-card {
       width: 370px;
+
+      &__content {
+        padding: 0 20px;
+      }
     }
   }
 

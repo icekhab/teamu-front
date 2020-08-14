@@ -19,6 +19,8 @@ class ProjectEntity {
   user!: UserEntity;
 
   imagePath?: string;
+
+  isFavorite?: boolean;
 }
 
 export default ProjectEntity;

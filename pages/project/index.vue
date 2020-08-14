@@ -2,7 +2,7 @@
   <MenuLayout>
     <div class="main">
       <AllProjectsHeader class="main__header" />
-      <ProjectList v-if="projects.length" class="main__project-list" :projects="projects" />
+      <ProjectList v-if="projects.length" class="main__project-list" :projects="projects" @add-to-favorite="addProjectToFavorites"/>
       <div v-else class="main__not-found">
         <span class="main__not-found-text">К сожалению, по вашим параметрам проектов не найдено.</span>
         <img class="main__not-found-img" src="/images/svg/projects/not-found.svg" alt="">
@@ -13,13 +13,14 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
+import { Getter, Action } from 'vuex-class';
 import MenuLayout from '@/components/layout/MenuLayout.vue';
 import AllProjectsHeader from '@/components/allProjects/AllProjectsHeader.vue';
 import ProjectList from '@/components/common/ProjectList.vue';
 import ProjectEntity from '@/entities/ProjectEntity';
 
 const namespace = 'allProjects';
+const namespaceUserFavorites = 'userFavorites';
 
 @Component({
   components: {
@@ -36,6 +37,12 @@ const namespace = 'allProjects';
 })
 export default class MainPageComponent extends Vue {
   @Getter('projects', { namespace }) projects!: ProjectEntity[];
+
+  @Action('addFavoriteProject', { namespace: namespaceUserFavorites }) addFavoriteProject!: (id: number) => void;
+
+  addProjectToFavorites(id: number) {
+    this.addFavoriteProject(id);
+  }
 }
 </script>
 
