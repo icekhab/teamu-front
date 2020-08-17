@@ -1,7 +1,7 @@
 class FileEntity {
-    file!: File;
+  file!: File;
 
-    field!: string;
+  field!: string;
 }
 
 export default FileEntity;

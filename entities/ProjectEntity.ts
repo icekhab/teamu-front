@@ -17,6 +17,10 @@ class ProjectEntity {
   labels!: LabelEntity[];
 
   user!: UserEntity;
+
+  imagePath?: string;
+
+  isFavorite?: boolean;
 }
 
 export default ProjectEntity;
