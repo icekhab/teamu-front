@@ -1,7 +1,7 @@
 <template>
   <div class="menu">
     <nuxt-link class="menu__item teamu-logo" to="/">
-      <span class="logo">U</span>
+      <TeamuLogo class="logo" />
     </nuxt-link>
     <client-only>
       <Avatar
@@ -88,7 +88,7 @@ import NotificationIcon from '@/static/images/svg/menu/notification-icon.svg';
 import SearchIcon from '@/static/images/svg/menu/search-icon.svg';
 import HelpIcon from '@/static/images/svg/menu/help-icon.svg';
 import LogoutIcon from '@/static/images/svg/menu/logout-icon.svg';
-import TeamuLogo from '@/static/images/svg/menu/teamu-logo.svg';
+import TeamuLogo from '@/static/images/svg/menu/teamu-logo-2020-08-19.svg';
 import UsersIcon from '@/static/images/svg/menu/users-icon.svg';
 import ProfileIcon from '@/static/images/svg/menu/profile-logo.svg';
 import { State, Action, Mutation } from 'vuex-class';
@@ -322,9 +322,7 @@ export default class MenuComponent extends Vue {
           height: 35px;
           width: 35px;
           margin-bottom: 50px;
-          background: #4f56f1;
           color: white;
-          padding: 9px;
           border-radius: 100%;
           font-weight: bold;
           font-size: 26px;
