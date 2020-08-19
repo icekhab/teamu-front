@@ -2,7 +2,6 @@
   <div class="user-card__wrap" style="display: flex">
     <div class="user-card">
       <nuxt-link :to="userLink" class="user-card__link-block">
-      <!-- <div class="user-card__link-block"> -->
         <div class="user-card__content">
           <div class="user-card__header">
             <div class="user-card__author">
