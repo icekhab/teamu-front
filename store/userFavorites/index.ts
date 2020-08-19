@@ -12,4 +12,8 @@ export const actions : any = {
   async addFavoriteProject(context: ActionContext<UserFavoritesState, RootState>, id: number) {
     await UserFavoritesService.addFavoriteProject(id);
   },
+
+  async addFavoriteUser(context: ActionContext<UserFavoritesState, RootState>, id: number) {
+    await UserFavoritesService.addFavoriteProject(id);
+  },
 };

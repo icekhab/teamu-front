@@ -22,9 +22,9 @@
               {{ project.accounts }}
             </span>
           </div>
-          <div class="project-card__looking-for">
+          <div class="project-card__looking-for" v-if="false">
             Ищем в команду:
-            <span class="project-card__looking-for__number">{{declOfNumPeople(3)}}</span>
+            <span class="project-card__looking-for__number">{{ declOfNumPeople(3) }}</span>
           </div>
           <div class="project-card__text">
             {{ project.description }}

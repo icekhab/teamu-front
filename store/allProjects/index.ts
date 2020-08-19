@@ -46,7 +46,6 @@ export const mutations = {
   },
 
   setSearchFilter(currentState: AllProjectsState, search: string): void {
-    console.log(search);
     currentState.filter.search = search;
   },
 

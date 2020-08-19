@@ -44,6 +44,7 @@ export default class MenuLayoutComponent extends Vue {}
       width: 100%;
       height: 50px;
       border-top: 1.23px solid var(--borderColor);
+      z-index: 2;
     }
   }
 

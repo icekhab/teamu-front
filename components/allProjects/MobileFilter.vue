@@ -26,15 +26,11 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import ProjectLabelEnum from '@/enums/ProjectLabelEnum';
 import MetrikaHelper from '@/helpers/MetrikaHelper';
-import ProjectCard from '~/components/common/ProjectCard.vue';
-import FilterIcon from '~/static/images/svg/filter-icon.svg';
 import ProjectLabel from '~/components/common/ProjectLabel.vue';
 
 @Component({
   components: {
     ProjectLabel,
-    FilterIcon,
-    ProjectCard,
   },
 })
 export default class MobileFilterComponent extends Vue {

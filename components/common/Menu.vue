@@ -30,7 +30,9 @@
     <a class="menu__item help" href="https://t.me/joinchat/CbUfXVP2Djjr4DtSxls0CA" target="_blank">
       <HelpIcon class="menu__item help" />
     </a>
-    <!--    <UsersIcon class="menu__item users" />-->
+    <nuxt-link v-if="isAuthorize" class="menu__item all-idea" :to="usersLink">
+      <UsersIcon class="menu__item users" :class="getClass(usersLink)" />
+    </nuxt-link>
     <client-only>
       <modal
         v-if="isAuthorize"
@@ -119,6 +121,10 @@ export default class MenuComponent extends Vue {
 
   projectsLink = {
     name: 'project',
+  };
+
+  usersLink = {
+    name: 'user',
   };
 
   myProjectsLink = {
@@ -236,7 +242,7 @@ export default class MenuComponent extends Vue {
       color: var(--greyColor);
       transition: color .1s ease-in;
 
-      &.help, &.teamu-logo, &.users, &.empty, &.search {
+      &.help, &.teamu-logo, &.empty, &.search {
         display: none;
       }
 

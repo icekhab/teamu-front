@@ -9,6 +9,10 @@ class UserService extends BaseApiService {
   public update(profile: UserEntity): Promise<number> {
     return this.http.put<UserEntity>('/user', profile).then((x) => x.data.id);
   }
+
+  public get(): Promise<UserEntity[]> {
+    return this.http.get<UserEntity[]>('/users').then((x) => x.data);
+  }
 }
 
 export default new UserService();

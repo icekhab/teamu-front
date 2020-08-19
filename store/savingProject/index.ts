@@ -37,10 +37,6 @@ export const actions : any = {
     context: ActionContext<SavingProjectState, RootState>,
     project: DescriptionProjectEntity,
   ) {
-    // const { file, project: projectInfo } = context.state;
-    // console.log('projectInfo', JSON.stringify(projectInfo));
-    // console.log('project', project);
-
     if (project.id) {
       await ProjectService.update(project);
 
