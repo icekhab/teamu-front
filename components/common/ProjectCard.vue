@@ -82,7 +82,7 @@
         >
           В черновик
         </TButton>
-        <v-popover>
+        <v-popover offset="50" placement="left">
           <button class="project-card__buttons__drop-down-menu">
             <PolygonIcon/>
           </button>
