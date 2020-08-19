@@ -30,7 +30,7 @@
     <a class="menu__item help" href="https://t.me/joinchat/CbUfXVP2Djjr4DtSxls0CA" target="_blank">
       <HelpIcon class="menu__item help" />
     </a>
-    <nuxt-link v-if="isAuthorize" class="menu__item all-idea" :to="usersLink">
+    <nuxt-link v-if="isAuthorize" class="menu__item all-users" :to="usersLink">
       <UsersIcon class="menu__item users" :class="getClass(usersLink)" />
     </nuxt-link>
     <client-only>
@@ -348,6 +348,11 @@ export default class MenuComponent extends Vue {
         }
 
         &.all-idea {
+          display: inline;
+          margin-bottom: 26px;
+        }
+
+        &.all-users {
           display: inline;
           margin-bottom: 26px;
         }
