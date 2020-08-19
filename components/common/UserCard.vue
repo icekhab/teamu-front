@@ -1,8 +1,8 @@
 <template>
   <div class="user-card__wrap" style="display: flex">
     <div class="user-card">
-      <!-- <nuxt-link :to="userLink" class="user-card__link-block"> -->
-      <div class="user-card__link-block">
+      <nuxt-link :to="userLink" class="user-card__link-block">
+      <!-- <div class="user-card__link-block"> -->
         <div class="user-card__content">
           <div class="user-card__header">
             <div class="user-card__author">
@@ -45,7 +45,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </nuxt-link>
       <div class="user-card__bookmark" @click="$emit('add-to-favorite', user.id)">
         <BookmarkFilledIcon v-if="user.isFavorite"/>
         <BookmarkIcon v-else/>
@@ -90,7 +90,7 @@ export default class UserCardComponent extends Vue {
   @Prop() readonly user!: UserEntity;
 
   userLink = {
-    name: 'user-id',
+    name: 'profile-id',
     params: {
       id: this.user.id,
     },
