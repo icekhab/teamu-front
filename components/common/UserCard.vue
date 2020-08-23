@@ -27,27 +27,30 @@
             <div class="user-card__location">
               Локация:
               <span class="user-card__location-text">
-                {{ user.location || ''}}
+                {{ user.location || '' }}
               </span>
             </div>
             <div class="user-card__role">
               Роль:
               <span class="user-card__role-text">
-                {{ user.role || ''}}
+                {{ user.role || '' }}
               </span>
             </div>
             <div class="user-card__active-projects">
               Активные проекты:
               <span class="user-card__active-projects-text">
-                <!-- {{ user.active-projects || ''}} -->
+                <!-- {{ user.active-projects || '' }} -->
               </span>
             </div>
           </div>
         </div>
       </nuxt-link>
-      <div class="user-card__bookmark" @click="$emit('add-to-favorite', user.id)">
-        <BookmarkFilledIcon v-if="user.isFavorite"/>
-        <BookmarkIcon v-else/>
+      <div
+        class="user-card__bookmark"
+        @click="user.isFavorite ? $emit('remove-from-favorite', user.id) : $emit('add-to-favorite', user.id)"
+      >
+        <BookmarkFilledIcon v-if="user.isFavorite" />
+        <BookmarkIcon v-else />
       </div>
     </div>
   </div>
@@ -134,12 +137,14 @@ export default class UserCardComponent extends Vue {
     &__author {
       display: flex;
       align-items: center;
+
+      max-width: 280px;
     }
 
     &__author-avatar {
-      height: 25px;
-      width: 25px;
-      min-width: 25px;
+      height: 40px;
+      width: 40px;
+      min-width: 40px;
       margin: 0 5px;
     }
 
@@ -178,6 +183,12 @@ export default class UserCardComponent extends Vue {
 
     &__location {
       margin-top: 15px;
+      max-width: 280px;
+      margin-right: 30px;
+      color: var(--blackColor);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       color: var(--blackColor);
     }
 
@@ -186,8 +197,13 @@ export default class UserCardComponent extends Vue {
     }
 
     &__role {
+      max-width: 280px;
       margin-top: 10px;
+      margin-right: 30px;
       color: var(--blackColor);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     &__role-text {
@@ -198,6 +214,11 @@ export default class UserCardComponent extends Vue {
       display: none;
       margin-top: 15px;
       color: var(--blackColor);
+      max-width: 280px;
+      margin-right: 30px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     &__active-projects-text {
@@ -205,7 +226,6 @@ export default class UserCardComponent extends Vue {
     }
 
     &__bookmark {
-      display: none;
       position: absolute;
       cursor: pointer;
       bottom: 15px;

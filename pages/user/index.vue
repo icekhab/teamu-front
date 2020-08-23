@@ -2,9 +2,17 @@
   <MenuLayout>
     <div class="main">
       <AllUsersHeader class="main__header" />
-      <UserList v-if="users.length" class="main__user-list" :users="users" @add-to-favorite="addUserToFavorites"/>
+      <UserList
+        v-if="users.length"
+        class="main__user-list"
+        :users="users"
+        @add-to-favorite="addUserToFavorites"
+        @remove-from-favorite="removeUserFromFavorites"
+      />
       <div v-else class="main__not-found">
-        <span class="main__not-found-text">К сожалению, по вашим параметрам пользователей не найдено.</span>
+        <span class="main__not-found-text">
+          К сожалению, по вашим параметрам пользователей не найдено.
+        </span>
         <img class="main__not-found-img" src="/images/svg/projects/not-found.svg" alt="">
       </div>
     </div>
@@ -13,7 +21,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
+import { Getter, Action, Mutation } from 'vuex-class';
 import MenuLayout from '@/components/layout/MenuLayout.vue';
 import AllUsersHeader from '@/components/allUsers/AllUsersHeader.vue';
 import UserList from '@/components/common/UserList.vue';
@@ -38,10 +46,20 @@ const namespaceUserFavorites = 'userFavorites';
 export default class UserPageComponent extends Vue {
   @Getter('users', { namespace }) users!: UserEntity[];
 
+  @Mutation('changeUserFavorite', { namespace }) changeUserFavorite!: (id: number) => void;
+
   @Action('addFavoriteUser', { namespace: namespaceUserFavorites }) addFavoriteUser!: (id: number) => void;
 
-  addUserToFavorites(id: number) {
-    this.addFavoriteUser(id);
+  @Action('removeFavoriteUser', { namespace: namespaceUserFavorites }) removeFavoriteUser!: (id: number) => void;
+
+  async addUserToFavorites(id: number) {
+    await this.addFavoriteUser(id);
+    this.changeUserFavorite(id);
+  }
+
+  async removeUserFromFavorites(id: number) {
+    await this.removeFavoriteUser(id);
+    this.changeUserFavorite(id);
   }
 }
 </script>

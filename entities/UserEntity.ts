@@ -17,6 +17,8 @@ class UserEntity {
 
   imagePath?: string;
 
+  isFavorite?: boolean;
+
   contacts!: UserContactEntity[];
 }
 

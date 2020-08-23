@@ -30,9 +30,16 @@
     <a class="menu__item help" href="https://t.me/joinchat/CbUfXVP2Djjr4DtSxls0CA" target="_blank">
       <HelpIcon class="menu__item help" />
     </a>
-    <nuxt-link v-if="isAuthorize" class="menu__item all-users" :to="usersLink">
-      <UsersIcon class="menu__item users" :class="getClass(usersLink)" />
-    </nuxt-link>
+    <client-only>
+      <nuxt-link v-if="isAuthorize" class="menu__item all-users" :to="usersLink">
+        <UsersIcon class="menu__item users" :class="getClass(usersLink)" />
+      </nuxt-link>
+    </client-only>
+    <client-only>
+      <nuxt-link v-if="isAuthorize" class="menu__item my-favorites" :to="favoritesLink">
+        <FavoriteIcon class="menu__item favorites" :class="getClass(favoritesLink)" />
+      </nuxt-link>
+    </client-only>
     <client-only>
       <modal
         v-if="isAuthorize"
@@ -91,6 +98,7 @@ import LogoutIcon from '@/static/images/svg/menu/logout-icon.svg';
 import TeamuLogo from '@/static/images/svg/menu/teamu-logo-2020-08-19.svg';
 import UsersIcon from '@/static/images/svg/menu/users-icon.svg';
 import ProfileIcon from '@/static/images/svg/menu/profile-logo.svg';
+import FavoriteIcon from '@/static/images/svg/menu/favorite-icon.svg';
 import { State, Action, Mutation } from 'vuex-class';
 import UserEntity from '@/entities/UserEntity';
 import Avatar from 'vue-avatar';
@@ -107,6 +115,7 @@ import { RawLocation } from 'vue-router/types/router';
     UsersIcon,
     LogoutIcon,
     ProfileIcon,
+    FavoriteIcon,
     Avatar,
   },
 })
@@ -125,6 +134,10 @@ export default class MenuComponent extends Vue {
 
   usersLink = {
     name: 'user',
+  };
+
+  favoritesLink = {
+    name: 'favorites',
   };
 
   myProjectsLink = {
@@ -338,6 +351,11 @@ export default class MenuComponent extends Vue {
           order: 3
         }
 
+        &.favorites {
+          display: inline;
+          order: 4
+        }
+
         &.my-idea {
           display: inline;
           margin-bottom: 26px;
@@ -353,6 +371,11 @@ export default class MenuComponent extends Vue {
         }
 
         &.all-users {
+          display: inline;
+          margin-bottom: 26px;
+        }
+
+        &.my-favorites {
           display: inline;
           margin-bottom: 26px;
         }

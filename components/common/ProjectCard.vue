@@ -22,7 +22,7 @@
               {{ project.accounts }}
             </span>
           </div>
-          <div class="project-card__looking-for" v-if="false">
+          <div v-if="false" class="project-card__looking-for">
             Ищем в команду:
             <span class="project-card__looking-for__number">{{ declOfNumPeople(3) }}</span>
           </div>
@@ -59,9 +59,9 @@
           </div>
         </div>
       </nuxt-link>
-      <div v-if="!isMy && false" class="project-card__bookmark" @click="$emit('add-to-favorite', project.id)">
-        <BookmarkFilledIcon v-if="project.isFavorite"/>
-        <BookmarkIcon v-else/>
+      <div v-if="!isMy" class="project-card__bookmark" @click="project.isFavorite ? $emit('remove-from-favorite', project.id) : $emit('add-to-favorite', project.id)">
+        <BookmarkFilledIcon v-if="project.isFavorite" />
+        <BookmarkIcon v-else />
       </div>
       <div v-if="isMy" class="project-card__buttons">
         <TButton
@@ -84,7 +84,7 @@
         </TButton>
         <v-popover offset="50" placement="left">
           <button class="project-card__buttons__drop-down-menu">
-            <PolygonIcon/>
+            <PolygonIcon />
           </button>
           <template slot="popover">
             <div class="edit-menu">

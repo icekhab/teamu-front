@@ -188,7 +188,7 @@ export default class MyProjectsPageComponent extends Vue {
         align-self: flex-start;
         text-align: center;
 
-        color: #878E99;
+        color: var(--greyColor);
     }
 
     &__project-list {
@@ -236,7 +236,7 @@ export default class MyProjectsPageComponent extends Vue {
         align-self: flex-start;
         text-align: center;
 
-        color: #878E99;
+        color: var(--greyColor);
     }
 
     &__project-list {

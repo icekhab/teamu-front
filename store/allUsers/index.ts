@@ -59,6 +59,13 @@ export const mutations = {
     currentState.users = [...users];
   },
 
+  changeUserFavorite(currentState: AllUsersState, id: number): void {
+    const currentUser = currentState.users.find((el: UserEntity) => el.id === id);
+    if (currentUser) {
+      currentUser.isFavorite = !currentUser.isFavorite;
+    }
+  },
+
   setFilter(currentState: AllUsersState, filter: UsersFilterEntity): void {
     currentState.filter = { ...filter };
   },
