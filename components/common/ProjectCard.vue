@@ -59,7 +59,7 @@
           </div>
         </div>
       </nuxt-link>
-      <div v-if="!isMy" class="project-card__bookmark" @click="project.isFavorite ? $emit('remove-from-favorite', project.id) : $emit('add-to-favorite', project.id)">
+      <div v-if="!isMy" class="project-card__bookmark" @click="changeFavorites">
         <BookmarkFilledIcon v-if="project.isFavorite" />
         <BookmarkIcon v-else />
       </div>
@@ -173,6 +173,14 @@ export default class ProjectCardComponent extends Vue {
 
   private declOfNumPeople(n: number) {
     return `${n} ${StringHelper.declOfNum(n, ['человек', 'человекa', 'человек'])}`;
+  }
+
+  changeFavorites() {
+    if (this.project.isFavorite) {
+      this.$emit('remove-from-favorite', this.project.id);
+    } else {
+      this.$emit('add-to-favorite', this.project.id);
+    }
   }
 
   projectLink = {

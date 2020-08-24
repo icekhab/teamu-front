@@ -47,7 +47,7 @@
       </nuxt-link>
       <div
         class="user-card__bookmark"
-        @click="user.isFavorite ? $emit('remove-from-favorite', user.id) : $emit('add-to-favorite', user.id)"
+        @click="changeFavorites"
       >
         <BookmarkFilledIcon v-if="user.isFavorite" />
         <BookmarkIcon v-else />
@@ -97,6 +97,14 @@ export default class UserCardComponent extends Vue {
       id: this.user.id,
     },
   };
+
+  changeFavorites() {
+    if (this.user.isFavorite) {
+      this.$emit('remove-from-favorite', this.user.id);
+    } else {
+      this.$emit('add-to-favorite', this.user.id);
+    }
+  }
 }
 </script>
 

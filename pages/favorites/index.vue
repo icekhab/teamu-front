@@ -43,7 +43,7 @@
               class="favorites__content__user-list"
               :users="users"
               @add-to-favorite="addUserToFavorites"
-              @remove-from-favorite="removeProjectFromFavorites"
+              @remove-from-favorite="removeUserFromFavorites"
             />
             <div v-else class="favorites__not-found">
               <span class="favorites__not-found-text">К сожалению, по вашим параметрам пользователей не найдено.</span>
