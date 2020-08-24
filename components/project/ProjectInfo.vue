@@ -89,6 +89,13 @@ const namespace = 'project';
     TButton,
     Avatar,
   },
+  head(this: ProjectInfoComponent): object {
+    return {
+      meta: [
+        { hid: 'og:image', property: 'og:image', content: this.projectImg },
+      ],
+    };
+  },
 })
 export default class ProjectInfoComponent extends Vue {
   @State('project', { namespace }) project!: DetailProjectEntity;
@@ -133,6 +140,10 @@ export default class ProjectInfoComponent extends Vue {
       name: 'profile-id',
       params: { id: this.project.user.id },
     };
+  }
+
+  get projectImg() {
+    return this.project.imagePath || this.noLogoUrl;
   }
 }
 </script>

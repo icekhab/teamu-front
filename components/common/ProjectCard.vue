@@ -139,15 +139,7 @@ export default class ProjectCardComponent extends Vue {
 
   @Prop({ default: false, type: Boolean }) readonly isDraft!: boolean;
 
-  private baseSrc: string = '/images/svg/no-photo.svg';
-
-  head() {
-    return {
-      meta: [
-        { hid: 'og:image', property: 'og:image', content: this.projectImg },
-      ],
-    };
-  }
+  baseSrc: string = '/images/svg/no-photo.svg';
 
   get modalName() {
     return `edit-menu-${this.project.id}`;
