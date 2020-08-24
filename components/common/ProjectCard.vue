@@ -8,7 +8,7 @@
         >
           <img
             class="project-card__image__logo"
-            :src="project.imagePath || baseSrc"
+            :src="projectImg"
             alt="project logo"
           >
         </div>
@@ -141,8 +141,20 @@ export default class ProjectCardComponent extends Vue {
 
   private baseSrc: string = '/images/svg/no-photo.svg';
 
+  head() {
+    return {
+      meta: [
+        { hid: 'og:image', property: 'og:image', content: this.projectImg },
+      ],
+    };
+  }
+
   get modalName() {
     return `edit-menu-${this.project.id}`;
+  }
+
+  get projectImg() {
+    return this.project.imagePath || this.baseSrc;
   }
 
   private showModal() {
@@ -165,7 +177,7 @@ export default class ProjectCardComponent extends Vue {
 
   private style() {
     const containerStyle: any = {};
-    containerStyle.backgroundImage = `url(${this.project.imagePath || this.baseSrc})`;
+    containerStyle.backgroundImage = `url(${this.projectImg})`;
     containerStyle.backgroundSize = 'cover';
 
     return containerStyle;
