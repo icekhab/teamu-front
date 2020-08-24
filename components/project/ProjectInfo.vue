@@ -93,6 +93,8 @@ const namespace = 'project';
     return {
       meta: [
         { hid: 'og:image', property: 'og:image', content: this.projectImg },
+        { hid: 'og:url', property: 'og:url', content: this.projectImg },
+        { hid: 'og:title', property: 'og:title', content: 'AAAAAAA' },
       ],
     };
   },
