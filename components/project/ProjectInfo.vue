@@ -92,10 +92,9 @@ const namespace = 'project';
   head(this: ProjectInfoComponent): object {
     return {
       meta: [
-        { hid: 'og:image', property: 'og:image', content: 'https://miro.medium.com/max/987/1*dw923vPBJNFAcOtdS4Aoug.png' },
-        { hid: 'og-image', property: 'og-image', content: 'https://miro.medium.com/max/987/1*dw923vPBJNFAcOtdS4Aoug.png' },
-        { hid: 'og:url', property: 'og:url', content: this.projectImg },
-        { hid: 'og:title', property: 'og:title', content: 'AAAAAAA' },
+        { hid: 'og:type', property: 'og:type', content: 'article' },
+        { hid: 'og:image', property: 'og:image', content: this.projectImg },
+        { hid: 'og:title', property: 'og:title', content: this.project.name },
       ],
     };
   },
