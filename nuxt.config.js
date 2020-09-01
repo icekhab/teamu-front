@@ -10,6 +10,7 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1, minimum-scale=1' },
       { hid: 'og:image', property: 'og:image', content: 'https://miro.medium.com/max/987/1*dw923vPBJNFAcOtdS4Aoug.png' },
+      { hid: 'og:type', property: 'og:type', content: 'article' },
       { hid: 'og-image', property: 'og-image', content: 'https://miro.medium.com/max/987/1*dw923vPBJNFAcOtdS4Aoug.png' },
     ],
     link: [
