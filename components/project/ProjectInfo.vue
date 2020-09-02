@@ -89,13 +89,14 @@ const namespace = 'project';
     TButton,
     Avatar,
   },
-  head(this: ProjectInfoComponent): object {
+  head(): object {
+  // head(this: ProjectInfoComponent): object {
     return {
       title: 'Test title for card',
       meta: [
         { hid: 'og:type', property: 'og:type', content: 'article' },
-        { hid: 'og:image', property: 'og:image', content: this.projectImg },
-        { hid: 'og:title', property: 'og:title', content: this.project.name },
+        { hid: 'og:image', property: 'og:image', content: 'https://i.imgur.com/OYrHoWa.png' },
+        // { hid: 'og:title', property: 'og:title', content: this.project.name },
       ],
     };
   },
