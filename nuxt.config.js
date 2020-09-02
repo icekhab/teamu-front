@@ -8,6 +8,7 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1, minimum-scale=1' },
+      { hid: 'og:title', property: 'og:title', content: 'this.project.name' },
     ],
     link: [
       {
