@@ -6,4 +6,7 @@ module.exports = {
       app.use(writeAccessLog);
     },
   },
+  'generate:page': page => {
+    page.html = page.html.replace(/ data-n-head=".*?"/gi, '').replace(/ data-hid=".*?"/gi, '')
+  },
 };
