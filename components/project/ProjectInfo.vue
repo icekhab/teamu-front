@@ -91,6 +91,7 @@ const namespace = 'project';
   },
   head(this: ProjectInfoComponent): object {
     return {
+      title: 'Test title for card',
       meta: [
         { hid: 'og:type', property: 'og:type', content: 'article' },
         { hid: 'og:image', property: 'og:image', content: this.projectImg },
