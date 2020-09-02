@@ -97,4 +97,5 @@ module.exports = {
       },
     ],
   ],
+  mode: 'spa',
 };
