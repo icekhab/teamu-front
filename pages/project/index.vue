@@ -1,19 +1,27 @@
 <template>
   <MenuLayout>
     <div class="main">
-      <AllProjectsHeader class="main__header" />
-      <ProjectList v-if="projects.length" class="main__project-list" :projects="projects" @add-to-favorite="addProjectToFavorites"/>
-      <div v-else class="main__not-found">
-        <span class="main__not-found-text">К сожалению, по вашим параметрам проектов не найдено.</span>
-        <img class="main__not-found-img" src="/images/svg/projects/not-found.svg" alt="">
-      </div>
+      <client-only v-if="!loading">
+        <AllProjectsHeader class="main__header" />
+        <ProjectList
+          v-if="projects.length"
+          class="main__project-list"
+          :projects="projects"
+          @add-to-favorite="addProjectToFavorites"
+          @remove-from-favorite="removeProjectFromFavorites"
+        />
+        <div v-else class="main__not-found">
+          <span class="main__not-found-text">К сожалению, по вашим параметрам проектов не найдено.</span>
+          <img class="main__not-found-img" src="/images/svg/projects/not-found.svg" alt="">
+        </div>
+      </client-only>
     </div>
   </MenuLayout>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
+import { Getter, Action, Mutation } from 'vuex-class';
 import MenuLayout from '@/components/layout/MenuLayout.vue';
 import AllProjectsHeader from '@/components/allProjects/AllProjectsHeader.vue';
 import ProjectList from '@/components/common/ProjectList.vue';
@@ -28,20 +36,34 @@ const namespaceUserFavorites = 'userFavorites';
     AllProjectsHeader,
     ProjectList,
   },
-
-  async fetch({
-    store,
-  }) {
-    await store.dispatch('allProjects/getAllProjects');
-  },
 })
 export default class MainPageComponent extends Vue {
   @Getter('projects', { namespace }) projects!: ProjectEntity[];
 
   @Action('addFavoriteProject', { namespace: namespaceUserFavorites }) addFavoriteProject!: (id: number) => void;
 
-  addProjectToFavorites(id: number) {
-    this.addFavoriteProject(id);
+  @Action('removeFavoriteProject', { namespace: namespaceUserFavorites }) removeFavoriteProject!: (id: number) => void;
+
+  @Action('getAllProjects', { namespace }) getAllProjects!: () => void;
+
+  @Mutation('changeProjectFavorite', { namespace }) changeProjectFavorite!: (id: number) => void;
+
+  loading = false;
+
+  async mounted() {
+    this.loading = true;
+    await this.getAllProjects();
+    this.loading = false;
+  }
+
+  async addProjectToFavorites(id: number) {
+    await this.addFavoriteProject(id);
+    this.changeProjectFavorite(id);
+  }
+
+  async removeProjectFromFavorites(id: number) {
+    await this.removeFavoriteProject(id);
+    this.changeProjectFavorite(id);
   }
 }
 </script>

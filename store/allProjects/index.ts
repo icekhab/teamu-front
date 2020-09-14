@@ -45,8 +45,14 @@ export const mutations = {
     currentState.projects = [...projects];
   },
 
+  changeProjectFavorite(currentState: AllProjectsState, id: number): void {
+    const currentProject = currentState.projects.find((el: ProjectEntity) => el.id === id);
+    if (currentProject) {
+      currentProject.isFavorite = !currentProject.isFavorite;
+    }
+  },
+
   setSearchFilter(currentState: AllProjectsState, search: string): void {
-    console.log(search);
     currentState.filter.search = search;
   },
 

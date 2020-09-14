@@ -1,7 +1,7 @@
 <template>
   <div class="menu">
     <nuxt-link class="menu__item teamu-logo" to="/">
-      <span class="logo">U</span>
+      <TeamuLogo class="logo" />
     </nuxt-link>
     <client-only>
       <Avatar
@@ -30,7 +30,16 @@
     <a class="menu__item help" href="https://t.me/joinchat/CbUfXVP2Djjr4DtSxls0CA" target="_blank">
       <HelpIcon class="menu__item help" />
     </a>
-    <!--    <UsersIcon class="menu__item users" />-->
+    <client-only>
+      <nuxt-link v-if="isAuthorize" class="menu__item all-users" :to="usersLink">
+        <UsersIcon class="menu__item users" :class="getClass(usersLink)" />
+      </nuxt-link>
+    </client-only>
+    <client-only>
+      <nuxt-link v-if="isAuthorize" class="menu__item my-favorites" :to="favoritesLink">
+        <FavoriteIcon class="menu__item favorites" :class="getClass(favoritesLink)" />
+      </nuxt-link>
+    </client-only>
     <client-only>
       <modal
         v-if="isAuthorize"
@@ -86,9 +95,10 @@ import NotificationIcon from '@/static/images/svg/menu/notification-icon.svg';
 import SearchIcon from '@/static/images/svg/menu/search-icon.svg';
 import HelpIcon from '@/static/images/svg/menu/help-icon.svg';
 import LogoutIcon from '@/static/images/svg/menu/logout-icon.svg';
-import TeamuLogo from '@/static/images/svg/menu/teamu-logo.svg';
+import TeamuLogo from '@/static/images/svg/menu/teamu-logo-2020-08-19.svg';
 import UsersIcon from '@/static/images/svg/menu/users-icon.svg';
 import ProfileIcon from '@/static/images/svg/menu/profile-logo.svg';
+import FavoriteIcon from '@/static/images/svg/menu/favorite-icon.svg';
 import { State, Action, Mutation } from 'vuex-class';
 import UserEntity from '@/entities/UserEntity';
 import Avatar from 'vue-avatar';
@@ -105,6 +115,7 @@ import { RawLocation } from 'vue-router/types/router';
     UsersIcon,
     LogoutIcon,
     ProfileIcon,
+    FavoriteIcon,
     Avatar,
   },
 })
@@ -119,6 +130,14 @@ export default class MenuComponent extends Vue {
 
   projectsLink = {
     name: 'project',
+  };
+
+  usersLink = {
+    name: 'user',
+  };
+
+  favoritesLink = {
+    name: 'favorites',
   };
 
   myProjectsLink = {
@@ -236,7 +255,7 @@ export default class MenuComponent extends Vue {
       color: var(--greyColor);
       transition: color .1s ease-in;
 
-      &.help, &.teamu-logo, &.users, &.empty, &.search {
+      &.help, &.teamu-logo, &.empty, &.search {
         display: none;
       }
 
@@ -316,9 +335,7 @@ export default class MenuComponent extends Vue {
           height: 35px;
           width: 35px;
           margin-bottom: 50px;
-          background: #4f56f1;
           color: white;
-          padding: 9px;
           border-radius: 100%;
           font-weight: bold;
           font-size: 26px;
@@ -334,6 +351,11 @@ export default class MenuComponent extends Vue {
           order: 3
         }
 
+        &.favorites {
+          display: inline;
+          order: 4
+        }
+
         &.my-idea {
           display: inline;
           margin-bottom: 26px;
@@ -344,6 +366,16 @@ export default class MenuComponent extends Vue {
         }
 
         &.all-idea {
+          display: inline;
+          margin-bottom: 26px;
+        }
+
+        &.all-users {
+          display: inline;
+          margin-bottom: 26px;
+        }
+
+        &.my-favorites {
           display: inline;
           margin-bottom: 26px;
         }

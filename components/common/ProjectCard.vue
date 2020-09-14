@@ -8,7 +8,7 @@
         >
           <img
             class="project-card__image__logo"
-            :src="project.imagePath || baseSrc"
+            :src="projectImg"
             alt="project logo"
           >
         </div>
@@ -22,9 +22,9 @@
               {{ project.accounts }}
             </span>
           </div>
-          <div class="project-card__looking-for">
+          <div v-if="false" class="project-card__looking-for">
             Ищем в команду:
-            <span class="project-card__looking-for__number">{{declOfNumPeople(3)}}</span>
+            <span class="project-card__looking-for__number">{{ declOfNumPeople(3) }}</span>
           </div>
           <div class="project-card__text">
             {{ project.description }}
@@ -59,9 +59,9 @@
           </div>
         </div>
       </nuxt-link>
-      <div v-if="!isMy && false" class="project-card__bookmark" @click="$emit('add-to-favorite', project.id)">
-        <BookmarkFilledIcon v-if="project.isFavorite"/>
-        <BookmarkIcon v-else/>
+      <div v-if="!isMy" class="project-card__bookmark" @click="changeFavorites">
+        <BookmarkFilledIcon v-if="project.isFavorite" />
+        <BookmarkIcon v-else />
       </div>
       <div v-if="isMy" class="project-card__buttons">
         <TButton
@@ -82,9 +82,9 @@
         >
           В черновик
         </TButton>
-        <v-popover>
+        <v-popover offset="50" placement="left">
           <button class="project-card__buttons__drop-down-menu">
-            <PolygonIcon/>
+            <PolygonIcon />
           </button>
           <template slot="popover">
             <div class="edit-menu">
@@ -139,10 +139,14 @@ export default class ProjectCardComponent extends Vue {
 
   @Prop({ default: false, type: Boolean }) readonly isDraft!: boolean;
 
-  private baseSrc: string = '/images/svg/no-photo.svg';
+  baseSrc: string = '/images/svg/no-photo.svg';
 
   get modalName() {
     return `edit-menu-${this.project.id}`;
+  }
+
+  get projectImg() {
+    return this.project.imagePath || this.baseSrc;
   }
 
   private showModal() {
@@ -165,7 +169,7 @@ export default class ProjectCardComponent extends Vue {
 
   private style() {
     const containerStyle: any = {};
-    containerStyle.backgroundImage = `url(${this.project.imagePath || this.baseSrc})`;
+    containerStyle.backgroundImage = `url(${this.projectImg})`;
     containerStyle.backgroundSize = 'cover';
 
     return containerStyle;
@@ -173,6 +177,14 @@ export default class ProjectCardComponent extends Vue {
 
   private declOfNumPeople(n: number) {
     return `${n} ${StringHelper.declOfNum(n, ['человек', 'человекa', 'человек'])}`;
+  }
+
+  changeFavorites() {
+    if (this.project.isFavorite) {
+      this.$emit('remove-from-favorite', this.project.id);
+    } else {
+      this.$emit('add-to-favorite', this.project.id);
+    }
   }
 
   projectLink = {

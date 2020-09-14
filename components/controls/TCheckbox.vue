@@ -36,7 +36,7 @@ import CheckIcon from '~/static/images/svg/check-icon.svg';
     CheckIcon,
   },
 })
-export default class MCheckboxComponent extends Vue {
+export default class TCheckboxComponent extends Vue {
   @Ref('input') readonly inputCheckbox!: HTMLInputElement;
 
   @Ref('label') readonly label!: HTMLLabelElement;

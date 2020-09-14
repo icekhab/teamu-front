@@ -89,6 +89,17 @@ const namespace = 'project';
     TButton,
     Avatar,
   },
+  head(): object {
+  // head(this: ProjectInfoComponent): object {
+    return {
+      // title: 'Test title for card',
+      meta: [
+        { hid: 'og:type', property: 'og:type', content: 'article' },
+        { hid: 'og:image', property: 'og:image', content: 'https://i.imgur.com/OYrHoWa.png' },
+        { hid: 'og:title', property: 'og:title', content: 'asdasdsddasdadss' },
+      ],
+    };
+  },
 })
 export default class ProjectInfoComponent extends Vue {
   @State('project', { namespace }) project!: DetailProjectEntity;
@@ -133,6 +144,10 @@ export default class ProjectInfoComponent extends Vue {
       name: 'profile-id',
       params: { id: this.project.user.id },
     };
+  }
+
+  get projectImg() {
+    return this.project.imagePath || this.noLogoUrl;
   }
 }
 </script>

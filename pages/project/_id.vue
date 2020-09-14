@@ -4,7 +4,7 @@
       <client-only v-if="!loading">
         <ProjectInfo :my="isMy" />
         <div
-          v-if="project.vacancy.length"
+          v-if="project.vacancy && project.vacancy.length"
           class="project-page__vacancies"
         >
           <span class="project-page__vacancy-header">Мы ищем</span>
